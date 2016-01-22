@@ -12,9 +12,8 @@ db.once('open', function() {
 });
 
 var drinksSchema = new mongoose.Schema({
-    name: {
-        ingredient: { type: Number}
-    }
+    name: String,
+    ingredients: { String }
 });
 
 // compiles schema into a model
@@ -24,15 +23,45 @@ var DrinksModel = mongoose.model('drinks', drinksSchema);
 // user will see this message.
 var found = ['DB Connection not yet established.  Try again later.  Check the console output for error messages if this persists.'];
 
-router.get('/', function(req, res) {
+
+function getDatabase(req, res, next) {
     // Let's find all the documents
     DrinksModel.find({}).exec(function(err, result) {
         if (!err) {
-            res.render('drinks', {json: JSON.stringify(result, undefined, 2), length: result.length})
+            req.json = JSON.stringify(result, undefined, 2);
+            req.length = result.length;
+            return next();
+            //res.render('drinks', {json: JSON.stringify(result, undefined, 2), length: result.length})
         } else {
             res.end('Error in first query. ' + err)
         };
     });
-});
+}
+
+function queryDatabase(req, res) {
+    // Let's find all the documents
+    DrinksModel.find({}).exec(function(err, result) {
+        // Let's see if there are....
+        var query = DrinksModel.find({ "ingredients.cola": { $exists: true } }); // (ok in this example, it's all entries)
+        //query.where('age').gt(64);
+        query.exec(function(err, result) {
+            if (!err) {
+                req.json2 = JSON.stringify(result, undefined, 2);
+                req.length2 = result.length;
+                res.render('drinks_queried', {json: req.json, length: req.length, json2: req.json2, length2: req.length2})
+                //res.end('drinks_queried')
+                //res.render('drinks_queried', {json2: JSON.stringify(result, undefined, 2)})
+                //res.end(html4 + JSON.stringify(result, undefined, 2) + html5 + result.length + html6);
+            } else {
+                // just render the data from getDatabase() if query fails
+                res.render('drinks', {json: req.json, length: req.length})
+
+                res.end('Error in second query. ' + err)
+            }
+        });
+    });
+}
+
+router.get('/', getDatabase, queryDatabase);
 
 module.exports = router;
