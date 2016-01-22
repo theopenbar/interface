@@ -7,9 +7,7 @@ mongoose.connect('mongodb://fakeuser:fakepassword@ds035004.mongolab.com:35004/he
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-console.log('About to open connection to database.');
 db.once('open', function() {
-    console.log('Connected to database.');
     // we're connected!
 });
 
@@ -27,14 +25,10 @@ var DrinksModel = mongoose.model('drinks', drinksSchema);
 var found = ['DB Connection not yet established.  Try again later.  Check the console output for error messages if this persists.'];
 
 router.get('/', function(req, res) {
-    console.log('Routed!');
     // Let's find all the documents
     DrinksModel.find({}).exec(function(err, result) {
-        console.log('Find whats in here');
         if (!err) {
-            console.log('Draw up some html.');
             res.end(html1 + JSON.stringify(result, undefined, 2) +  html2 + result.length + html3);
-            console.log('Complete!');
         } else {
             res.end('Error in first query. ' + err)
         };
