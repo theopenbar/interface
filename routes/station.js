@@ -40,7 +40,7 @@ function getDatabase(req, res) {
 */
 
 router.get('/', function(req, res, next) {
-  res.render('station', { id: '1234' });
+  res.render('station', { id: req.query.id });
 });
 
 module.exports = router;
