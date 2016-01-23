@@ -14,9 +14,10 @@ app.config(['$routeProvider', function($routeProvider) {
         });
 }]);
 
-app.controller('HomeCtrl', ['$scope', '$resource', function($scope, $resource){
-    var Drinks = $resource('/api/drinks');
-    Drinks.query(function(drinks){
-        $scope.drinks = drinks;
-    });
+app.controller('HomeCtrl', ['$scope', '$resource',
+    function($scope, $resource){
+        var Drinks = $resource('/api/drinks');
+        Drinks.query(function(drinks){
+            $scope.drinks = drinks;
+        });
 }]);
