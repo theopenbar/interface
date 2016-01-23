@@ -69,14 +69,24 @@ function drawValves(req, res, next) {
             ingredients[i] = json_parsed[gpio_key].name;
         }
         else {
-            ingredients[i] = "empty";
+            ingredients[i] = null;
         }
     }
 
-    res.render('station', { id: req.id, details: req.json, valves: ingredients });
+    req.ingredients = ingredients;
+    return next();
+
+    //res.render('station', { id: req.id, details: req.json, valves: ingredients });
+}
+
+function findDrinks(req, res, next) {
+
+
+    res.render('station', { id: req.id, details: req.json, valves: req.ingredients });
+
 }
 
 
-router.get('/', parseID, drawValves);
+router.get('/', parseID, drawValves, findDrinks);
 
 module.exports = router;
