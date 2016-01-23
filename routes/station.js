@@ -31,24 +31,21 @@ function parseID(req, res, next) {
 
     if (mongoose.Types.ObjectId.isValid(station_id))
     {
-        // Let's find all the documents
-        StationModel.find({}).exec(function(err, result) {
-            // look in the stations database for key with id from URL parameter
-            var query = StationModel.findOne({ "_id": station_id });
-            query.exec(function(err, result) {
-                if (err) {
-                    res.end('Error in first query. ' + err)
-                }
-                if (result !== null) {
-                    req.id = station_id;
-                    req.json = JSON.stringify(result, undefined, 2);
-                    return next();
-                    //res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
-                }
-                else {
-                    res.render('station_error', { error : "not found", id: station_id});
-                }
-            });
+        // look in the stations database for key with id from URL parameter
+        var query = StationModel.findOne({ "_id": station_id });
+        query.exec(function(err, result) {
+            if (err) {
+                res.end('Error in first query. ' + err)
+            }
+            if (result !== null) {
+                req.id = station_id;
+                req.json = JSON.stringify(result, undefined, 2);
+                return next();
+                //res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
+            }
+            else {
+                res.render('station_error', { error : "not found", id: station_id});
+            }
         });
     }
     else {
