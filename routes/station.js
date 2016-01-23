@@ -23,24 +23,18 @@ var StationModel = mongoose.model('station', stationSchema);
 // user will see this message.
 var found = ['DB Connection not yet established.  Try again later.  Check the console output for error messages if this persists.'];
 
-/*
-function getDatabase(req, res) {
+router.get('/', function(req, res, next) {
     // Let's find all the documents
-    DrinksModel.find({}).exec(function(err, result) {
+    StationModel.find({}).exec(function(err, result) {
+        // look in the stations database for key with id from URL parameter
+        var query = StationModel.find({ "__id": req.query.id });
+
         if (!err) {
-            req.json = JSON.stringify(result, undefined, 2);
-            req.length = result.length;
-            return next();
-            //res.render('drinks', {json: JSON.stringify(result, undefined, 2), length: result.length})
+            res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
         } else {
             res.end('Error in first query. ' + err)
         };
     });
-}
-*/
-
-router.get('/', function(req, res, next) {
-  res.render('station', { id: req.query.id });
 });
 
 module.exports = router;
