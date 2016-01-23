@@ -5,6 +5,7 @@ block content
   pre
       code= details
 
+  h1 Your station is configured as such:
   div
   table
     thead
@@ -15,3 +16,8 @@ block content
       tr
         each val in valves
           td= val
+
+  h1 You can make the following drinks:
+  ul
+    each drink, index in drinks
+      li= drinks[index]
