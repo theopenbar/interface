@@ -80,6 +80,28 @@ function drawValves(req, res, next) {
 
 function findDrinks(req, res, next) {
 
+    // Let's find all the recipes
+    StationModel.find({}).exec(function(err, result) {
+        if (!err) {
+            //
+            console.log(result);
+
+
+
+            //req.json2 = JSON.stringify(result, undefined, 2);
+            //req.length2 = result.length;
+            //res.render('drinks_queried', {json: req.json, length: req.length, json2: req.json2, length2: req.length2})
+            //res.end('drinks_queried')
+            //res.render('drinks_queried', {json2: JSON.stringify(result, undefined, 2)})
+            //res.end(html4 + JSON.stringify(result, undefined, 2) + html5 + result.length + html6);
+        } else {
+            // just render the data from getDatabase() if query fails
+            res.render('drinks', {json: req.json, length: req.length})
+
+            res.end('Error in second query. ' + err)
+        }
+    });
+
 
     res.render('station', { id: req.id, details: req.json, valves: req.ingredients });
 
