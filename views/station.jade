@@ -7,9 +7,11 @@ block content
 
   div
   table
-    tr
-      each val in [1,2,3,4,5,6]
-        td #{val}
-    tr
-      each val in [1,2,3,4,5,6]
-        td hello
+    thead
+      tr
+        each val, index in valves
+          td= index
+    tbody
+      tr
+        each val in valves
+          td= val
