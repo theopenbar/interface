@@ -12,8 +12,7 @@ db.once('open', function() {
 });
 
 var stationSchema = new mongoose.Schema({
-    "ip-address": String,
-    "ingredients": { String }
+    "ip-address": String
 });
 
 // compiles schema into a model

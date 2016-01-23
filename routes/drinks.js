@@ -12,8 +12,8 @@ db.once('open', function() {
 });
 
 var drinksSchema = new mongoose.Schema({
-    name: String,
-    ingredients: { String }
+    "name": String,
+    "recipe": { ingredient: String, quantity: Number }
 });
 
 // compiles schema into a model
@@ -42,7 +42,7 @@ function queryDatabase(req, res) {
     // Let's find all the documents
     DrinksModel.find({}).exec(function(err, result) {
         // Let's see if there are....
-        var query = DrinksModel.find({ "ingredients.cola": { $exists: true } }); // (ok in this example, it's all entries)
+        var query = DrinksModel.find({ "recipe.cola": { $exists: true } }); // (ok in this example, it's all entries)
         //query.where('age').gt(64);
         query.exec(function(err, result) {
             if (!err) {
