@@ -75,27 +75,29 @@ function findDrinks(req, res, next) {
     var collection = db.get('drinks');
     collection.find({},function(err,result){
         if (!err) {
+            // array of drinks we can make
             var drinks = [];
 
-            // FYI, req.ingredients has "null" where there isn't an ingredient
-
-            // go through each recipe and make sure we have all ingredients
+            // go through each recipe in collection 'drinks'
             result.forEach(function(item, index) {
-
-                //console.log(item.recipe);
-                console.log();
+                // assume true -- will be false if we can't find one ingredient
+                var canMake = true;
 
                 // go through each ingedient in the recipe
                 for(var ingredient in item.recipe){
-                    console.log(ingredient + " : " + item.recipe[ingredient]);
-
-
-                    // make sure that ingredient is in drinks[]
-
+                    // make sure that ingredient is in req.ingredients
+                    // returns -1 if not found
+                    if (req.ingredients.indexOf(ingredient) < 0) {
+                        // if there's an ingedient in the recipe that we don't have,
+                        // make it false
+                        canMake = false;
+                    }
                 }
 
-
-                drinks.push(item.name);
+                // as long as we have all ingredients, add recipe to drinks[]
+                if (canMake) {
+                    drinks.push(item.name);
+                }
             });
 
             res.render('station', { id: req.id, details: req.json, valves: req.ingredients, "drinks": drinks });
