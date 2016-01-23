@@ -32,13 +32,17 @@ router.get('/', function(req, res, next) {
         // Let's find all the documents
         StationModel.find({}).exec(function(err, result) {
             // look in the stations database for key with id from URL parameter
-            var query = StationModel.find({ "_id": station_id });
+            var query = StationModel.findOne({ "_id": station_id });
             query.exec(function(err, result) {
-                if (!err) {
-                    res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
-                } else {
+                if (err) {
                     res.end('Error in first query. ' + err)
-                };
+                }
+                if (result !== null) {
+                    res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
+                }
+                else {
+                    res.render('station_error', { error : "not found", id: station_id});
+                }
             });
         });
     }
