@@ -43,8 +43,7 @@ router.get('/', function(req, res, next) {
         });
     }
     else {
-        // not valid
-        res.render('wrong_station', { id: station_id });
+        res.render('station_error', { error : "not valid", id: station_id});
     }
 });
 
