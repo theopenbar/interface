@@ -89,8 +89,8 @@ function findDrinks(req, res, next) {
 router.get('/', function(req, res) {
     var station_id = req.query.id;
 
-    //if (isValidObjectID(station_id))
-    //{
+    if (isValidObjectID(station_id))
+    {
         // look in the stations database for key with id from URL parameter
         var db = req.db;
         var collection = db.get('stations');
@@ -105,10 +105,10 @@ router.get('/', function(req, res) {
                 res.render('station_error', { error : "not found", id: station_id});
             }
         });
-    //}
-    //else {
-    //    res.render('station_error', { error : "not valid", id: station_id});
-    //}
+    }
+    else {
+        res.render('station_error', { error : "not valid", id: station_id});
+    }
 });
 
 module.exports = router;
