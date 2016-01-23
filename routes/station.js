@@ -24,17 +24,28 @@ var StationModel = mongoose.model('station', stationSchema);
 var found = ['DB Connection not yet established.  Try again later.  Check the console output for error messages if this persists.'];
 
 router.get('/', function(req, res, next) {
-    // Let's find all the documents
-    StationModel.find({}).exec(function(err, result) {
-        // look in the stations database for key with id from URL parameter
-        var query = StationModel.find({ "__id": req.query.id });
 
-        if (!err) {
-            res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
-        } else {
-            res.end('Error in first query. ' + err)
-        };
-    });
+    var station_id = req.query.id;
+
+    if (mongoose.Types.ObjectId.isValid(station_id))
+    {
+        // Let's find all the documents
+        StationModel.find({}).exec(function(err, result) {
+            // look in the stations database for key with id from URL parameter
+            var query = StationModel.find({ "_id": station_id });
+            query.exec(function(err, result) {
+                if (!err) {
+                    res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
+                } else {
+                    res.end('Error in first query. ' + err)
+                };
+            });
+        });
+    }
+    else {
+        // not valid
+        res.render('wrong_station', { id: station_id });
+    }
 });
 
 module.exports = router;
