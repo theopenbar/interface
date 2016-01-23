@@ -1,26 +1,17 @@
 var express = require('express');
 var router = express.Router();
+var mongo = require('mongodb');
 
-var mongoose = require('mongoose');
-// replace with some process.env variables in the future
-mongoose.connect('mongodb://fakeuser:fakepassword@ds035004.mongolab.com:35004/heroku_ff1ms21p');
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    // we're connected!
-});
-
-var stationSchema = new mongoose.Schema({
-    "ip-address": String
-});
-
-// compiles schema into a model
-var StationModel = mongoose.model('station', stationSchema);
-
-// In case the browser connects before the database is connected, the
-// user will see this message.
-var found = ['DB Connection not yet established.  Try again later.  Check the console output for error messages if this persists.'];
+// http://stackoverflow.com/a/18547480
+function isValidObjectID(str) {
+  // coerce to string so the function can be generically used to test both strings and native objectIds created by the driver
+  str = str + '';
+  var len = str.length, valid = false;
+  if (len == 12 || len == 24) {
+    valid = /^[0-9a-fA-F]+$/.test(str);
+  }
+  return valid;
+}
 
 // determines if the id passed as a URL parameter is valid for the database,
 // and that it is found in the database,
@@ -28,11 +19,13 @@ var found = ['DB Connection not yet established.  Try again later.  Check the co
 function parseID(req, res, next) {
     var station_id = req.query.id;
 
-    if (mongoose.Types.ObjectId.isValid(station_id))
+    if (isValidObjectID(station_id))
     {
         // look in the stations database for key with id from URL parameter
-        var query = StationModel.findOne({ "_id": station_id });
-        query.exec(function(err, result) {
+        var db = req.db;
+        var collection = db.get('stations');
+        collection.findOne({ "_id": mongo.ObjectID(station_id) },function(err,result){
+            console.log(result);
             if (err) {
                 res.end('Error in first query. ' + err)
             }
@@ -40,7 +33,6 @@ function parseID(req, res, next) {
                 req.id = station_id;
                 req.json = JSON.stringify(result, undefined, 2);
                 return next();
-                //res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
             }
             else {
                 res.render('station_error', { error : "not found", id: station_id});
@@ -74,8 +66,6 @@ function drawValves(req, res, next) {
 
     req.ingredients = ingredients;
     return next();
-
-    //res.render('station', { id: req.id, details: req.json, valves: ingredients });
 }
 
 function findDrinks(req, res, next) {
