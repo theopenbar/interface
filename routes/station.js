@@ -77,7 +77,24 @@ function findDrinks(req, res, next) {
         if (!err) {
             var drinks = [];
 
+            // FYI, req.ingredients has "null" where there isn't an ingredient
+
+            // go through each recipe and make sure we have all ingredients
             result.forEach(function(item, index) {
+
+                //console.log(item.recipe);
+                console.log();
+
+                // go through each ingedient in the recipe
+                for(var ingredient in item.recipe){
+                    console.log(ingredient + " : " + item.recipe[ingredient]);
+
+
+                    // make sure that ingredient is in drinks[]
+
+                }
+
+
                 drinks.push(item.name);
             });
 
