@@ -26,9 +26,9 @@ app.controller('HomeCtrl', ['$scope', '$resource',
 app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location',
     function($scope, $resource, $location) {
         $scope.save = function() {
-            var Drinks = $resource)'/api/drinks');
+            var Drinks = $resource('/api/drinks');
             Drinks.save($scope.drink, function() {
                 $location.path('/');
             });
         };
-)]);
+}]);
