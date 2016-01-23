@@ -95,8 +95,6 @@ router.get('/', function(req, res) {
         var db = req.db;
         var collection = db.get('stations');
         collection.findOne({ "_id": mongo.ObjectID(station_id) },function(err,station){
-        //collection.find({},function(err,station){
-            //console.log(result);
             if (err) throw err;
             if (station !== null) {
                 res.json(station);
