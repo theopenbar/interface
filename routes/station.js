@@ -23,8 +23,10 @@ var StationModel = mongoose.model('station', stationSchema);
 // user will see this message.
 var found = ['DB Connection not yet established.  Try again later.  Check the console output for error messages if this persists.'];
 
-router.get('/', function(req, res, next) {
-
+// determines if the id passed as a URL parameter is valid for the database,
+// and that it is found in the database,
+// and then finally passes the ID on if its good
+function parseID(req, res, next) {
     var station_id = req.query.id;
 
     if (mongoose.Types.ObjectId.isValid(station_id))
@@ -38,7 +40,10 @@ router.get('/', function(req, res, next) {
                     res.end('Error in first query. ' + err)
                 }
                 if (result !== null) {
-                    res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
+                    req.id = station_id;
+                    req.json = JSON.stringify(result, undefined, 2);
+                    return next();
+                    //res.render('station', { id: req.query.id, details: JSON.stringify(result, undefined, 2) });
                 }
                 else {
                     res.render('station_error', { error : "not found", id: station_id});
@@ -49,6 +54,13 @@ router.get('/', function(req, res, next) {
     else {
         res.render('station_error', { error : "not valid", id: station_id});
     }
-});
+}
+
+function drawValves(req, res, next) {
+    res.render('station', { id: req.id, details: req.json });
+}
+
+
+router.get('/', parseID, drawValves);
 
 module.exports = router;
