@@ -6,6 +6,9 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'partials/home.html',
             controller: 'HomeCtrl'
         })
+        .when('/add-drink', {
+            templateUrl: 'partials/drink-form.html'
+        })
         .otherwise({
             redirectTo: '/'
         });

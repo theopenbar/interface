@@ -19,12 +19,23 @@ function queryDatabase(req, res) {
 */
 
 router.get('/', function(req, res) {
-    // let's open the drinks collection
     var db = req.db;
     var collection = db.get('drinks');
     collection.find({},function(err, drinks){
         if (err) throw err;
         res.json(drinks);
+    });
+});
+
+router.post('/', function(req, res) {
+    var db = req.db;
+    var collection = db.get('drinks');
+    collection.insert({
+        name: req.body.name,
+        recipe: req.body.recipe
+    }, function(err, drink){
+        if (err) throw err;
+        res.json(drink);
     });
 });
 
