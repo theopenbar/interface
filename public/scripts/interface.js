@@ -46,4 +46,8 @@ app.controller('ViewStationCtrl', ['$scope', '$resource', '$location',
         Station.query(function(station){
             $scope.station = station;
         });
+
+        $scope.getMaxValves = function(num) {
+            return new Array(num);
+        }
 }]);
