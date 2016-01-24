@@ -37,8 +37,13 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location',
         };
 }]);
 
-app.controller('ViewStationCtrl', ['$scope', '$resource',
-    function($scope, $resource){
+app.controller('ViewStationCtrl', ['$scope', '$resource', '$location',
+    function($scope, $resource, $location){
+
+        var url_params = $location.search();
+
+        console.log(url_params.id);
+
         var Station = $resource('/api/station');
         Station.query(function(station){
             $scope.station = station;
