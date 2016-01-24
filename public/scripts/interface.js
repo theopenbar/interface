@@ -12,7 +12,7 @@ app.config(['$routeProvider', function($routeProvider) {
         })
         .when('/pour', {
             templateUrl: 'partials/pour.html',
-            controller: 'HomeCtrl'
+            controller: 'PourCtrl'
         })
         .when('/station', {
             templateUrl: 'partials/view-station.html',
@@ -39,6 +39,14 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location',
                 $location.path('/');
             });
         };
+}]);
+
+app.controller('PourCtrl', ['$scope', '$resource',
+    function($scope, $resource){
+        var Drinks = $resource('/api/drinks');
+        Drinks.query(function(drinks){
+            $scope.drinks = drinks;
+        });
 }]);
 
 app.controller('ViewStationCtrl', ['$scope', '$resource', '$location',
