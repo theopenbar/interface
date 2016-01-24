@@ -10,6 +10,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'partials/drink-form.html',
             controller: 'AddDrinkCtrl'
         })
+        .when('/station', {
+            templateUrl: 'partials/view-station.html',
+            controller: 'ViewStationCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
@@ -31,4 +35,19 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location',
                 $location.path('/');
             });
         };
+}]);
+
+app.controller('ViewStationCtrl', ['$scope', '$resource', '$location',
+    function($scope, $resource, $location){
+        var url_params = $location.search();
+        var station_id = url_params.id;
+
+        var Station = $resource('/api/station/:id', {id: station_id});
+        Station.query(function(station){
+            $scope.station = station;
+        });
+
+        $scope.getMaxValves = function(num) {
+            return new Array(num);
+        }
 }]);
