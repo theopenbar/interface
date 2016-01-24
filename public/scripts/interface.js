@@ -10,6 +10,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'partials/drink-form.html',
             controller: 'AddDrinkCtrl'
         })
+        .when('/pour', {
+            templateUrl: 'partials/pour.html',
+            controller: 'HomeCtrl'
+        })
         .when('/station', {
             templateUrl: 'partials/view-station.html',
             controller: 'ViewStationCtrl'
