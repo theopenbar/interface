@@ -31,7 +31,7 @@ app.controller('HomeCtrl', ['$scope', '$resource',
         });
 }]);
 
-app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location',
+app.controller('AddDrinkCtrl', ['$scope', '$resource',
     function($scope, $resource, $location) {
         $scope.save = function() {
             var Drinks = $resource('/api/drinks');
@@ -41,8 +41,16 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location',
         };
 }]);
 
-app.controller('PourCtrl', ['$scope', '$resource',
-    function($scope, $resource){
+app.controller('PourCtrl', ['$scope', '$resource', '$location',
+    function($scope, $resource, $location){
+        var url_params = $location.search();
+        var station_id = url_params.id;
+
+        var Station = $resource('/api/station/:id', {id: station_id});
+        Station.query(function(station){
+            $scope.station = station;
+        });
+
         var Drinks = $resource('/api/drinks');
         Drinks.query(function(drinks){
             $scope.drinks = drinks;
