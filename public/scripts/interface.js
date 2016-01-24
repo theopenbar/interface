@@ -47,7 +47,7 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location',
         var station_id = url_params.id;
 
         var Station = $resource('/api/station/:id', {id: station_id});
-        Station.query(function(station){
+        Station.get(function(station){
             $scope.station = station;
         });
 
