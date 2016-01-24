@@ -1,9 +1,9 @@
-<h1>Your Station ID is: {{station[0]._id}}</h1>
+<h1>Your Station ID is: {{station._id}}</h1>
 
-<h2>Your local IP address is: {{station[0].ip_address}}</h2>
+<h2>Your local IP address is: {{station.ip_address}}</h2>
 
 <h3>Your station is configured as such:</h3>
-<!--<p>{{station[0].max_valves}}</p>-->
+
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             <tr>
-                <td ng-repeat="i in getMaxValves(12) track by $index">{{station[0]["gpio"+$index].name}}</td>
+                <td ng-repeat="i in getMaxValves(12) track by $index">{{station["gpio"+$index].name}}</td>
             </tr>
         </tbody>
     </table>
