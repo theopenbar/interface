@@ -83,11 +83,12 @@ function findDrinks(req, res, next) {
 }
 */
 
-// determines if the id passed as a URL parameter is valid for the database,
+// determines if the id passed as a parameter is valid for the database,
 // and that it is found in the database,
-// and then finally passes the ID on if its good
-router.get('/', function(req, res) {
-    var station_id = req.query.id;
+// and then finally passes the ID on if its good,
+// otherwise returns an error in JSON
+router.get('/:id', function(req, res) {
+    var station_id = req.params.id;
 
     if (isValidObjectID(station_id))
     {
@@ -100,12 +101,12 @@ router.get('/', function(req, res) {
                 res.json(station);
             }
             else {
-                res.render('station_error', { error : "not found", id: station_id});
+                res.json({"error" : "not_found"});
             }
         });
     }
     else {
-        res.render('station_error', { error : "not valid", id: station_id});
+        res.json({"error" : "not_valid_objectId"});
     }
 });
 
