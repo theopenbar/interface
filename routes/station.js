@@ -98,15 +98,15 @@ router.get('/:id', function(req, res) {
         collection.findOne({ "_id": mongo.ObjectID(station_id) },function(err,station){
             if (err) throw err;
             if (station !== null) {
-                res.json(station);
+                res.json([station]);
             }
             else {
-                res.json({"error" : "not_found"});
+                res.json([{"error" : "not_found"}]);
             }
         });
     }
     else {
-        res.json({"error" : "not_valid_objectId"});
+        res.json([{"error" : "not_valid_objectId"}]);
     }
 });
 
