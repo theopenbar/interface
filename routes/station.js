@@ -14,33 +14,6 @@ function isValidObjectID(str) {
   return valid;
 }
 
-/* we can put this at /station/view (or similiar) later
-
-function drawValves(req, res, next) {
-    const NUM_VALVES = 12;
-    // empty array to store ingredients
-    var ingredients = [];
-
-    // we have the JSON from parseID()
-    var json_parsed = JSON.parse(req.json);
-
-    // loop through the 12 possible values and assign an ingredient to each
-    for (i=0; i < NUM_VALVES; i++) {
-        var gpio_key = "gpio".concat(i);
-
-        if (json_parsed[gpio_key] != undefined) {
-            ingredients[i] = json_parsed[gpio_key].name;
-        }
-        else {
-            ingredients[i] = null;
-        }
-    }
-
-    req.ingredients = ingredients;
-    return next();
-}
-*/
-
 /* we'll want this on the main page later
 
 function findDrinks(req, res, next) {
