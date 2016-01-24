@@ -10,6 +10,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'partials/drink-form.html',
             controller: 'AddDrinkCtrl'
         })
+        .when('/station', {
+            templateUrl: 'partials/view-station.html',
+            controller: 'ViewStationCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
@@ -31,4 +35,12 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location',
                 $location.path('/');
             });
         };
+}]);
+
+app.controller('ViewStationCtrl', ['$scope', '$resource',
+    function($scope, $resource){
+        var Station = $resource('/api/station');
+        Station.query(function(station){
+            $scope.station = station;
+        });
 }]);
