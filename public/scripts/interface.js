@@ -66,8 +66,8 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
                 // cobble together a request
-                // var base = station.ip_address;
-                var base = "http://httpbin.org/get";
+                 var base = station.ip_address;
+                //var base = "http://httpbin.org/get";
                 var request = base + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
                 // log it, but later want to actually send it out
                 //console.log(request);
