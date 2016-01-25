@@ -66,15 +66,12 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
                 // cobble together a request
-                 var base = station.ip_address;
-                //var base = "httpbin.org/get";
-                var request = "http://" + base + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
-                // log it, but later want to actually send it out
-                //console.log(request);
+                var request = "http://" + station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
+                // send it out
                 $http.get(request)
                     .then(function(response) {
-                        //console.log(response.data.args);
-                        console.log(response);
+                        // Should we do anything with the response?
+                        // Should add code to deal with errors or timeout
                     });
             }
         };
