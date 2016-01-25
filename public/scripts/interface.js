@@ -60,7 +60,7 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location',
             return $scope.selected == drink;
         };
 
-        $scope.pourDrink = function(drink) {
+        $scope.selectDrink = function(drink) {
             $scope.selected = drink;
         };
 }]);
