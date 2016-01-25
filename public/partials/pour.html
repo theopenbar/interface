@@ -13,13 +13,14 @@
 
 </br>
 
-<div class="alert alert-info" ng-show="selected">
-    <p>Making {{selected.name}}</p>
+<div class="panel panel-primary" ng-show="selected">
+    <div class="panel-heading">{{selected.name}}</div>
 
-    <ul>
-        <li ng-repeat='(ingredient, amount) in selected.recipe'>
-            Pouring {{amount}} of {{ingredient}}
-        </li>
-    </ul>
-
+    <div class="panel-body">
+        <ol>
+            <li ng-repeat='(ingredient, amount) in selected.recipe'>
+                {{amount/100}} oz of {{ingredient}}
+            </li>
+        </ol>
+    </div>
 </div>
