@@ -14,4 +14,9 @@
 
 <div class="alert alert-info" ng-show="selected">
     <p>Making {{selected.name}}</p>
+
+    <ul>
+        <li ng-repeat='(ingredient, amount) in selected.recipe'>Pouring {{amount}} of {{ingredient}}</li>
+    </ul>
+
 </div>
