@@ -2,5 +2,16 @@
 <h1>Your Station ID is: {{station._id}}</h1>
 
 <div>
-    <button type="button" class="btn btn-default" ng-repeat='drink in drinks'>{{drink.name}}</button>
+    <button type="button" class="btn btn-default"
+    ng-repeat='drink in drinks'
+    ng-class="{active : isSelected(drink)}"
+    ng-click="pourDrink(drink)">
+    {{drink.name}}
+    </button>
+</div>
+
+</br>
+
+<div class="alert alert-info" ng-show="selected">
+    <p>Making {{selected.name}}</p>
 </div>

@@ -55,6 +55,14 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location',
         Drinks.query(function(drinks){
             $scope.drinks = drinks;
         });
+
+        $scope.isSelected = function(drink) {
+            return $scope.selected == drink;
+        };
+
+        $scope.pourDrink = function(drink) {
+            $scope.selected = drink;
+        };
 }]);
 
 app.controller('ViewStationCtrl', ['$scope', '$resource', '$location',
