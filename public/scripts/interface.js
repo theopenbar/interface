@@ -41,8 +41,8 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource',
         };
 }]);
 
-app.controller('PourCtrl', ['$scope', '$resource', '$location',
-    function($scope, $resource, $location){
+app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
+    function($scope, $resource, $location, $http){
         var url_params = $location.search();
         var station_id = url_params.id;
 
@@ -66,9 +66,16 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location',
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
                 // cobble together a request
-                var request = station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
+                // var base = station.ip_address;
+                var base = "http://httpbin.org/get";
+                var request = base + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
                 // log it, but later want to actually send it out
-                console.log(request);
+                //console.log(request);
+                $http.get(request)
+                    .then(function(response) {
+                        //console.log(response.data.args);
+                        console.log(response);
+                    });
             }
         };
 }]);
