@@ -63,6 +63,11 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location',
         $scope.selectDrink = function(drink) {
             $scope.selected = drink;
         };
+
+        $scope.pourIngredient = function(ip_address, gpio, time) {
+            var request = ip_address + "?gpio=" + gpio + "&time=" + time;
+            console.log(request);
+        };
 }]);
 
 app.controller('ViewStationCtrl', ['$scope', '$resource', '$location',
