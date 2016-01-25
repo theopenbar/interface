@@ -5,7 +5,7 @@
     <button type="button" class="btn btn-default"
     ng-repeat='drink in drinks'
     ng-class="{active : isSelected(drink)}"
-    ng-click="selectDrink(drink)">
+    ng-click="selectDrink(drink, station)">
     {{drink.name}}
     </button>
 </div>
@@ -16,9 +16,8 @@
     <p>Making {{selected.name}}</p>
 
     <ul>
-        <li ng-repeat='(ingredient, amount) in selected.recipe'
-            ng-init="pourIngredient(station.ip_address, station.ingredients[ingredient].pin, amount)">
-            Pouring {{amount}} of {{ingredient}} using pin {{station.ingredients[ingredient].pin}}
+        <li ng-repeat='(ingredient, amount) in selected.recipe'>
+            Pouring {{amount}} of {{ingredient}}
         </li>
     </ul>
 

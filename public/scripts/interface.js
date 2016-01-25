@@ -60,13 +60,16 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location',
             return $scope.selected == drink;
         };
 
-        $scope.selectDrink = function(drink) {
+        $scope.selectDrink = function(drink, station) {
             $scope.selected = drink;
-        };
 
-        $scope.pourIngredient = function(ip_address, gpio, time) {
-            var request = ip_address + "?gpio=" + gpio + "&time=" + time;
-            console.log(request);
+            // loop through all ingredients in selected drink
+            for(var ingredient in drink.recipe) {
+                // cobble together a request
+                var request = station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
+                // log it, but later want to actually send it out
+                console.log(request);
+            }
         };
 }]);
 
