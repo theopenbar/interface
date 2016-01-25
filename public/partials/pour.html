@@ -16,11 +16,12 @@
 <div class="panel panel-primary" ng-show="selected">
     <div class="panel-heading">{{selected.name}}</div>
 
-    <div class="panel-body">
-        <ol>
-            <li ng-repeat='(ingredient, amount) in selected.recipe'>
-                {{amount/100}} oz of {{ingredient}}
-            </li>
-        </ol>
-    </div>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat='(ingredient, amount) in selected.recipe'>
+            {{amount/100}} oz of {{ingredient}}
+        </li>
+        <li class="list-group-item">
+            <button type="button" class="btn btn-primary">Pour drink</button>
+        </li>
+    </ul>
 </div>
