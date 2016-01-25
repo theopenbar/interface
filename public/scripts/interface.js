@@ -60,9 +60,11 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
             return $scope.selected == drink;
         };
 
-        $scope.selectDrink = function(drink, station) {
+        $scope.selectDrink = function(drink) {
             $scope.selected = drink;
+        };
 
+        $scope.pourDrink = function(drink, station) {
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
                 // cobble together a request
