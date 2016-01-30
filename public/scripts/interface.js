@@ -111,12 +111,7 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
             for(var ingredient in drink.recipe) {
                 // cobble together a request
                 var request = "http://" + station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
-                // send it out
-                $http.get(request)
-                    .then(function(response) {
-                        // Should we do anything with the response?
-                        // Should add code to deal with errors or timeout
-                    });
+                // store it in the "users" collection with _id = user_id
             }
         };
 }]);
