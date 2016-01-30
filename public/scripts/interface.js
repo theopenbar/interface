@@ -88,7 +88,10 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
         var url_params = $location.search();
         var user_id = url_params.id;
 
-        var User = $resource('/api/user/:id', {id: user_id});
+        var User = $resource('/api/user/:id', {id: user_id}, {
+          update: { method: 'PUT' }
+        });
+
         User.get(function(user){
             $scope.user = user;
         });
