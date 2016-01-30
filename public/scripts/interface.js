@@ -1,5 +1,20 @@
 var app = angular.module('interface', ['ngResource', 'ngRoute']);
 
+app.service("drinksService", function($resource, $q) {
+    // deferred means we can call this service after other stuff happens
+    // this would be perfect for calling station using ID from user collection
+    var deferred = $q.defer();
+
+    var Drinks = $resource('/api/drinks');
+    Drinks.query(function(drinks){
+        deferred.resolve(drinks);
+    });
+
+    this.getDrinks = function() {
+        return deferred.promise;
+    }
+})
+
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/', {
@@ -27,10 +42,10 @@ app.config(['$routeProvider', function($routeProvider) {
         });
 }]);
 
-app.controller('HomeCtrl', ['$scope', '$resource',
-    function($scope, $resource){
-        var Drinks = $resource('/api/drinks');
-        Drinks.query(function(drinks){
+app.controller('HomeCtrl', ['$scope', 'drinksService',
+    function($scope, drinksService){
+        var promise = drinksService.getDrinks();
+        promise.then(function (drinks) {
             $scope.drinks = drinks;
         });
 }]);
