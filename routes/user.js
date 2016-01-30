@@ -19,17 +19,17 @@ function isValidObjectID(str) {
 // and then finally passes the ID on if its good,
 // otherwise returns an error in JSON
 router.get('/:id', function(req, res) {
-    var station_id = req.params.id;
+    var user_id = req.params.id;
 
-    if (isValidObjectID(station_id))
+    if (isValidObjectID(user_id))
     {
-        // look in the stations database for key with id from URL parameter
+        // look in the user database for key with id from URL parameter
         var db = req.db;
-        var collection = db.get('stations');
-        collection.findOne({ "_id": mongo.ObjectID(station_id) },function(err,station){
+        var collection = db.get('users');
+        collection.findOne({ "_id": mongo.ObjectID(user_id) },function(err,user){
             if (err) throw err;
-            if (station !== null) {
-                res.json(station);
+            if (user !== null) {
+                res.json(user);
             }
             else {
                 res.json({"error" : "not_found"});
