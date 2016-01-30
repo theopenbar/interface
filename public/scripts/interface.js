@@ -15,6 +15,17 @@ app.service("drinksService", function($resource, $q) {
     }
 })
 
+app.service("stationService", function($resource) {
+    this.getStation = function(station_id) {
+        var Station = $resource('/api/station/:id', {id: station_id});
+        Station.get(function(station){
+            console.log("Station is: ");
+            console.log(station);
+            return station;
+        });
+    }
+})
+
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/', {
@@ -98,8 +109,8 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
         };
 }]);
 
-app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http', 'drinksService',
-    function($scope, $resource, $location, $http, drinksService){
+app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http', 'drinksService', 'stationService',
+    function($scope, $resource, $location, $http, drinksService, stationService){
         var url_params = $location.search();
         var user_id = url_params.id;
 
@@ -112,10 +123,9 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http', 'drin
         });
 
         // need to access station using ID from user collection
-        var Station = $resource('/api/station/:id', {id: /*dont know how to do this*/});
-        Station.get(function(station){
-            $scope.station = station;
-        });
+        var stationPromise = stationService.getStation(station_ID);
+        console.log("stationPromise is ");
+        console.log(stationPromise);
 
         var promise = drinksService.getDrinks();
         promise.then(function (drinks) {
