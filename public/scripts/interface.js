@@ -184,6 +184,8 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
                 "name": drink.name,
                 "recipe": esp_recipe
             });
+
+            $scope.user.name = drink.name;
         };
 }]);
 
