@@ -42,6 +42,14 @@ app.service("userService", function($resource, $q) {
         return deferred.promise;
     };
 
+    this.putUser = function(user_id, data) {
+        var User = $resource('/api/user/:id', {id: user_id}, {
+          update: { method: 'PUT' }
+        });
+        User.update(data);
+
+        return deferred.promise;
+    };
 });
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -160,20 +168,24 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
         };
 
         $scope.queueDrink = function(drink, station) {
-            var esp_recipe = [{}];
+            var esp_recipe = {};
 
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
                 // look in station for that ingredient's pin
                 var pin = station.ingredients[ingredient].pin;
                 var amount = drink.recipe[ingredient];
-                console.log(pin, amount);
 
                 // add to it in a format that the ESP can understand
-                esp_recipe.push({"pin": pin, "amount": amount});
+                esp_recipe[pin.toString()] = amount;
             };
 
-            console.log(esp_recipe);
+            // store it in the "users" collection with _id = user_id
+            var putUserPromise = userService.putUser(user_id, {
+                "station": station._id,
+                "name": drink.name,
+                "recipe": esp_recipe
+            });
         };
 }]);
 

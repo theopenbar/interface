@@ -57,6 +57,7 @@ router.put('/:id', function(req, res) {
             if (err) throw err;
             if (user !== null) {
                 var update = {
+                    "station": req.body.station,
                     "name": req.body.name,
                     "recipe": req.body.recipe
                 };
