@@ -96,6 +96,12 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
             $scope.user = user;
         });
 
+        // need to access station using ID from user collection
+        var Station = $resource('/api/station/:id', {id: /*dont know how to do this*/});
+        Station.get(function(station){
+            $scope.station = station;
+        });
+
         var Drinks = $resource('/api/drinks');
         Drinks.query(function(drinks){
             $scope.drinks = drinks;
@@ -112,9 +118,13 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
         $scope.queueDrink = function(drink, station) {
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
-                // cobble together a request
-                var request = "http://" + station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
+                // store JSON data with format
+                // { pin : amount}
                 // store it in the "users" collection with _id = user_id
+                User.update({
+                  "name": drink.name,
+                  "recipe": drink.recipe
+                })
             }
         };
 }]);
