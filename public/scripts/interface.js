@@ -12,8 +12,8 @@ app.service("drinksService", function($resource, $q) {
 
     this.getDrinks = function() {
         return deferred.promise;
-    }
-})
+    };
+});
 
 app.service("stationService", function($resource, $q) {
 
@@ -26,8 +26,23 @@ app.service("stationService", function($resource, $q) {
         });
 
         return deferred.promise;
-    }
-})
+    };
+});
+
+app.service("userService", function($resource, $q) {
+
+    var deferred = $q.defer();
+
+    this.getUser = function(user_id) {
+        var User = $resource('/api/user/:id', {id: user_id});
+        User.get(function(user){
+            deferred.resolve(user);
+        });
+
+        return deferred.promise;
+    };
+
+});
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
@@ -112,16 +127,17 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
         };
 }]);
 
-app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http', 'drinksService', 'stationService',
-    function($scope, $resource, $location, $http, drinksService, stationService){
+app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
+               'userService', 'drinksService', 'stationService',
+    function($scope, $resource, $location, $http, userService, drinksService, stationService){
+        // get user_id from URL parameter ?id=...
         var url_params = $location.search();
         var user_id = url_params.id;
 
-        var User = $resource('/api/user/:id', {id: user_id}, {
-          update: { method: 'PUT' }
-        });
-
-        User.get(function(user){
+        // retreive that user's data from user collection
+        var userPromise = userService.getUser(user_id);
+        userPromise.then(function (user) {
+            console.log(user.station);
             $scope.user = user;
         });
 
