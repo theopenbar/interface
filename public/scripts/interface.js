@@ -47,8 +47,6 @@ app.service("userService", function($resource, $q) {
           update: { method: 'PUT' }
         });
         User.update(data);
-
-        return deferred.promise;
     };
 });
 
@@ -181,7 +179,7 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
             };
 
             // store it in the "users" collection with _id = user_id
-            var putUserPromise = userService.putUser(user_id, {
+            userService.putUser(user_id, {
                 "station": station._id,
                 "name": drink.name,
                 "recipe": esp_recipe
