@@ -106,7 +106,7 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
             $scope.selected = drink;
         };
 
-        $scope.pourDrink = function(drink, station) {
+        $scope.queueDrink = function(drink, station) {
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
                 // cobble together a request
