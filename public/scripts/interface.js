@@ -132,8 +132,8 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http', 'drin
             $scope.station = station;
         });
 
-        var promise = drinksService.getDrinks();
-        promise.then(function (drinks) {
+        var drinksPromise = drinksService.getDrinks();
+        drinksPromise.then(function (drinks) {
             $scope.drinks = drinks;
         });
 
