@@ -160,16 +160,20 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
         };
 
         $scope.queueDrink = function(drink, station) {
+            var esp_recipe = [{}];
+
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
-                // store JSON data with format
-                // { pin : amount}
-                // store it in the "users" collection with _id = user_id
-                User.update({
-                  "name": drink.name,
-                  "recipe": drink.recipe
-                })
-            }
+                // look in station for that ingredient's pin
+                var pin = station.ingredients[ingredient].pin;
+                var amount = drink.recipe[ingredient];
+                console.log(pin, amount);
+
+                // add to it in a format that the ESP can understand
+                esp_recipe.push({"pin": pin, "amount": amount});
+            };
+
+            console.log(esp_recipe);
         };
 }]);
 
