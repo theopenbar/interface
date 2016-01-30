@@ -15,14 +15,17 @@ app.service("drinksService", function($resource, $q) {
     }
 })
 
-app.service("stationService", function($resource) {
+app.service("stationService", function($resource, $q) {
+
+    var deferred = $q.defer();
+
     this.getStation = function(station_id) {
         var Station = $resource('/api/station/:id', {id: station_id});
         Station.get(function(station){
-            console.log("Station is: ");
-            console.log(station);
-            return station;
+            deferred.resolve(station);
         });
+
+        return deferred.promise;
     }
 })
 
@@ -124,8 +127,10 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http', 'drin
 
         // need to access station using ID from user collection
         var stationPromise = stationService.getStation(station_ID);
-        console.log("stationPromise is ");
-        console.log(stationPromise);
+        stationPromise.then(function (station) {
+            console.log(station);
+            $scope.station = station;
+        });
 
         var promise = drinksService.getDrinks();
         promise.then(function (drinks) {
