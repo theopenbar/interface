@@ -98,8 +98,8 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
         };
 }]);
 
-app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
-    function($scope, $resource, $location, $http){
+app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http', 'drinksService',
+    function($scope, $resource, $location, $http, drinksService){
         var url_params = $location.search();
         var user_id = url_params.id;
 
@@ -117,8 +117,8 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
             $scope.station = station;
         });
 
-        var Drinks = $resource('/api/drinks');
-        Drinks.query(function(drinks){
+        var promise = drinksService.getDrinks();
+        promise.then(function (drinks) {
             $scope.drinks = drinks;
         });
 
