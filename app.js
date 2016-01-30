@@ -11,7 +11,7 @@ var monk = require('monk');
 var db = monk('mongodb://fakeuser:fakepassword@ds035004.mongolab.com:35004/heroku_ff1ms21p');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var user = require('./routes/user');
 var station = require('./routes/station')
 var drinks = require('./routes/drinks');
 
@@ -36,9 +36,9 @@ app.use(function(req,res,next){
 });
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/api/drinks', drinks);
+app.use('/api/user', user);
 app.use('/api/station', station);
+app.use('/api/drinks', drinks);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
