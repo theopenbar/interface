@@ -86,11 +86,11 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
 app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
     function($scope, $resource, $location, $http){
         var url_params = $location.search();
-        var station_id = url_params.id;
+        var user_id = url_params.id;
 
-        var Station = $resource('/api/station/:id', {id: station_id});
-        Station.get(function(station){
-            $scope.station = station;
+        var User = $resource('/api/user/:id', {id: user_id});
+        User.get(function(user){
+            $scope.user = user;
         });
 
         var Drinks = $resource('/api/drinks');
