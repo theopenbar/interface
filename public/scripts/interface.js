@@ -134,18 +134,16 @@ app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
         var url_params = $location.search();
         var user_id = url_params.id;
 
-        // retreive that user's data from user collection
+        // retreive that user's data from users collection
         var userPromise = userService.getUser(user_id);
         userPromise.then(function (user) {
-            console.log(user.station);
             $scope.user = user;
-        });
 
-        // need to access station using ID from user collection
-        var stationPromise = stationService.getStation(station_ID);
-        stationPromise.then(function (station) {
-            console.log(station);
-            $scope.station = station;
+            // access the station stored under "station" for the user
+            var stationPromise = stationService.getStation(user.station);
+            stationPromise.then(function (station) {
+                $scope.station = station;
+            });
         });
 
         var drinksPromise = drinksService.getDrinks();
