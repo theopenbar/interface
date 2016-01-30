@@ -14,6 +14,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'partials/pour.html',
             controller: 'PourCtrl'
         })
+        .when('/queuer', {
+            templateUrl: 'partials/queuer.html',
+            controller: 'QueueRCtrl'
+        })
         .when('/station', {
             templateUrl: 'partials/view-station.html',
             controller: 'ViewStationCtrl'
@@ -42,6 +46,44 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource',
 }]);
 
 app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
+    function($scope, $resource, $location, $http){
+        var url_params = $location.search();
+        var station_id = url_params.id;
+
+        var Station = $resource('/api/station/:id', {id: station_id});
+        Station.get(function(station){
+            $scope.station = station;
+        });
+
+        var Drinks = $resource('/api/drinks');
+        Drinks.query(function(drinks){
+            $scope.drinks = drinks;
+        });
+
+        $scope.isSelected = function(drink) {
+            return $scope.selected == drink;
+        };
+
+        $scope.selectDrink = function(drink) {
+            $scope.selected = drink;
+        };
+
+        $scope.pourDrink = function(drink, station) {
+            // loop through all ingredients in selected drink
+            for(var ingredient in drink.recipe) {
+                // cobble together a request
+                var request = "http://" + station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
+                // send it out
+                $http.get(request)
+                    .then(function(response) {
+                        // Should we do anything with the response?
+                        // Should add code to deal with errors or timeout
+                    });
+            }
+        };
+}]);
+
+app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
     function($scope, $resource, $location, $http){
         var url_params = $location.search();
         var station_id = url_params.id;

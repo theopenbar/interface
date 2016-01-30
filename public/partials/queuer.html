@@ -1,0 +1,27 @@
+<div class="page-header">
+    <h1>Choose a drink</h1>
+</div>
+
+<div>
+    <button type="button" class="btn btn-default"
+    ng-repeat='drink in drinks'
+    ng-class="{active : isSelected(drink)}"
+    ng-click="selectDrink(drink)">
+    {{drink.name}}
+    </button>
+</div>
+
+</br>
+
+<div class="panel panel-primary" ng-show="selected">
+    <div class="panel-heading">{{selected.name}}</div>
+
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat='(ingredient, amount) in selected.recipe'>
+            {{amount/100}} oz of {{ingredient}}
+        </li>
+        <li class="list-group-item">
+            <button type="button" class="btn btn-primary" ng-click="pourDrink(selected, station)">Pour drink</button>
+        </li>
+    </ul>
+</div>
