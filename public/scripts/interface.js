@@ -112,12 +112,14 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
             $scope.drinks = drinks;
         });
 
-        $scope.isSelected = function(drink) {
-            return $scope.selected == drink;
+        // these 2 functions are for displaying the list of ingredients
+        // so that the user can pout the drink if they wish
+        $scope.isDrinkSelected = function(drink) {
+            return $scope.drinkSelected == drink;
         };
 
         $scope.selectDrink = function(drink) {
-            $scope.selected = drink;
+            $scope.drinkSelected = drink;
         };
 
         $scope.pourDrink = function(drink, station) {

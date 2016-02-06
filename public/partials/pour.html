@@ -5,7 +5,7 @@
 <div>
     <button type="button" class="btn btn-default"
     ng-repeat='drink in drinks'
-    ng-class="{active : isSelected(drink)}"
+    ng-class="{active : isDrinkSelected(drink)}"
     ng-click="selectDrink(drink)">
     {{drink.name}}
     </button>
@@ -13,15 +13,18 @@
 
 </br>
 
-<div class="panel panel-primary" ng-show="selected">
-    <div class="panel-heading">{{selected.name}}</div>
+<div class="panel panel-primary" ng-show="drinkSelected">
+    <div class="panel-heading">{{drinkSelected.name}}</div>
 
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat='(ingredient, amount) in selected.recipe'>
+        <li class="list-group-item" ng-repeat='(ingredient, amount) in drinkSelected.recipe'>
             {{amount/100}} oz of {{ingredient}}
         </li>
         <li class="list-group-item">
-            <button type="button" class="btn btn-primary" ng-click="pourDrink(selected, station)">Pour drink</button>
+            <button type="button" class="btn btn-primary" ng-click="pourDrink(drinkSelected, station)">Pour drink</button>
+        </li>
+    </ul>
+</div>
         </li>
     </ul>
 </div>
