@@ -25,6 +25,18 @@
         </li>
     </ul>
 </div>
+
+<div class="alert alert-info alert-dismissible" role="alert" ng-show="addYourself">
+    <button type="button" class="close" aria-label="Close" ng-click=selectDrink(false)>
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="page-header">
+        <h4>After your drink has poured, add these ingredients:</h4>
+    </div>
+
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat='(ingredient, amount) in addYourself'>
+            {{amount/100}} oz of {{ingredient}}
         </li>
     </ul>
 </div>
