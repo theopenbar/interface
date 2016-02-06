@@ -96,17 +96,19 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource',
 }]);
 
 app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
-    function($scope, $resource, $location, $http){
+               'drinksService', 'stationService',
+    function($scope, $resource, $location, $http, drinksService, stationService){
         var url_params = $location.search();
         var station_id = url_params.id;
 
-        var Station = $resource('/api/station/:id', {id: station_id});
-        Station.get(function(station){
+        // access the station stored under "station" for the user
+        var stationPromise = stationService.getStation(station_id);
+        stationPromise.then(function (station) {
             $scope.station = station;
         });
 
-        var Drinks = $resource('/api/drinks');
-        Drinks.query(function(drinks){
+        var drinksPromise = drinksService.getDrinks();
+        drinksPromise.then(function (drinks) {
             $scope.drinks = drinks;
         });
 
