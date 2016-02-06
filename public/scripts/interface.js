@@ -119,20 +119,41 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
         };
 
         $scope.selectDrink = function(drink) {
+            // hide additional ingredients alert when selecting a new drink
+            $scope.addYourself = false;
             $scope.drinkSelected = drink;
         };
 
         $scope.pourDrink = function(drink, station) {
+            // stores any additional ingredients you need to add after
+            // the machine pours what it can
+            var addYourself = {};
+
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
-                // cobble together a request
-                var request = "http://" + station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
-                // send it out
-                $http.get(request)
-                    .then(function(response) {
-                        // Should we do anything with the response?
-                        // Should add code to deal with errors or timeout
-                    });
+                // see if that ingredient is in station
+                if (station.ingredients[ingredient] == undefined){
+                    // if not, add to addYourself object
+                    addYourself[ingredient] = drink.recipe[ingredient];
+                }
+                else{
+                    // cobble together a request
+                    var request = "http://" + station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
+                    // send it out
+                    $http.get(request)
+                        .then(function(response) {
+                            // Should we do anything with the response?
+                            // Should add code to deal with errors or timeout
+                        });
+                }
+            }
+
+            // hide recipe after successfully pouring
+            $scope.drinkSelected = false;
+
+            // if additional ingredients, show alert
+            if (Object.keys(addYourself).length != 0){
+                $scope.addYourself = addYourself;
             }
         };
 }]);
