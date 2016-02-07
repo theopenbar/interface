@@ -9,3 +9,9 @@ a {
 .btn.padding {
     margin-bottom: 15px;
 }
+
+.input-group-addon.ingredient {
+    min-width:125px;
+    text-align:left;
+    text-transform:capitalize;
+}
