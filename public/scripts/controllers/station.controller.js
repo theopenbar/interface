@@ -1,4 +1,4 @@
-app.controller('ViewStationCtrl', ['$scope', '$resource', '$location',
+app.controller('StationCtrl', ['$scope', '$resource', '$location',
     function($scope, $resource, $location){
         var url_params = $location.search();
         var station_id = url_params.id;
