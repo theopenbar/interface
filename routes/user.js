@@ -1,18 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongo = require('mongodb');
-
-// http://stackoverflow.com/a/18547480
-function isValidObjectID(str) {
-  // coerce to string so the function can be generically used to test
-  // both strings and native objectIds created by the driver
-  str = str + '';
-  var len = str.length, valid = false;
-  if (len == 12 || len == 24) {
-    valid = /^[0-9a-fA-F]+$/.test(str);
-  }
-  return valid;
-}
+var dbHelper = require('./dbHelper');
 
 // determines if the id passed as a parameter is valid for the database,
 // and that it is found in the database,
@@ -21,7 +10,7 @@ function isValidObjectID(str) {
 router.get('/:id', function(req, res) {
     var user_id = req.params.id;
 
-    if (isValidObjectID(user_id))
+    if (dbHelper.isValidObjectID(user_id))
     {
         // look in the user database for key with id from URL parameter
         var db = req.db;
@@ -48,7 +37,7 @@ router.get('/:id', function(req, res) {
 router.put('/:id', function(req, res) {
     var user_id = req.params.id;
 
-    if (isValidObjectID(user_id))
+    if (dbHelper.isValidObjectID(user_id))
     {
         // look in the user database for key with id from URL parameter
         var db = req.db;
