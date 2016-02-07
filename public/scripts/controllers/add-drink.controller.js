@@ -19,7 +19,7 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location', 'stationServ
             $scope.ingredients = available_ingredients;
         });
 
-        $scope.save = function() {
+        $scope.addDrink = function() {
             drinksService.saveDrink($scope.drink);
         };
 }]);

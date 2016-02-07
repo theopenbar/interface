@@ -11,10 +11,10 @@
     <div class="form-group" ng-repeat='ingredient in ingredients'>
         <div class="input-group">
             <span class="input-group-addon ingredient">{{ingredient}}: </span>
-            <input type="number" class="form-control">
+            <input type="number" class="form-control" ng-model="drink.recipe[ingredient]">
             <span class="input-group-addon">oz</span>
         </div>
     </div>
 
-    <input type="button" class="btn btn-primary" value="Save" ng-click="save()"></input>
+    <input type="button" class="btn btn-primary" value="Save" ng-click="addDrink()"></input>
 </form>

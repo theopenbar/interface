@@ -13,6 +13,6 @@ app.service('drinksService', function($resource, $q) {
 
     this.saveDrink = function(data) {
         var Drinks = $resource('/api/drinks');
-        Drinks.save($scope.drink);
+        Drinks.save(data);
     };
 });
