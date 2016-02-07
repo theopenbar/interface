@@ -1,55 +1,5 @@
 var app = angular.module('interface', ['ngResource', 'ngRoute']);
 
-app.service("drinksService", function($resource, $q) {
-    // deferred means we can call this service after other stuff happens
-    // this would be perfect for calling station using ID from user collection
-    var deferred = $q.defer();
-
-    var Drinks = $resource('/api/drinks');
-    Drinks.query(function(drinks){
-        deferred.resolve(drinks);
-    });
-
-    this.getDrinks = function() {
-        return deferred.promise;
-    };
-});
-
-app.service("stationService", function($resource, $q) {
-
-    var deferred = $q.defer();
-
-    this.getStation = function(station_id) {
-        var Station = $resource('/api/station/:id', {id: station_id});
-        Station.get(function(station){
-            deferred.resolve(station);
-        });
-
-        return deferred.promise;
-    };
-});
-
-app.service("userService", function($resource, $q) {
-
-    var deferred = $q.defer();
-
-    this.getUser = function(user_id) {
-        var User = $resource('/api/user/:id', {id: user_id});
-        User.get(function(user){
-            deferred.resolve(user);
-        });
-
-        return deferred.promise;
-    };
-
-    this.putUser = function(user_id, data) {
-        var User = $resource('/api/user/:id', {id: user_id}, {
-          update: { method: 'PUT' }
-        });
-        User.update(data);
-    };
-});
-
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/', {
