@@ -3,8 +3,7 @@ var app = angular.module('interface', ['ngResource', 'ngRoute']);
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'partials/home.html',
-            controller: 'HomeCtrl'
+            templateUrl: 'partials/home.html'
         })
         .when('/drinks', {
             templateUrl: 'partials/drinks.html',
