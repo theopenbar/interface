@@ -1,9 +1,6 @@
-app.controller('AddDrinkCtrl', ['$scope', '$resource',
-    function($scope, $resource, $location) {
+app.controller('AddDrinkCtrl', ['$scope', '$resource', 'drinksService',
+    function($scope, $resource, drinksService) {
         $scope.save = function() {
-            var Drinks = $resource('/api/drinks');
-            Drinks.save($scope.drink, function() {
-                $location.path('/');
-            });
+            drinksService.saveDrink($scope.drink);
         };
 }]);
