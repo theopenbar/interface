@@ -1,4 +1,4 @@
-app.controller('HomeCtrl', ['$scope', 'drinksService',
+app.controller('DrinksCtrl', ['$scope', 'drinksService',
     function($scope, drinksService){
         var promise = drinksService.getDrinks();
         promise.then(function (drinks) {
