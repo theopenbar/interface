@@ -19,8 +19,8 @@ app.config(['$routeProvider', function($routeProvider) {
             controller: 'QueueRCtrl'
         })
         .when('/station', {
-            templateUrl: 'partials/view-station.html',
-            controller: 'ViewStationCtrl'
+            templateUrl: 'partials/station.html',
+            controller: 'StationCtrl'
         })
         .otherwise({
             redirectTo: '/'

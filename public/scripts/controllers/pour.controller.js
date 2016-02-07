@@ -41,14 +41,16 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$anchorScroll',
 
             // loop through all ingredients in selected drink
             for(var ingredient in drink.recipe) {
+                var station_ingredient = station.ingredients[ingredient];
                 // see if that ingredient is in station
-                if (station.ingredients[ingredient] == undefined){
+                if (station_ingredient == undefined){
                     // if not, add to addYourself object
                     addYourself[ingredient] = drink.recipe[ingredient];
                 }
                 else{
                     // cobble together a request
-                    var request = "http://" + station.ip_address + "?gpio=" + station.ingredients[ingredient].pin + "&time=" + drink.recipe[ingredient];
+                    var time = drink.recipe[ingredient] * station_ingredient.oz2time;
+                    var request = "http://" + station.ip_address + "?gpio=" + station_ingredient.pin + "&time=" + time;
                     // send it out
                     $http.get(request)
                         .then(function(response) {

@@ -1,0 +1,39 @@
+<div class="page-header">
+    <h3>Local IP Address</h3>
+</div>
+
+<h4>{{station.ip_address}}</h4>
+
+
+<div class="page-header">
+    <h3>Ingredients</h3>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td><b>Valve #:</b></td>
+                <td ng-repeat="i in details track by $index">{{$index}}</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>Name:</b></td>
+                <td ng-repeat="i in details track by $index">{{details[$index][0]}}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td><b>Amount left (oz):</b></td>
+                <td ng-repeat="i in details track by $index">{{details[$index][1]}}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td><b>Multiplier:<b></td>
+                <td ng-repeat="i in details track by $index">{{details[$index][2]}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
