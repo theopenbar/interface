@@ -7,6 +7,16 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location', 'stationServ
         var stationPromise = stationService.getStation(station_id);
         stationPromise.then(function (station) {
             $scope.station = station;
+
+            // now that we have the station, let's make an array to store the details
+            var available_ingredients = [];
+
+            // loop through all ingredients in the station
+            for(var ingredient in station.ingredients) {
+                available_ingredients.push(ingredient);
+            }
+
+            $scope.ingredients = available_ingredients;
         });
 
         $scope.save = function() {
