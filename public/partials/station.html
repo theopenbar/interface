@@ -25,8 +25,14 @@
         </tbody>
         <tbody>
             <tr>
-                <td><b>Multiplier:<b></td>
+                <td><b>Amount left (oz):</b></td>
                 <td ng-repeat="i in details track by $index">{{details[$index][1]}}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td><b>Multiplier:<b></td>
+                <td ng-repeat="i in details track by $index">{{details[$index][2]}}</td>
             </tr>
         </tbody>
     </table>

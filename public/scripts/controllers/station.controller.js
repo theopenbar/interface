@@ -13,7 +13,7 @@ app.controller('StationCtrl', ['$scope', '$resource', '$location', 'stationServi
             // loop through all ingredients in the station
             for(var ingredient in station.ingredients) {
                 var current_ingredient = station.ingredients[ingredient];
-                details[current_ingredient.pin] = [ingredient, current_ingredient.oz2time];
+                details[current_ingredient.pin] = [ingredient, current_ingredient.amount, current_ingredient.oz2time];
             }
 
             $scope.details = details;
