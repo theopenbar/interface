@@ -1,6 +1,9 @@
 doctype html
 html(ng-app='interface')
   head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.js')
@@ -9,4 +12,5 @@ html(ng-app='interface')
     script(src='scripts/interface.js')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
   body
-    block content
+    div.container-fluid
+        block content

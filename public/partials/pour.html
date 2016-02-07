@@ -4,9 +4,8 @@
 
 <div class="row">
     <div ng-repeat="drink in drinks">
-        <div class="clearfix" ng-if="$index % 4 == 0">&nbsp;</div>
-        <div class="col-sm-3">
-            <button type="button" class="btn btn-default btn-lg btn-block"
+        <div class="col-md-3 col-xs-6">
+            <button type="button" class="btn padding btn-default btn-block"
                 ng-class="{active : isDrinkSelected(drink)}"
                 ng-click="selectDrink(drink)">
                 {{drink.name}}
