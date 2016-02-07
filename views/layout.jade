@@ -24,4 +24,6 @@ html(ng-app='interface')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
   body
     div.container-fluid
-        block content
+      nav(class='navbar navbar-dark bg-primary')
+        a(class='navbar-brand', href='/#/') The Open Bar
+      block content

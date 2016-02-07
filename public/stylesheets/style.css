@@ -15,3 +15,7 @@ a {
     text-align:left;
     text-transform:capitalize;
 }
+
+.navbar-dark .navbar-brand {
+    color: #fff;
+}
