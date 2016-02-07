@@ -20,6 +20,14 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location', 'stationServ
         });
 
         $scope.addDrink = function() {
-            drinksService.saveDrink($scope.drink);
+            var drink = $scope.drink;
+
+            // loop through all ingredients and multiply by 100
+            // to support the ESP format
+            for(var ingredient in drink.recipe) {
+                drink.recipe[ingredient] *= 100;
+            }
+
+            drinksService.saveDrink(drink);
         };
 }]);
