@@ -7,7 +7,7 @@ app.config(['$routeProvider', function($routeProvider) {
             controller: 'HomeCtrl'
         })
         .when('/add-drink', {
-            templateUrl: 'partials/drink-form.html',
+            templateUrl: 'partials/add-drink.html',
             controller: 'AddDrinkCtrl'
         })
         .when('/pour', {
