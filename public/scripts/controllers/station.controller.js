@@ -1,10 +1,10 @@
-app.controller('StationCtrl', ['$scope', '$resource', '$location',
-    function($scope, $resource, $location){
+app.controller('StationCtrl', ['$scope', '$resource', '$location', 'stationService',
+    function($scope, $resource, $location, stationService){
         var url_params = $location.search();
         var station_id = url_params.id;
 
-        var Station = $resource('/api/station/:id', {id: station_id});
-        Station.get(function(station){
+        var stationPromise = stationService.getStation(station_id);
+        stationPromise.then(function (station) {
             $scope.station = station;
         });
 
