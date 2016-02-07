@@ -6,9 +6,16 @@ app.controller('StationCtrl', ['$scope', '$resource', '$location', 'stationServi
         var stationPromise = stationService.getStation(station_id);
         stationPromise.then(function (station) {
             $scope.station = station;
-        });
 
-        $scope.getNumValves = function(num) {
-            return new Array(num);
-        }
+            // now that we have the station, let's make an array to store the details
+            var details = Array(station.num_valves);
+
+            // loop through all ingredients in the station
+            for(var ingredient in station.ingredients) {
+                var current_ingredient = station.ingredients[ingredient];
+                details[current_ingredient.pin] = [ingredient, current_ingredient.oz2time];
+            }
+
+            $scope.details = details;
+        });
 }]);

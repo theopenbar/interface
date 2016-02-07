@@ -13,12 +13,20 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <td ng-repeat="i in getNumValves(station.num_valves) track by $index">{{$index}}</td>
+                <td><b>Valve #:</b></td>
+                <td ng-repeat="i in details track by $index">{{$index}}</td>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td ng-repeat="i in getNumValves(station.num_valves) track by $index">{{station["gpio"+$index].name}}</td>
+                <td><b>Name:</b></td>
+                <td ng-repeat="i in details track by $index">{{details[$index][0]}}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td><b>Multiplier:<b></td>
+                <td ng-repeat="i in details track by $index">{{details[$index][1]}}</td>
             </tr>
         </tbody>
     </table>
