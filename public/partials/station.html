@@ -13,12 +13,12 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <td ng-repeat="i in getMaxValves(station.num_valves) track by $index">{{$index}}</td>
+                <td ng-repeat="i in getNumValves(station.num_valves) track by $index">{{$index}}</td>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td ng-repeat="i in getMaxValves(station.num_valves) track by $index">{{station["gpio"+$index].name}}</td>
+                <td ng-repeat="i in getNumValves(station.num_valves) track by $index">{{station["gpio"+$index].name}}</td>
             </tr>
         </tbody>
     </table>

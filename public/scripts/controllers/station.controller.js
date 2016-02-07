@@ -8,7 +8,7 @@ app.controller('StationCtrl', ['$scope', '$resource', '$location', 'stationServi
             $scope.station = station;
         });
 
-        $scope.getMaxValves = function(num) {
+        $scope.getNumValves = function(num) {
             return new Array(num);
         }
 }]);
