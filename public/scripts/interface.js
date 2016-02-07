@@ -95,9 +95,9 @@ app.controller('AddDrinkCtrl', ['$scope', '$resource',
         };
 }]);
 
-app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
+app.controller('PourCtrl', ['$scope', '$resource', '$location', '$anchorScroll', '$http',
                'drinksService', 'stationService',
-    function($scope, $resource, $location, $http, drinksService, stationService){
+    function($scope, $resource, $location, $anchorScroll, $http, drinksService, stationService){
         var url_params = $location.search();
         var station_id = url_params.id;
 
@@ -122,6 +122,13 @@ app.controller('PourCtrl', ['$scope', '$resource', '$location', '$http',
             // hide additional ingredients alert when selecting a new drink
             $scope.addYourself = false;
             $scope.drinkSelected = drink;
+
+            // need timeout so it runs after DOM is updated to show 'recipe'
+            // http://stackoverflow.com/a/19889541
+            setTimeout(function() {
+                $location.hash('recipe');
+                $anchorScroll();
+            }, 0);
         };
 
         $scope.pourDrink = function(drink, station) {
