@@ -1,4 +1,14 @@
-app.service("userService", function($resource, $q) {
+app.service("userService",
+    function($localStorage, $resource, $location, $q) {
+
+    // look for user in URL params
+    var url_params = $location.search();
+    var user_id = url_params.user;
+
+    // if it's there, save it locally
+    if (user_id != undefined) {
+        $localStorage.userId = user_id;
+    }
 
     var deferred = $q.defer();
 

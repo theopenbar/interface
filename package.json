@@ -15,6 +15,7 @@
     "mongodb": "^1.4.40",
     "monk": "^1.0.1",
     "morgan": "~1.6.1",
+    "ngstorage": "^0.3.10",
     "serve-favicon": "~2.3.0"
   }
 }

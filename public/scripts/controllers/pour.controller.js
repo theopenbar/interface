@@ -1,8 +1,7 @@
-app.controller('PourCtrl', ['$scope', '$resource', '$location', '$anchorScroll', '$http',
+app.controller('PourCtrl', ['$scope', '$localStorage', '$resource', '$anchorScroll', '$http',
                'drinksService', 'stationService',
-    function($scope, $resource, $location, $anchorScroll, $http, drinksService, stationService){
-        var url_params = $location.search();
-        var station_id = url_params.id;
+    function($scope, $localStorage, $resource, $anchorScroll, $http, drinksService, stationService){
+        var station_id = $localStorage.stationId;
 
         // access the station stored under "station" for the user
         var stationPromise = stationService.getStation(station_id);
