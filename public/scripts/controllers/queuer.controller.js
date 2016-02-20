@@ -1,6 +1,6 @@
-app.controller('QueueRCtrl', ['$scope', '$localStorage', '$http',
+app.controller('QueueRCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
                'userService', 'drinksService', 'stationService',
-    function($scope, $localStorage, $http, userService, drinksService, stationService){
+    function($scope, $localStorage, $location, $anchorScroll, $http, userService, drinksService, stationService){
         var user_id = $localStorage.userId;
 
         // retreive that user's data from users collection
@@ -36,7 +36,14 @@ app.controller('QueueRCtrl', ['$scope', '$localStorage', '$http',
         };
 
         $scope.selectDrink = function(drink) {
-            $scope.selected = drink;
+            $scope.drinkSelected = drink;
+
+            // need timeout so it runs after DOM is updated to show 'recipe'
+            // http://stackoverflow.com/a/19889541
+            setTimeout(function() {
+                $location.hash('recipe');
+                $anchorScroll();
+            }, 0);
         };
 
         $scope.queueDrink = function(drink, station) {
