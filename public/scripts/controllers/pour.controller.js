@@ -1,6 +1,6 @@
-app.controller('PourCtrl', ['$scope', '$localStorage', '$resource', '$anchorScroll', '$http',
+app.controller('PourCtrl', ['$scope', '$localStorage', '$resource', '$location', '$anchorScroll', '$http',
                'drinksService', 'stationService',
-    function($scope, $localStorage, $resource, $anchorScroll, $http, drinksService, stationService){
+    function($scope, $localStorage, $resource, $location, $anchorScroll, $http, drinksService, stationService){
         var station_id = $localStorage.stationId;
 
         // access the station stored under "station" for the user
