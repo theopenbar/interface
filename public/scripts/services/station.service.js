@@ -1,5 +1,5 @@
 app.service("stationService",
-    function($localStorage, $sessionStorage, $resource, $location, $q) {
+    function($localStorage, $resource, $location, $q) {
 
     // look for station in URL params
     var url_params = $location.search();
