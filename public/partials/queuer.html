@@ -1,12 +1,22 @@
-<div class="page-header">
-    <h1>Currently Selected Drink</h1>
+<div ng-show="storedDrink">
+    <div class="page-header">
+        <h1>Currently Selected Drink</h1>
+    </div>
+    <h2>
+        {{storedDrink}}
+    </h2>
 </div>
-<h2>
-    {{user.name}}
-</h2>
+
+<!-- Display some information for first time users -->
+<div ng-hide="storedDrink">
+    <br>
+    <div class="alert alert-info" role="alert">
+        <h4>Select a drink to be stored to your wristband. Then scan your wristband at the bar to pour your drink.</h4>
+    </div>
+</div>
 
 <div class="page-header">
-    <h1>Choose a new drink</h1>
+    <h1>Choose a <span ng-show="storedDrink">new </span>drink</h1>
 </div>
 
 <!-- http://stackoverflow.com/a/32358013 -->
@@ -32,7 +42,7 @@
             {{amount/100}} oz of {{ingredient}}
         </li>
         <li class="list-group-item">
-            <button type="button" class="btn btn-primary" ng-click="queueDrink(selected, station)">Queue drink</button>
+            <button type="button" class="btn btn-primary" ng-click="queueDrink(selected, station)">Store drink</button>
         </li>
     </ul>
 </div>

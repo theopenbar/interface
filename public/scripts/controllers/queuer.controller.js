@@ -8,6 +8,9 @@ app.controller('QueueRCtrl', ['$scope', '$localStorage', '$http',
         userPromise.then(function (user) {
             $scope.user = user;
 
+            // only display selected drink when its already been selected
+            $scope.storedDrink = user.name;
+
             /*
             We need to get the station every time the user loads the page,
             because if the user changes bars, the database will change the
@@ -56,6 +59,6 @@ app.controller('QueueRCtrl', ['$scope', '$localStorage', '$http',
                 "recipe": esp_recipe
             });
 
-            $scope.user.name = drink.name;
+            $scope.storedDrink = drink.name;
         };
 }]);
