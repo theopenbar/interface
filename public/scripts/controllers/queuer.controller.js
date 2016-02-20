@@ -1,9 +1,7 @@
-app.controller('QueueRCtrl', ['$scope', '$resource', '$location', '$http',
+app.controller('QueueRCtrl', ['$scope', '$localStorage', '$resource', '$http',
                'userService', 'drinksService', 'stationService',
-    function($scope, $resource, $location, $http, userService, drinksService, stationService){
-        // get user_id from URL parameter ?id=...
-        var url_params = $location.search();
-        var user_id = url_params.id;
+    function($scope, $localStorage, $resource, $http, userService, drinksService, stationService){
+        var user_id = $localStorage.userId;
 
         // retreive that user's data from users collection
         var userPromise = userService.getUser(user_id);
