@@ -1,4 +1,14 @@
-app.service("stationService", function($resource, $q) {
+app.service("stationService",
+    function($localStorage, $sessionStorage, $resource, $location, $q) {
+
+    // look for station in URL params
+    var url_params = $location.search();
+    var station_id = url_params.station;
+
+    // if it's there, save it locally
+    if (station_id != undefined) {
+        $localStorage.stationId = station_id;
+    }
 
     var deferred = $q.defer();
 
