@@ -1,6 +1,6 @@
-app.controller('QueueRCtrl', ['$scope', '$localStorage', '$resource', '$http',
+app.controller('QueueRCtrl', ['$scope', '$localStorage', '$http',
                'userService', 'drinksService', 'stationService',
-    function($scope, $localStorage, $resource, $http, userService, drinksService, stationService){
+    function($scope, $localStorage, $http, userService, drinksService, stationService){
         var user_id = $localStorage.userId;
 
         // retreive that user's data from users collection

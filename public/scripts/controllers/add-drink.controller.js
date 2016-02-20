@@ -1,5 +1,5 @@
-app.controller('AddDrinkCtrl', ['$scope', '$localStorage', '$resource', 'stationService', 'drinksService',
-    function($scope, $localStorage, $resource, stationService, drinksService) {
+app.controller('AddDrinkCtrl', ['$scope', '$localStorage', 'stationService', 'drinksService',
+    function($scope, $localStorage, stationService, drinksService) {
         var station_id = $localStorage.stationId;
 
         // need station to get all available ingredients

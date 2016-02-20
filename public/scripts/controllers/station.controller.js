@@ -1,5 +1,5 @@
-app.controller('StationCtrl', ['$scope', '$localStorage', '$resource', 'stationService',
-    function($scope,  $localStorage, $resource, stationService){
+app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
+    function($scope,  $localStorage, stationService){
         var station_id = $localStorage.stationId;
 
         var stationPromise = stationService.getStation(station_id);
