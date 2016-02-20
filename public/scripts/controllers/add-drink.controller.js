@@ -1,7 +1,6 @@
-app.controller('AddDrinkCtrl', ['$scope', '$resource', '$location', 'stationService', 'drinksService',
-    function($scope, $resource, $location, stationService, drinksService) {
-        var url_params = $location.search();
-        var station_id = url_params.id;
+app.controller('AddDrinkCtrl', ['$scope', '$localStorage', '$resource', 'stationService', 'drinksService',
+    function($scope, $localStorage, $resource, stationService, drinksService) {
+        var station_id = $localStorage.stationId;
 
         // need station to get all available ingredients
         var stationPromise = stationService.getStation(station_id);

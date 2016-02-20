@@ -1,7 +1,6 @@
-app.controller('StationCtrl', ['$scope', '$resource', '$location', 'stationService',
-    function($scope, $resource, $location, stationService){
-        var url_params = $location.search();
-        var station_id = url_params.id;
+app.controller('StationCtrl', ['$scope', '$localStorage', '$resource', 'stationService',
+    function($scope,  $localStorage, $resource, stationService){
+        var station_id = $localStorage.stationId;
 
         var stationPromise = stationService.getStation(station_id);
         stationPromise.then(function (station) {
