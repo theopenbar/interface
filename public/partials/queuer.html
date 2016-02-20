@@ -9,13 +9,17 @@
     <h1>Choose a new drink</h1>
 </div>
 
-<div>
-    <button type="button" class="btn btn-default"
-    ng-repeat='drink in drinks'
-    ng-class="{active : isSelected(drink)}"
-    ng-click="selectDrink(drink)">
-    {{drink.name}}
-    </button>
+<!-- http://stackoverflow.com/a/32358013 -->
+<div class="row">
+    <div ng-repeat="drink in drinks">
+        <div class="col-lg-2 col-md-3 col-xs-6">
+            <button type="button" class="btn padding btn-default btn-block"
+                ng-class="{active : isDrinkSelected(drink)}"
+                ng-click="selectDrink(drink)">
+                {{drink.name}}
+            </button>
+        </div>
+    </div>
 </div>
 
 </br>
