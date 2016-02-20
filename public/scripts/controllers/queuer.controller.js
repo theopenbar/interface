@@ -8,6 +8,12 @@ app.controller('QueueRCtrl', ['$scope', '$localStorage', '$resource', '$http',
         userPromise.then(function (user) {
             $scope.user = user;
 
+            /*
+            We need to get the station every time the user loads the page,
+            because if the user changes bars, the database will change the
+            stationId, and this is how the user would reload that value.
+            */
+
             // access the station stored under "station" for the user
             var stationPromise = stationService.getStation(user.station);
             stationPromise.then(function (station) {
