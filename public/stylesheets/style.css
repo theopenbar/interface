@@ -20,3 +20,7 @@ a {
 .navbar-dark .navbar-brand {
     color: #fff;
 }
+
+.page-header.stored {
+    margin-top: 0px;
+}
