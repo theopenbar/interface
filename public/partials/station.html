@@ -18,7 +18,6 @@
 
     <h4>{{station.ip_address}}</h4>
 
-
     <div class="page-header">
         <h3>Ingredients</h3>
     </div>
@@ -27,28 +26,27 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <td><b>Ingredient #:</b></td>
-                    <td ng-repeat="i in details track by $index">{{$index}}</td>
+                    <td><b>Valve #:</b></td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{$index+1}}</td>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><b>Name:</b></td>
-                    <td ng-repeat="i in details track by $index">{{details[$index][0]}}</td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][0]}}</td>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
                     <td><b>Amount left (oz):</b></td>
-                    <td ng-repeat="i in details track by $index">{{details[$index][1]}}</td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][1]}}</td>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
-                    <td><b>Flow Factor:<b></td>
-                    <td ng-repeat="i in details track by $index">{{details[$index][2]}}</td>
+                    <td><b>Multiplier:<b></td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][2]}}</td>
                 </tr>
             </tbody>
         </table>
-    </div>
 </div>
