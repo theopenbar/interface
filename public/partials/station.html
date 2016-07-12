@@ -2,8 +2,8 @@
     <div class-"page-header">
         <h3>Already have a station?</h3>
     </div>
-    <input type="text" placeholder="Enter Station ID">
-    <button type="button" class="btn dtn-default">Find station</button>
+    <input type="text" placeholder="Enter Station ID" ng-model="station.id">
+    <a href="/#/station?station={{station.id}}" class="btn btn-default active" role="button">Find station</a>
     
     <div class-"page-header">
         <h3>Want to create a new station?</h3>
