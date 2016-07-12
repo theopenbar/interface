@@ -3,9 +3,11 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
         var station_id = $localStorage.stationId;
 
         if (station_id == undefined) {
-
+            $scope.stationSelected = false;
         }
         else {
+            $scope.stationSelected = true;
+
             var stationPromise = stationService.getStation(station_id);
             stationPromise.then(function (station) {
                 $scope.station = station;
