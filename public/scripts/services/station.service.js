@@ -10,14 +10,17 @@ app.service("stationService",
         $localStorage.stationId = station_id;
     }
 
-    var deferred = $q.defer();
+    // get station from database only if it has been set
+    if ($localStorage.stationId != undefined) {
+        var deferred = $q.defer();
 
-    this.getStation = function(station_id) {
-        var Station = $resource('/api/station/:id', {id: station_id});
-        Station.get(function(station){
-            deferred.resolve(station);
-        });
+        this.getStation = function(station_id) {
+            var Station = $resource('/api/station/:id', {id: station_id});
+            Station.get(function(station){
+                deferred.resolve(station);
+            });
 
-        return deferred.promise;
-    };
+            return deferred.promise;
+        };
+    }
 });
