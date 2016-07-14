@@ -37,6 +37,7 @@
                     <td><b>Name</b></td>
                     <td><b>Amount left (oz)</b></td>
                     <td><b>Multiplier</b></td>
+                    <td></td>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +54,9 @@
                     <!-- input field if no type chosen -->
                     <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][2]}}</td>
                     <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
+                    <!-- edit/save button -->
+                    <td ng-show="{{ details[$index+1][0].length}}"><button>edit</button></td>
+                    <td ng-show="{{!details[$index+1][0].length}}"><button>save</button></td>
                 </tr>
             </tbody>
         </table>
