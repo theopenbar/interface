@@ -41,10 +41,18 @@
             </thead>
             <tbody>
                 <tr ng-repeat="i in details track by $index">
+                    <!-- ingredient # -->
                     <td>{{$index+1}}</td>
-                    <td>{{details[$index+1][0]}}</td>
-                    <td>{{details[$index+1][1]}}</td>
-                    <td>{{details[$index+1][2]}}</td>
+                    <!-- ng-show will display data from database if type selected -->
+                    <!-- selection box if no type chosen -->
+                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][0]}}</td>
+                    <td ng-show="{{!details[$index+1][0].length}}"><select></select></td>
+                    <!-- input field if no type chosen -->
+                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][1]}}</td>
+                    <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
+                    <!-- input field if no type chosen -->
+                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][2]}}</td>
+                    <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
                 </tr>
             </tbody>
         </table>
