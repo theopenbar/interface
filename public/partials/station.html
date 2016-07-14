@@ -1,39 +1,59 @@
-<div class="page-header">
-    <h3>Local IP Address</h3>
+<div ng-hide="stationSelected">
+    <div class-"page-header">
+        <h3>Already have a station?</h3>
+    </div>
+    <input type="text" placeholder="Enter Station ID" ng-model="station.id">
+    <a href="/#/station?station={{station.id}}" class="btn btn-default" role="button">Find station</a>
+    
+    <div class-"page-header">
+        <h3>Want to create a new station?</h3>
+    </div>
+    <button type="button" class="btn dtn-default">Register station</button>
 </div>
 
-<h4>{{station.ip_address}}</h4>
+<div ng-show="stationSelected">
+    <div class="page-header">
+        <h3>Local IP Address</h3>
+    </div>
 
+    <h4>{{station.ip_address}}</h4>
 
-<div class="page-header">
-    <h3>Ingredients</h3>
-</div>
+    <div class="page-header">
+        <h3>Number of Ingredients</h3>
+    </div>
 
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <td><b>Valve #:</b></td>
-                <td ng-repeat="i in details | startFrom : 1 track by $index">{{$index+1}}</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><b>Name:</b></td>
-                <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][0]}}</td>
-            </tr>
-        </tbody>
-        <tbody>
-            <tr>
-                <td><b>Amount left (oz):</b></td>
-                <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][1]}}</td>
-            </tr>
-        </tbody>
-        <tbody>
-            <tr>
-                <td><b>Multiplier:<b></td>
-                <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][2]}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <input type="text" placeholder="" ng-model="station.num_ingredients">
+    <button>Submit</button>
+
+    <div class="page-header">
+        <h3>Ingredients</h3>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td><b>Valve #:</b></td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{$index+1}}</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Name:</b></td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][0]}}</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td><b>Amount left (oz):</b></td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][1]}}</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td><b>Multiplier:<b></td>
+                    <td ng-repeat="i in details | startFrom : 1 track by $index">{{details[$index+1][2]}}</td>
+                </tr>
+            </tbody>
+        </table>
 </div>
