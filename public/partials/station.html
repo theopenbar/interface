@@ -51,7 +51,7 @@
                     <td ng-show="{{!details[$index+1][0].length}}"><select></select></td>
                     <!-- input field if no type chosen -->
                     <td ng-show="{{ details[$index+1][0].length}}"></td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
+                    <td ng-show="{{!details[$index+1][0].length}}"><input type='text' list='list-{{$index+1}}'></input></td>
                     <!-- input field if no type chosen -->
                     <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][1]}}</td>
                     <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
