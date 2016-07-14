@@ -4,6 +4,13 @@
     </div>
     <input type="text" placeholder="Enter Station ID" ng-model="station.id">
     <a href="/#/station?station={{station.id}}" class="btn btn-default" role="button">Find station</a>
+
+    <div ng-show="error" class="row">
+        <br>
+        <div class="col-md-2">
+            <div class="alert alert-danger" role="alert">{{error}}</div>
+        </div>
+    </div>
     
     <div class-"page-header">
         <h3>Modify station?</h3>

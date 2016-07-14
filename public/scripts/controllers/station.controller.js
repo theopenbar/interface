@@ -7,12 +7,12 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
         else {
             var stationPromise = stationService.getStation(station_id);
             stationPromise.then(function (station) {
-                // check errors
+                // check for errors
                 if (station.error == "not_valid_objectId") {
-                    console.log("not valid");
+                    $scope.error = "Station ID is not formatted correctly";
                 }
                 else if (station.error == "not_found") {
-                    console.log("not found");
+                    $scope.error = "Station ID is not found";
                 }
                 else {
                     // station_id is good
