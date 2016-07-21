@@ -24,7 +24,7 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
                     // loop through all ingredients in the station
                     for(var ingredient in station.ingredients) {
                         var current_ingredient = station.ingredients[ingredient];
-                        details[current_ingredient.pin] = [ingredient, current_ingredient.amount, current_ingredient.oz2time];
+                        details[current_ingredient.valve] = [current_ingredient.type, current_ingredient.amount, current_ingredient.flow_factor];
                     }
                     $scope.details = details;
                 }
