@@ -21,8 +21,8 @@
     <div class="panel-heading">{{drinkSelected.name}}</div>
 
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat='(ingredient, amount) in drinkSelected.recipe'>
-            {{amount/100}} oz of {{ingredient}}
+        <li class="list-group-item" ng-repeat="i in drinkSelected.recipe track by $index">
+            {{drinkSelected.recipe[$index].amount}} oz of {{drinkSelected.recipe[$index].ingredient}}
         </li>
         <li class="list-group-item">
             <button type="button" class="btn btn-primary" ng-click="pourDrink(drinkSelected, station)">Pour drink</button>
