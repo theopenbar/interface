@@ -2,28 +2,44 @@ var express = require('express');
 var router = express.Router();
 var mongo = require('mongodb');
 var dbHelper = require('./dbHelper');
+var station = require('./station');
 var net = require('net');
-
-var HOST = 'thorwat.dlinkddns.com';
-var PORT = 12345;
 
 var client = new net.Socket();
 
-function sendCommand(command, commandData) {
-    client.connect(PORT, HOST, function() {
+// data comes from commander.service here
+router.post('/', function(req, res) {
+    // get IP address and port from station
+    var db = req.db;
+    var collection = db.get('stations');
+    collection.findOne({ "_id": mongo.ObjectID(req.body.stationId) },function(err,station){
+        if (err) throw err;
+        // now send socket with all required information
+        sendCommand(station.host, station.port, req.body.command, req.body.commandData);
+    });
 
-    console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-    // Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
-    if (commandData !== null) {
-        client.write(command + ' ' + commandData);
-        console.log('SENT: ' + command + ' ' + commandData);
-    }
-    else {
-        client.write(command);
-        console.log('SENT: ' + command);
-    }
+    res.json({"status":"sent"})
+});
 
-})};
+
+function sendCommand(station_host, station_port, command, commandData) {
+    client.connect(station_port, station_host,
+        function() {
+
+            console.log('CONNECTED TO: ' + station_host + ':' + station_port);
+            // Write a message to the socket as soon as the client is connected,
+            // the server will receive it as message from the client
+            if (commandData !== null) {
+                client.write(command + ' ' + commandData);
+                console.log('SENT: ' + command + ' ' + commandData);
+            }
+            else {
+                client.write(command);
+                console.log('SENT: ' + command);
+            }
+        }
+    );
+};
 
 // Add a 'data' event handler for the client socket
 // data is what the server sent to this socket
@@ -40,16 +56,5 @@ client.on('data', function(data) {
 client.on('close', function() {
     console.log('Connection Closed');
 });
-
-//sendCommand('01','56b50d52e4b0762325b1b1cf');
-
-router.post('/', function(req, res) {
-    var command = req.body.command;
-    var commandData = req.body.commandData;
-
-    sendCommand(command,commandData);
-    res.json({"status":"sent"})
-});
-
 
 module.exports = router;
