@@ -87,6 +87,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         */
 }]);
 
+// https://github.com/AngularClass/angular-websocket
 app.factory('WebSocket', function($websocket) {
     // Open a WebSocket connection
     var dataStream = $websocket('wss://echo.websocket.org');
