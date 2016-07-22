@@ -33,13 +33,20 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
             }, 0);
         };
 
-        $scope.pourDrink = function(drink, station) {
-            console.log("pouring drink");
-            commanderService.sendCommand('01','56b50d52e4b0762325b1b1cf');
+        $scope.pourDrink = function(drink) {
+            // Make Recipe selected for the user of ID
+            commanderService.sendCommand('01', drink._id);
+
+            // hide recipe after successfully pouring
+            // probably want to do this when commander returns with "OK"
+            //$scope.drinkSelected = false;
         };
 
-       /*
-       $scope.pourDrink = function(drink, station) {
+        /*
+        Keep this logic in case we want to add the ability to pour drinks
+        where we don't have all available ingredients.
+
+        $scope.pourDrink = function(drink, station) {
             // stores any additional ingredients you need to add after
             // the machine pours what it can
             var addYourself = {};
