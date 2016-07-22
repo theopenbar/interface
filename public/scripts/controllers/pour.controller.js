@@ -1,6 +1,6 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'stationService',
-    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService){
+               'drinksService', 'stationService', 'commanderService',
+    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, commanderService){
         var station_id = $localStorage.stationId;
 
         // access the station stored under "station" for the user
@@ -34,6 +34,12 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         };
 
         $scope.pourDrink = function(drink, station) {
+            console.log("pouring drink");
+            commanderService.sendCommand('01','56b50d52e4b0762325b1b1cf');
+        };
+
+       /*
+       $scope.pourDrink = function(drink, station) {
             // stores any additional ingredients you need to add after
             // the machine pours what it can
             var addYourself = {};
@@ -67,4 +73,5 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
                 $scope.addYourself = addYourself;
             }
         };
+        */
 }]);

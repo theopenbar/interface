@@ -15,7 +15,7 @@ app.config(['$routeProvider', function($routeProvider) {
         })
         .when('/pour', {
             templateUrl: 'partials/pour.html',
-            controller: 'PourCtrl'
+            controller: 'PourCtrl',
         })
         .when('/queuer', {
             templateUrl: 'partials/queuer.html',
