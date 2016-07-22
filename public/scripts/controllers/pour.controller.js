@@ -1,6 +1,10 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'stationService', 'commanderService',
-    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, commanderService){
+               'drinksService', 'stationService', 'commanderService', 'WebSocket',
+    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, commanderService, WebSocket){
+        WebSocket.collection.push("hi again");
+
+        console.log(WebSocket.collection);
+
         var station_id = $localStorage.stationId;
 
         // access the station stored under "station" for the user
@@ -82,3 +86,24 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         };
         */
 }]);
+
+app.factory('WebSocket', function($websocket) {
+    // Open a WebSocket connection
+    var dataStream = $websocket('wss://echo.websocket.org');
+    //var dataStream = $websocket('ws://localhost/commander');
+
+    var collection = ["Hello there"];
+
+    dataStream.onMessage(function(message) {
+        collection.push(JSON.parse(message.data));
+    });
+
+    var methods = {
+        collection: collection,
+        get: function() {
+            dataStream.send(JSON.stringify({action: 'get'}));
+        }
+    };
+
+    return methods;
+});
