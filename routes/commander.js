@@ -57,4 +57,10 @@ client.on('close', function() {
     console.log('Connection Closed');
 });
 
+// Add a 'error' event handler for the client socket
+client.on('error', function() {
+    console.log('Error');
+    // calls 'close' event afterwards
+});
+
 module.exports = router;
