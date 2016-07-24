@@ -11,7 +11,7 @@
             <div class="alert alert-danger" role="alert">{{error}}</div>
         </div>
     </div>
-    
+
     <div class-"page-header">
         <h3>Modify station?</h3>
     </div>
@@ -20,10 +20,10 @@
 
 <div ng-show="stationSelected">
     <div class="page-header">
-        <h3>Local IP Address</h3>
+        <h3>Station IP Address</h3>
     </div>
 
-    <h4>{{station.ip_address}}</h4>
+    <h4>{{station.host}}:{{station.port}}</h4>
 
     <div class="page-header">
         <h3>Number of Ingredients</h3>
