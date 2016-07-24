@@ -17,7 +17,7 @@
 
 </br>
 
-<div class="panel panel-primary" id="recipe" ng-show="drinkSelected">
+<div class="panel panel-primary" id="recipe" ng-if="drinkSelected">
     <div class="panel-heading">{{drinkSelected.name}}</div>
 
     <ul class="list-group">
@@ -30,7 +30,7 @@
     </ul>
 </div>
 
-<div class="alert alert-info alert-dismissible" role="alert" ng-show="addYourself">
+<div class="alert alert-info alert-dismissible" role="alert" ng-if="addYourself">
     <button type="button" class="close" aria-label="Close" ng-click=selectDrink(false)>
         <span aria-hidden="true">&times;</span>
     </button>
