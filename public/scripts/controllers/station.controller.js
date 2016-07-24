@@ -1,10 +1,8 @@
 app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
     function($scope,  $localStorage, stationService){
         var station_id = $localStorage.stationId;
-        if (station_id == undefined) {
-            $scope.stationSelected = false;
-        }
-        else {
+        $scope.stationSelected = false;
+        if (station_id != undefined) {
             var stationPromise = stationService.getStation(station_id);
             stationPromise.then(function (station) {
                 // check for errors
