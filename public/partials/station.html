@@ -1,4 +1,4 @@
-<div ng-hide="stationSelected">
+<div ng-if="!stationSelected">
     <div class-"page-header">
         <h3>Already have a station?</h3>
     </div>
@@ -18,7 +18,7 @@
     <button type="button" class="btn btn-default">Register station</button>
 </div>
 
-<div ng-show="stationSelected">
+<div ng-if="stationSelected">
     <div class="page-header">
         <h3>Station IP Address</h3>
     </div>
