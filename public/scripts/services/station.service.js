@@ -28,4 +28,9 @@ app.service("stationService",
         var Commander =  $resource('/api/station/ip/:id', {id: station_id});
         Commander.save({"host":host, "port":port});
     }
+    
+    this.saveNumValves = function(station_id, num_valves) {
+        var Commander =  $resource('/api/station/valves/:id', {id: station_id});
+        Commander.save({"num_valves":num_valves});
+    }
 });

@@ -30,7 +30,7 @@
     </div>
     <div ng-show=" stationEdit">
         <input type="text" placeholder="" ng-model="station.host"></input> : 
-        <input type="text" placeholder="" ng-model="station.port"></input>
+        <input type="number" placeholder="" ng-model="station.port"></input>
         <button ng-click="saveIPAddress()">Save</button>
     </div>
 
@@ -38,8 +38,8 @@
         <h3>Number of Valves</h3>
     </div>
 
-    <input type="text" placeholder="" ng-model="station.num_valves">
-    <button>Submit</button>
+    <input type="number" placeholder="" ng-model="station.num_valves"></input>
+    <button ng-click="saveNumValves()">Save</button>
 
     <div class="page-header">
         <h3>Ingredients</h3>

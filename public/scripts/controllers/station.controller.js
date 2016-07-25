@@ -42,5 +42,10 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
 
             $scope.stationEdit = false;
         };
+        
+        // change the number of valves
+        $scope.saveNumValves = function() {
+            stationService.saveNumValves($scope.station._id, $scope.station.num_valves);
+        };
 
 }]);
