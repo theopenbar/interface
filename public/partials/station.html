@@ -23,7 +23,16 @@
         <h3>Station IP Address</h3>
     </div>
 
-    <h4>{{station.host}}:{{station.port}}</h4>
+    <div ng-show="!stationEdit">
+        <p>{{station.host}}:{{station.port}}
+        <button ng-click="editIPAddress()">Edit</button>
+        </p>
+    </div>
+    <div ng-show=" stationEdit">
+        <input type="text" placeholder="" ng-model="station.host"></input> : 
+        <input type="text" placeholder="" ng-model="station.port"></input>
+        <button ng-click="saveIPAddress()">Save</button>
+    </div>
 
     <div class="page-header">
         <h3>Number of Valves</h3>
