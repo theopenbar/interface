@@ -7,7 +7,7 @@ var net = require('net');
 
 // https://github.com/theturtle32/WebSocket-Node
 var WebSocketServer = require('websocket').server;
-var http = require('http');
+var https = require('https');
 
 var client = new net.Socket();
 
@@ -73,10 +73,10 @@ client.on('error', function() {
 
 // https://github.com/theturtle32/WebSocket-Node
 // ***** SERVER EXAMPLE *****
-var server = http.createServer(function(req, res) {
-    console.log((new Date()) + ' Recieved request for ' + req.url);
-    res.writeHead(404);
-    res.end();
+var server = https.createServer(function(request, respsonse) {
+    console.log((new Date()) + ' Recieved request for ' + request.url);
+    response.writeHead(404);
+    response.end();
 });
 server.listen(8081, function() {
     console.log((new Date()) + ' Server is listening on port 8081');
@@ -93,15 +93,15 @@ function originIsAllowed(origin) {
   return true;
 }
 
-wsServer.on('req', function(req) {
-    if (!originIsAllowed(req.origin)) {
+wsServer.on('request', function(request) {
+    if (!originIsAllowed(request.origin)) {
         // Make sure we only accept requests from an allowed origin
-        req.reject();
-        console.log((new Date()) + ' Connection from origin ' + req.origin + ' rejected.');
+        request.reject();
+        console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
         return;
     }
 
-    var connection = req.accept('echo-protocol', req.origin);
+    var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
