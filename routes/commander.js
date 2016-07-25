@@ -5,6 +5,10 @@ var dbHelper = require('./dbHelper');
 var station = require('./station');
 var net = require('net');
 
+// https://github.com/theturtle32/WebSocket-Node
+var WebSocketServer = require('websocket').server;
+var http = require('http');
+
 var client = new net.Socket();
 
 // data comes from commander.service here
@@ -18,7 +22,6 @@ router.post('/', function(req, res) {
         sendCommand(station.host, station.port, req.body.command, req.body.commandData);
     });
 
-    res.json({"status":"sent"})
 });
 
 
@@ -44,11 +47,14 @@ function sendCommand(station_host, station_port, command, commandData) {
 // Add a 'data' event handler for the client socket
 // data is what the server sent to this socket
 client.on('data', function(data) {
-    console.log('DATA: ' + data);
     // Close the client socket completely
     if (data == 'ERROR' || data == 'OK'){
+        console.log("END: " + data);
          client.destroy();
          console.log('Closing Connection');
+    }
+    else {
+        console.log('DATA: ' + data);
     }
 });
 
@@ -61,6 +67,55 @@ client.on('close', function() {
 client.on('error', function() {
     console.log('Error');
     // calls 'close' event afterwards
+});
+
+
+
+// https://github.com/theturtle32/WebSocket-Node
+// ***** SERVER EXAMPLE *****
+var server = http.createServer(function(req, res) {
+    console.log((new Date()) + ' Recieved request for ' + req.url);
+    res.writeHead(404);
+    res.end();
+});
+server.listen(8081, function() {
+    console.log((new Date()) + ' Server is listening on port 8081');
+});
+
+wsServer = new WebSocketServer({
+    httpServer: server,
+    autoAcceptConnections: false
+});
+
+function originIsAllowed(origin) {
+    console.log('Origin: ' + origin);
+  // put logic here to detect whether the specified origin is allowed.
+  return true;
+}
+
+wsServer.on('req', function(req) {
+    if (!originIsAllowed(req.origin)) {
+        // Make sure we only accept requests from an allowed origin
+        req.reject();
+        console.log((new Date()) + ' Connection from origin ' + req.origin + ' rejected.');
+        return;
+    }
+
+    var connection = req.accept('echo-protocol', req.origin);
+    console.log((new Date()) + ' Connection accepted.');
+    connection.on('message', function(message) {
+        if (message.type === 'utf8') {
+            console.log('Received Message: ' + message.utf8Data);
+            connection.sendUTF(message.utf8Data);
+        }
+        else if (message.type === 'binary') {
+            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+            connection.sendBytes(message.binaryData);
+        }
+    });
+    connection.on('close', function(reasonCode, description) {
+        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    });
 });
 
 module.exports = router;
