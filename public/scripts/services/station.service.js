@@ -23,4 +23,9 @@ app.service("stationService",
             return deferred.promise;
         };
     }
+
+    this.saveIPAddress = function(station_id, host, port) {
+        var Commander =  $resource('/api/station/ip/:id', {id: station_id});
+        Commander.save({"host":host, "port":port});
+    }
 });

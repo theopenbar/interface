@@ -72,4 +72,21 @@ router.get('/:id', function(req, res) {
     }
 });
 
+router.post('/:id', function(req, res) {
+    var db = req.db;
+    var collection = db.get('stations');
+    console.log(req.body);
+    collection.update({ "_id": mongo.ObjectID(req.params.id) },
+        {$set:
+            {host: req.body.host}
+        },
+        {$set:
+            {port: req.body.port}
+        },
+        function(err, ip){
+            if (err) throw err;
+            res.json(ip);
+        });
+});
+
 module.exports = router;
