@@ -91,14 +91,14 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 app.factory('WebSocket', function($websocket) {
     // Open a WebSocket connection
     //var dataStream = $websocket('wss://echo.websocket.org');
-    var dataStream = $websocket('wss://localhost:8081');
+    var dataStream = $websocket('ws://192.168.0.5:8081','echo-protocol');
 
     var collection = ["Hello there"];
 
     dataStream.onMessage(function(message) {
         collection.push(JSON.parse(message.data));
     });
-    
+
     dataStream.onOpen = function() {
         dataStream.send("SUP");
         console.log("Established Socket Connection to Server")

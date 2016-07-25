@@ -7,7 +7,7 @@ var net = require('net');
 
 // https://github.com/theturtle32/WebSocket-Node
 var WebSocketServer = require('websocket').server;
-var https = require('https');
+var http = require('http');
 
 var client = new net.Socket();
 
@@ -73,7 +73,7 @@ client.on('error', function() {
 
 // https://github.com/theturtle32/WebSocket-Node
 // ***** SERVER EXAMPLE *****
-var server = https.createServer(function(request, respsonse) {
+var server = http.createServer(function(request, respsonse) {
     console.log((new Date()) + ' Recieved request for ' + request.url);
     response.writeHead(404);
     response.end();
