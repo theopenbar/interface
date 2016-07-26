@@ -17,9 +17,11 @@
 
 </br>
 
-<div ng-repeat="message in WebSocket.messages">
-    <h1> {{message}} </h1> 
-</div>
+    <ul>
+        <li ng-repeat="message in WebSocket.messages track by $index">
+            <span> {{message}} </span>
+        </li>
+    </ul> 
 
 
 <div class="panel panel-primary" id="recipe" ng-show="drinkSelected">

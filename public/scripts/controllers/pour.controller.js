@@ -1,5 +1,5 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'stationService', 'WebSocket','messagesService',
+               'drinksService', 'stationService', 'WebSocket',
     function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, WebSocket){
                
         var station_id = $localStorage.stationId;
@@ -14,6 +14,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
             $scope.drinks = drinks;
         });
         
+        $scope.WebSocket = WebSocket;
 
         // these 2 functions are for displaying the list of ingredients
         // so that the user can pour the drink if they wish
@@ -36,7 +37,8 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 
         $scope.pourDrink = function(drink) {
             // Make Recipe selected for the user of ID
-            WebSocket.sendCommand(station_id, '01', drink._id{;
+            WebSocket.messages.length = 0;
+            WebSocket.sendCommand(station_id, '01', drink._id);
 
             // hide recipe after successfully pouring
             // probably want to do this when commander returns with "OK"
@@ -94,7 +96,6 @@ app.factory('WebSocket', function($websocket) {
     dataStream.onMessage(function(message) {
         messages.push(message.data);
         console.log(message.data);
-        updateMessages();
     });
     dataStream.onOpen(function() {
         console.log("Established WebSocket Connection to Server")
