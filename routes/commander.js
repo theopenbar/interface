@@ -45,13 +45,9 @@ wsServer.on('request', function(request) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             connection.sendUTF(message.utf8Data);
-            var db = express.db;
-            var collection = db.get('stations');
-            collection.findOne({ "_id": mongo.ObjectID(request.body.stationId) },function(err,station){
-                if (err) throw err;
-                // now send command to station socket with all required information
-                sendCommand(station.host, station.port, request.body.command, request.body.commandData);
-            });
+            // send request to station API to get details
+            var data = httpGet('/api/station/'+message.utf8Data.stationId);
+            console.log(data);
         }
         else {
             console.log('Received Unacceptable Message');
@@ -61,6 +57,15 @@ wsServer.on('request', function(request) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
+
+// http://stackoverflow.com/a/4033310
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
 
 //Function to send a command to a station controller and receive status updates back
 //These status updates are then returned to the Browser GUI through a websocket
