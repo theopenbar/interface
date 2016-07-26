@@ -23,12 +23,12 @@
         <h3>Station IP Address</h3>
     </div>
 
-    <div ng-show="!stationEdit">
+    <div ng-show="!stationIPEdit">
         <p>{{station.host}}:{{station.port}}
         <button ng-click="editIPAddress()">Edit</button>
         </p>
     </div>
-    <div ng-show=" stationEdit">
+    <div ng-show=" stationIPEdit">
         <input type="text" placeholder="" ng-model="station.host"></input> : 
         <input type="number" placeholder="" ng-model="station.port"></input>
         <button ng-click="saveIPAddress()">Save</button>

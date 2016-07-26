@@ -21,18 +21,18 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
             });
         }
 
-        $scope.stationEdit = false;
+        $scope.stationIPEdit = false;
 
         // display Edit input
         $scope.editIPAddress = function() {
-            $scope.stationEdit = true;
+            $scope.stationIPEdit = true;
         };
 
         // save details to database and display values
         $scope.saveIPAddress = function() {
             stationService.saveIPAddress($scope.station._id, $scope.station.host, $scope.station.port);
 
-            $scope.stationEdit = false;
+            $scope.stationIPEdit = false;
         };
         
         // change the number of valves
