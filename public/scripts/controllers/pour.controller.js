@@ -1,6 +1,6 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'stationService', 'commanderService', 'WebSocket',
-    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, commanderService, WebSocket){
+               'drinksService', 'stationService', 'WebSocket',
+    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, WebSocket){
         WebSocket.collection.push("hi again");
 
         console.log(WebSocket.collection);
@@ -39,7 +39,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 
         $scope.pourDrink = function(drink) {
             // Make Recipe selected for the user of ID
-            commanderService.sendCommand(station_id, '01', drink._id);
+            WebSocket.sendCommand(station_id, '01', drink._id);
 
             // hide recipe after successfully pouring
             // probably want to do this when commander returns with "OK"
@@ -91,23 +91,22 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 app.factory('WebSocket', function($websocket) {
     // Open a WebSocket connection
     //var dataStream = $websocket('wss://echo.websocket.org');
-    var dataStream = $websocket('ws://192.168.0.5:8081','echo-protocol');
+    var dataStream = $websocket('ws://192.168.0.5:8081','tob_command-protocol');
 
-    var collection = ["Hello there"];
+    var collection = [];
 
     dataStream.onMessage(function(message) {
         collection.push(JSON.parse(message.data));
     });
 
     dataStream.onOpen = function() {
-        dataStream.send("SUP");
         console.log("Established Socket Connection to Server")
     };
 
     var methods = {
         collection: collection,
-        get: function() {
-            dataStream.send(JSON.stringify({action: 'get'}));
+        sendCommand: function(stationId, command, commandData) {
+            dataStream.send(JSON.stringify({"stationId":stationId, "command":command, "commandData":commandData}));
         }
     };
 
