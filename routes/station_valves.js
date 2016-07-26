@@ -13,26 +13,42 @@ router.post('/:id', function(req, res) {
         },
         function(err, valves){
             if (err) throw err;
-            // probably shouldn't return here
-            res.json(valves);
+            // don't return here -- more to do
+            //res.json(valves);
         });
 
-    // testing the ability to update ingredients array based  on num_valves
+    // add/remove items in ingredients array based on num_valves
     collection.findOne({ "_id": mongo.ObjectID(req.params.id) },function(err,station){
         if (err) throw err;
         if (station !== null) {
-            //console.log(data);
-            console.log(station.ingredients.length)
 
-            // if less ingredients than number of valves, add some
+            // if less ingredients than num_valves, add some
             if (station.ingredients.length < station.num_valves) {
-                //collection.update()
+                // loop through new, large num_valves
+                for (var valve_num = 1; valve_num <= station.num_valves; valve_num++) {
+                    var found = false;
+                    // try to find that valve_num
+                    for (var v in station.ingredients) {
+                        if(station.ingredients[v].valve == valve_num){
+                            found = true;
+                        }
+                    }
+                    // if we can't find that valve_num, add it to the array
+                    if (found == false) {
+                        collection.update({ "_id": mongo.ObjectID(req.params.id) },
+                            { $addToSet : {ingredients: {"valve": valve_num}} },
+                            function(err,station){
+                                if (err) throw err;
+                        });
+                    }
+                }
             }
-            // else, delete some
+            // if more ingredients than num_valves, delete some
             else {
 
             }
         }
+        res.json({"msg":"ok"});
     });
 });
 
