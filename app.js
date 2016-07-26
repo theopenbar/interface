@@ -5,10 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// for mongodb
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('mongodb://fakeuser2:fakeuser2@ds035004.mongolab.com:35004/heroku_ff1ms21p');
+var db = require('./db_connection');
 
 var routes = require('./routes/index');
 var user = require('./routes/user');
@@ -72,6 +69,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

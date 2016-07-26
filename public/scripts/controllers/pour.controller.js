@@ -1,12 +1,8 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'stationService', 'WebSocket',
+               'drinksService', 'stationService', 'WebSocket','messagesService',
     function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, WebSocket){
-        WebSocket.collection.push("hi again");
-
-        console.log(WebSocket.collection);
-
+               
         var station_id = $localStorage.stationId;
-
         // access the station stored under "station" for the user
         var stationPromise = stationService.getStation(station_id);
         stationPromise.then(function (station) {
@@ -17,6 +13,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         drinksPromise.then(function (drinks) {
             $scope.drinks = drinks;
         });
+        
 
         // these 2 functions are for displaying the list of ingredients
         // so that the user can pour the drink if they wish
@@ -39,7 +36,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 
         $scope.pourDrink = function(drink) {
             // Make Recipe selected for the user of ID
-            WebSocket.sendCommand(station_id, '01', drink._id);
+            WebSocket.sendCommand(station_id, '01', drink._id{;
 
             // hide recipe after successfully pouring
             // probably want to do this when commander returns with "OK"
@@ -90,25 +87,23 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 // https://github.com/AngularClass/angular-websocket
 app.factory('WebSocket', function($websocket) {
     // Open a WebSocket connection
-    //var dataStream = $websocket('wss://echo.websocket.org');
     var dataStream = $websocket('ws://192.168.0.5:8081','tob_command-protocol');
 
-    var collection = [];
-
+    var messages = [];
+    
     dataStream.onMessage(function(message) {
-        collection.push(JSON.parse(message.data));
+        messages.push(message.data);
+        console.log(message.data);
+        updateMessages();
     });
-
-    dataStream.onOpen = function() {
-        console.log("Established Socket Connection to Server")
-    };
-
+    dataStream.onOpen(function() {
+        console.log("Established WebSocket Connection to Server")
+    });
     var methods = {
-        collection: collection,
+        messages: messages,
         sendCommand: function(stationId, command, commandData) {
             dataStream.send(JSON.stringify({"stationId":stationId, "command":command, "commandData":commandData}));
         }
     };
-
     return methods;
 });

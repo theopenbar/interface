@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1>Choose a drink</h1>
+      <h1>Choose a drink</h1>
 </div>
 
 <!-- http://stackoverflow.com/a/32358013 -->
@@ -16,6 +16,11 @@
 </div>
 
 </br>
+
+<div ng-repeat="message in WebSocket.messages">
+    <h1> {{message}} </h1> 
+</div>
+
 
 <div class="panel panel-primary" id="recipe" ng-show="drinkSelected">
     <div class="panel-heading">{{drinkSelected.name}}</div>
