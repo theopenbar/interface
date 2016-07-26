@@ -44,11 +44,19 @@ router.post('/:id', function(req, res) {
                 }
             }
             // if more ingredients than num_valves, delete some
-            else {
-
+            else if (station.ingredients.length > station.num_valves){
+                // loop through valves that are too high
+                for (var valve_num = station.ingredients.length; valve_num > station.num_valves; valve_num--) {
+                    // remove that valve_num
+                    collection.update({ "_id": mongo.ObjectID(req.params.id) },
+                            { $pull : {ingredients: {"valve": valve_num}} },
+                            function(err,station){
+                                if (err) throw err;
+                        });
+                }
             }
         }
-        res.json({"msg":"ok"});
+        res.json({"status":"done"});
     });
 });
 
