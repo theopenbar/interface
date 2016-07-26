@@ -36,7 +36,17 @@ router.post('/:id', function(req, res) {
                     // if we can't find that valve_num, add it to the array
                     if (found == false) {
                         collection.update({ "_id": mongo.ObjectID(req.params.id) },
-                            { $addToSet : {ingredients: {"valve": valve_num}} },
+                            { $addToSet:
+                                { ingredients:
+                                    {
+                                        "type": "",
+                                        "valve": valve_num,
+                                        "amount": 0,
+                                        "flow_factor": 0,
+                                        "pressurized": false
+                                    }
+                                }
+                            },
                             function(err,station){
                                 if (err) throw err;
                         });
