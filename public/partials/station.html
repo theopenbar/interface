@@ -49,7 +49,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <td><b>Ingredient #</b></td>
+                    <td><b>Valve #</b></td>
                     <td><b>Type</b></td>
                     <td><b>Brand</b></td>
                     <td><b>Amount left (oz)</b></td>
@@ -58,36 +58,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="i in details track by $index">
-                    <!-- ingredient # -->
-                    <td>{{$index+1}}</td>
+                <tr ng-repeat="i in station.ingredients track by $index">
+
+                    <!-- valve # -->
+                    <td>{{station.ingredients[$index].valve}}</td>
 
                     <!-- display -->
-                    <div ng-if="{{ details[$index+1][0].length}}">
-                        <!-- Type -->
-                        <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][0]}}</td>
-                        <!-- Brand -->
-                        <td ng-show="{{ details[$index+1][0].length}}"></td>
-                        <!-- Amount left (oz) -->
-                        <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][1]}}</td>
-                        <!-- Flow Factor (oz/sec) -->
-                        <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][2]}}</td>
-                        <!-- edit button -->
-                        <td ng-show="{{ details[$index+1][0].length}}"><button>edit</button></td>
+                    <div ng-show=" station.ingredients[$index].type.length">
+                        <td>{{station.ingredients[$index].type}}</td>
+                        <td>{{station.ingredients[$index].brand}}</td>
+                        <td>{{station.ingredients[$index].amount}}</td>
+                        <td>{{station.ingredients[$index].flow_factor}}</td>
+                        <td><button>edit</button></td>
                     </div>
 
                     <!-- edit -->
-                    <div ng-if="{{!details[$index+1][0].length}}">
-                         <!-- selection box for Type -->
-                        <td ng-show="{{!details[$index+1][0].length}}"><select></select></td>
-                        <!-- input field for Brand -->
-                        <td ng-show="{{!details[$index+1][0].length}}"><input type='text' list='list-{{$index+1}}'></input></td>
-                        <!-- input field for Amount left (oz) -->
-                        <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
-                        <!-- input field for Flow Factor (oz/sec) -->
-                        <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
-                        <!-- save button -->
-                        <td ng-show="{{!details[$index+1][0].length}}"><button>save</button></td>
+                    <div ng-show="!station.ingredients[$index].type.length">
+                        <td><select></select></td>
+                        <td><input type='text' list='list-{{$index+1}}'></input></td>
+                        <td><input type="number" placeholder="" ng-model="station.amount"></input></td>
+                        <td><input type="number" placeholder="" ng-model="station.flow_factor"></input></td>
+                        <td><button>save</button></td>
                     </div>
                 </tr>
             </tbody>

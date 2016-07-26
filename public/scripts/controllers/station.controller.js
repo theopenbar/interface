@@ -17,14 +17,6 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
                     $scope.stationSelected = true;
 
                     $scope.station = station;
-                    // now that we have the station, let's make an array to store the details
-                    var details = Array(station.num_valves);
-                    // loop through all ingredients in the station
-                    for(var ingredient in station.ingredients) {
-                        var current_ingredient = station.ingredients[ingredient];
-                        details[current_ingredient.valve] = [current_ingredient.type, current_ingredient.amount, current_ingredient.flow_factor];
-                    }
-                    $scope.details = details;
                 }
             });
         }
