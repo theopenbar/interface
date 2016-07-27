@@ -1,5 +1,5 @@
-app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
-    function($scope,  $localStorage, stationService){
+app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService', 'drinksService',
+    function($scope,  $localStorage, stationService, drinksService){
         var station_id = $localStorage.stationId;
         $scope.stationSelected = false;
         if (station_id != undefined) {
@@ -16,36 +16,67 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
                     // station_id is good
                     $scope.stationSelected = true;
 
-                    $scope.station = station;
-                    // now that we have the station, let's make an array to store the details
-                    var details = Array(station.num_valves);
-                    // loop through all ingredients in the station
-                    for(var ingredient in station.ingredients) {
-                        var current_ingredient = station.ingredients[ingredient];
-                        details[current_ingredient.valve] = [current_ingredient.type, current_ingredient.amount, current_ingredient.flow_factor];
+                    // need array of "actual" ingredients to display correctly
+                    $scope.actual = [];
+                    for (var ingredient in station.ingredients) {
+                        if (station.ingredients[ingredient].type == ""){
+                            $scope.actual.push(false);
+                        }
+                        else {
+                            $scope.actual.push(true);
+                        }
                     }
-                    $scope.details = details;
+
+                    $scope.station = station;
                 }
             });
         }
 
-        $scope.stationEdit = false;
+        var promise = drinksService.getTypes();
+        promise.then(function (types) {
+            $scope.types = types;
+        });
+
+        $scope.stationIPEdit = false;
 
         // display Edit input
         $scope.editIPAddress = function() {
-            $scope.stationEdit = true;
+            $scope.stationIPEdit = true;
         };
 
         // save details to database and display values
         $scope.saveIPAddress = function() {
             stationService.saveIPAddress($scope.station._id, $scope.station.host, $scope.station.port);
 
-            $scope.stationEdit = false;
+            $scope.stationIPEdit = false;
         };
-        
+
         // change the number of valves
         $scope.saveNumValves = function() {
             stationService.saveNumValves($scope.station._id, $scope.station.num_valves);
+        };
+
+        // edit an ingredient
+        $scope.editIngredient = function(event) {
+            // http://stackoverflow.com/a/31956122
+            // and index is higher by 1
+            var index = event.target.id - 1;
+            $scope.actual[index] = false;
+        };
+
+        // save an ingredient
+        $scope.saveIngredient = function(event) {
+            // http://stackoverflow.com/a/31956122
+            // and index is higher by 1
+            var index = event.target.id - 1;
+
+            // get that index's ingredient information
+            var ingredient = $scope.station.ingredients[index];
+
+            // save the changes to the database
+            stationService.saveIngredient($scope.station._id, ingredient);
+
+            $scope.actual[index] = true;
         };
 
 }]);

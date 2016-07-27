@@ -23,13 +23,13 @@
         <h3>Station IP Address</h3>
     </div>
 
-    <div ng-show="!stationEdit">
+    <div ng-show="!stationIPEdit">
         <p>{{station.host}}:{{station.port}}
         <button ng-click="editIPAddress()">Edit</button>
         </p>
     </div>
-    <div ng-show=" stationEdit">
-        <input type="text" placeholder="" ng-model="station.host"></input> : 
+    <div ng-show=" stationIPEdit">
+        <input type="text" placeholder="" ng-model="station.host"></input> :
         <input type="number" placeholder="" ng-model="station.port"></input>
         <button ng-click="saveIPAddress()">Save</button>
     </div>
@@ -49,48 +49,42 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <td><b>Ingredient #</b></td>
+                    <td><b>Valve #</b></td>
                     <td><b>Type</b></td>
                     <td><b>Brand</b></td>
                     <td><b>Amount left (oz)</b></td>
-                    <td><b>Flow Factor (oz/sec)</b></td>
+                    <td><b>Pressurized?</b></td>
                     <td></td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="i in details track by $index">
-                    <!-- ingredient # -->
-                    <td>{{$index+1}}</td>
-                    <!-- ng-show will display data from database if type selected -->
-                    <!-- selection box if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][0]}}</td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><select></select></td>
-                    <!-- input field if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}"></td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><input type='text' list='list-{{$index+1}}'></input></td>
-                    <!-- input field if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][1]}}</td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
-                    <!-- input field if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][2]}}</td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
-                    <!-- edit/save button -->
-                    <td ng-show="{{ details[$index+1][0].length}}"><button>edit</button></td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><button>save</button></td>
+
+                <tr ng-repeat="i in station.ingredients track by $index">
+                    <!-- display -->
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].valve}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].type}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].brand}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].amount}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].pressurized}}</td>
+                    <td ng-show="actual[$index]"><button id="{{station.ingredients[$index].valve}}" ng-click="editIngredient($event)">edit</button></td>
+
+                    <!-- edit -->
+                    <td ng-show="!actual[$index]">{{station.ingredients[$index].valve}}</td>
+                    <td ng-show="!actual[$index]"><input list="types" ng-model="station.ingredients[$index].type"/></td>
+                    <td ng-show="!actual[$index]"><input type='text' list='list-{{$index+1}}' value='{{station.ingredients[$index].brand}}'></input></td>
+                    <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.ingredients[$index].amount"></input></td>
+                    <td ng-show="!actual[$index]"><select placeholder="" ng-model="station.ingredients[$index].pressurized"><option value="true">true</option><option value="false">false</option></input></td>
+                    <td ng-show="!actual[$index]"><button id="{{station.ingredients[$index].valve}}" ng-click="saveIngredient($event)">save</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-
-<!-- example data for Brand -->
-<datalist id='list-11'>
-    <option value='value1'>
-    <option value='value2'>
-</datalist>
-
-<datalist id='list-12'>
-    <option value='data1'>
-    <option value='data2'>
+<!-- list of types -->
+<datalist id="types">
+    <select>
+        <!-- Yo, dawg. I heard you like types. -->
+        <option ng-repeat="type in types" value="{{type.type}}"></option>
+    </select>
 </datalist>

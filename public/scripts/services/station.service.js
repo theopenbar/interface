@@ -25,12 +25,17 @@ app.service("stationService",
     }
 
     this.saveIPAddress = function(station_id, host, port) {
-        var Commander =  $resource('/api/station/ip/:id', {id: station_id});
-        Commander.save({"host":host, "port":port});
+        var Station =  $resource('/api/station/ip/:id', {id: station_id});
+        Station.save({"host":host, "port":port});
     }
     
     this.saveNumValves = function(station_id, num_valves) {
-        var Commander =  $resource('/api/station/valves/:id', {id: station_id});
-        Commander.save({"num_valves":num_valves});
+        var Station =  $resource('/api/station/valves/:id', {id: station_id});
+        Station.save({"num_valves":num_valves});
     }
+
+    this.saveIngredient = function(station_id, ingredient) {
+        var Station = $resource('/api/station/ingredient/:id', {id: station_id});
+        Station.save(ingredient);
+    };
 });
