@@ -42,7 +42,6 @@ router.post('/:id', function(req, res) {
                                         "type": "",
                                         "valve": valve_num,
                                         "amount": 0,
-                                        "flow_factor": 0,
                                         "pressurized": false
                                     }
                                 }
