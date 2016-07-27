@@ -53,7 +53,7 @@
                     <td><b>Type</b></td>
                     <td><b>Brand</b></td>
                     <td><b>Amount left (oz)</b></td>
-                    <td><b>Flow Factor (oz/sec)</b></td>
+                    <td><b>Pressurized?</b></td>
                     <td></td>
                 </tr>
             </thead>
@@ -65,7 +65,7 @@
                     <td ng-show="actual[$index]">{{station.ingredients[$index].type}}</td>
                     <td ng-show="actual[$index]">{{station.ingredients[$index].brand}}</td>
                     <td ng-show="actual[$index]">{{station.ingredients[$index].amount}}</td>
-                    <td ng-show="actual[$index]">{{station.ingredients[$index].flow_factor}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].pressurized}}</td>
                     <td ng-show="actual[$index]"><button id="{{station.ingredients[$index].valve}}" ng-click="editIngredient($event)">edit</button></td>
 
                     <!-- edit -->
@@ -73,7 +73,7 @@
                     <td ng-show="!actual[$index]"><input list="types" ng-model="station.ingredients[$index].type"/></td>
                     <td ng-show="!actual[$index]"><input type='text' list='list-{{$index+1}}' value='{{station.ingredients[$index].brand}}'></input></td>
                     <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.ingredients[$index].amount"></input></td>
-                    <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.ingredients[$index].flow_factor"></input></td>
+                    <td ng-show="!actual[$index]"><select placeholder="" ng-model="station.ingredients[$index].pressurized"><option value="true">true</option><option value="false">false</option></input></td>
                     <td ng-show="!actual[$index]"><button id="{{station.ingredients[$index].valve}}" ng-click="saveIngredient($event)">save</button></td>
                 </tr>
             </tbody>
