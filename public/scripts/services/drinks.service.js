@@ -15,4 +15,13 @@ app.service('drinksService', function($resource, $q) {
         var Drinks = $resource('/api/drinks');
         Drinks.save(data);
     };
+
+    this.getTypes = function() {
+        var Types = $resource('/api/types');
+        Types.query(function(types){
+            deferred.resolve(types);
+        });
+
+        return deferred.promise;
+    };
 });
