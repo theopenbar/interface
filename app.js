@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 
 var db = require('./db_connection');
 
+var app = express();
+var expressWs = require('express-ws')(app);
+
 var routes = require('./routes/index');
 var user = require('./routes/user');
 var station = require('./routes/station');
@@ -15,7 +18,6 @@ var station_valves = require('./routes/station_valves');
 var drinks = require('./routes/drinks');
 var commander = require('./routes/commander');
 
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -73,5 +75,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+app.listen(8081);
 
 module.exports = app;

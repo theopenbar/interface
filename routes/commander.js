@@ -1,28 +1,31 @@
 var mongo = require('mongodb');
 var express = require('express');
 var router = express.Router();
-var dbHelper = require('./dbHelper');
-var station = require('./station');
+//var dbHelper = require('./dbHelper');
+//var station = require('./station');
 var net = require('net');
-var db = require('../db_connection');
+//var db = require('../db_connection');
 // https://github.com/theturtle32/WebSocket-Node
-var WebSocketServer = require('websocket').server;
-var http = require('http');
+//var WebSocketServer = require('websocket').server;
+//var http = require('http');
+//var app = require('../app');
+
 
 // Setup a websocket server to receive commands from the Browser GUI client to send to the station
 // controller and return status messages from the station controller back to the Browser GUI client
-var server = http.createServer(function(request, respsonse) {
-    console.log((new Date()) + ' Recieved request for ' + request.url);
-    response.writeHead(404);
-    response.end();
-});
+
+//var server = http.createServer(app);
+
+/*
 server.listen(8081, function() {
     console.log((new Date()) + ' Server is listening on port 8081');
 });
-
+*/
+/*
 wsServer = new WebSocketServer({
     httpServer: server,
-    autoAcceptConnections: false
+    autoAcceptConnections: false,
+    path: "/api/commander"
 });
 
 // Function to check if the origin is valid. It should be this Server
@@ -31,8 +34,40 @@ function originIsAllowed(origin) {
   // put logic here to detect whether the specified origin is allowed.
   return true;
 }
+*/
 
+router.get('/', function(req, res, next){
+  console.log('get route');
+  res.end();
+});
 
+router.ws('/', function(ws, req) {
+    if (ws.protocol !== 'tob_command-protocol') {
+          console.log((new Date()) + ' Rejected WebSocket Connection From: ' + req.ip);
+          return;
+    }
+    ws.on('message', function(message) {
+          console.log(message);
+          try {
+              var command = JSON.parse(message);
+              console.log('Received Command: ' + command.command);
+              // Get the provided station's details from the database (need host and port for station)
+              var db = req.db;
+              var collection = db.get('stations');
+              collection.findOne({ "_id": mongo.ObjectID(command.stationId) },function(err,station){
+                  if (err) throw err;
+                  if (station !== null) {
+                      sendCommand(ws, station.host, station.port, command.command, command.commandData);
+                  }
+              });
+          }
+          catch(e) {
+              console.log(e);
+          }
+    });
+});
+
+/*
 // https://github.com/theturtle32/WebSocket-Node/blob/master/example/whiteboard/whiteboard.js
 wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
@@ -70,6 +105,8 @@ wsServer.on('request', function(request) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
+*/
+
 
 // Function to send a command to a station controller and receive status updates back
 // These status updates are then returned to the Browser GUI through a passed websocket connection
@@ -104,7 +141,7 @@ function sendCommand(guiConnection, station_host, station_port, command, command
             var length = +data.slice(0,2) - 3; //length of message is the byte length -3 header bytes
             var remainder = data.slice(3);        //remainder of data string (should be 1 message)
             do {
-                guiConnection.sendUTF(remainder.slice(0,length)); //send the message
+                guiConnection.send((remainder.slice(0,length)).toString()); //send the message
                 remainder = remainder.slice(length); // if any further messages, repeat the loop
             }
             while (remainder.length > 0);
@@ -116,6 +153,7 @@ function sendCommand(guiConnection, station_host, station_port, command, command
     });
     // Add a 'error' event handler for the client socket
     client.on('error', function() {
+        guiConnection.send("Station Controller Socket Error");
         console.log('Station Socket Communication Error');
         // calls 'close' event afterwards
     });

@@ -88,9 +88,19 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 }]);
 
 // https://github.com/AngularClass/angular-websocket
-app.factory('WebSocket', function($websocket) {
+app.factory('WebSocket', function($websocket, $location) {
     // Open a WebSocket connection
-    var dataStream = $websocket('ws://192.168.0.5:8081','tob_command-protocol');
+    var host = $location.host();
+    var port = $location.port();
+    var protocol = $location.protocol();
+    if (protocol === 'https') {
+        var dataStream = $websocket('wss://' + host + ':' + port + '/api/commander','tob_command-protocol');
+        console.log("Creating Secure WebSocket");
+    }
+    else {
+        var dataStream = $websocket('ws://' + host + ':' + port + '/api/commander','tob_command-protocol');
+        console.log("Creating Non-Secure WebSocket");
+    }
 
     var messages = [];
     
