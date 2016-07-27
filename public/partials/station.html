@@ -29,7 +29,7 @@
         </p>
     </div>
     <div ng-show=" stationIPEdit">
-        <input type="text" placeholder="" ng-model="station.host"></input> : 
+        <input type="text" placeholder="" ng-model="station.host"></input> :
         <input type="number" placeholder="" ng-model="station.port"></input>
         <button ng-click="saveIPAddress()">Save</button>
     </div>
@@ -58,28 +58,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="i in station.ingredients track by $index">
-
-                    <!-- valve # -->
+                <!-- display -->
+                <tr ng-repeat="i in station.ingredients track by $index" ng-show="actual[$index]">
                     <td>{{station.ingredients[$index].valve}}</td>
+                    <td>{{station.ingredients[$index].type}}</td>
+                    <td>{{station.ingredients[$index].brand}}</td>
+                    <td>{{station.ingredients[$index].amount}}</td>
+                    <td>{{station.ingredients[$index].flow_factor}}</td>
+                    <td><button>edit</button></td>
+                </tr>
 
-                    <!-- display -->
-                    <div ng-show=" station.ingredients[$index].type.length">
-                        <td>{{station.ingredients[$index].type}}</td>
-                        <td>{{station.ingredients[$index].brand}}</td>
-                        <td>{{station.ingredients[$index].amount}}</td>
-                        <td>{{station.ingredients[$index].flow_factor}}</td>
-                        <td><button>edit</button></td>
-                    </div>
-
-                    <!-- edit -->
-                    <div ng-show="!station.ingredients[$index].type.length">
-                        <td><select></select></td>
-                        <td><input type='text' list='list-{{$index+1}}'></input></td>
-                        <td><input type="number" placeholder="" ng-model="station.amount"></input></td>
-                        <td><input type="number" placeholder="" ng-model="station.flow_factor"></input></td>
-                        <td><button>save</button></td>
-                    </div>
+                <!-- edit -->
+                <tr ng-repeat="i in station.ingredients track by $index"  ng-show="!actual[$index]">
+                    <td>{{station.ingredients[$index].valve}}</td>
+                    <td><select></select></td>
+                    <td><input type='text' list='list-{{$index+1}}'></input></td>
+                    <td><input type="number" placeholder="" ng-model="station.amount"></input></td>
+                    <td><input type="number" placeholder="" ng-model="station.flow_factor"></input></td>
+                    <td><button>save</button></td>
                 </tr>
             </tbody>
         </table>
