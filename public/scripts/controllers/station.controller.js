@@ -16,6 +16,19 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
                     // station_id is good
                     $scope.stationSelected = true;
 
+                    // need array of "actual" ingredients to display correctly
+                    $scope.actual = [];
+                    for (var ingredient in station.ingredients) {
+                        //console.log(ingredient);
+                        if (station.ingredients[ingredient].type == ""){
+                            $scope.actual.push(false);
+                        }
+                        else {
+                            $scope.actual.push(true);
+                        }
+                    }
+                    console.log($scope.actual);
+
                     $scope.station = station;
                 }
             });
@@ -34,7 +47,7 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
 
             $scope.stationIPEdit = false;
         };
-        
+
         // change the number of valves
         $scope.saveNumValves = function() {
             stationService.saveNumValves($scope.station._id, $scope.station.num_valves);
