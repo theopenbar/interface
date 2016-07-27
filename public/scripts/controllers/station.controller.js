@@ -19,7 +19,6 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
                     // need array of "actual" ingredients to display correctly
                     $scope.actual = [];
                     for (var ingredient in station.ingredients) {
-                        //console.log(ingredient);
                         if (station.ingredients[ingredient].type == ""){
                             $scope.actual.push(false);
                         }
@@ -27,7 +26,6 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
                             $scope.actual.push(true);
                         }
                     }
-                    console.log($scope.actual);
 
                     $scope.station = station;
                 }
