@@ -69,6 +69,13 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService', 'dri
             // http://stackoverflow.com/a/31956122
             // and index is higher by 1
             var index = event.target.id - 1;
+
+            // get that index's ingredient information
+            var ingredient = $scope.station.ingredients[index];
+
+            // save the changes to the database
+            stationService.saveIngredient($scope.station._id, ingredient);
+
             $scope.actual[index] = true;
         };
 
