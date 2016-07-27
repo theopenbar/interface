@@ -58,24 +58,23 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- display -->
-                <tr ng-repeat="i in station.ingredients track by $index" ng-show="actual[$index]">
-                    <td>{{station.ingredients[$index].valve}}</td>
-                    <td>{{station.ingredients[$index].type}}</td>
-                    <td>{{station.ingredients[$index].brand}}</td>
-                    <td>{{station.ingredients[$index].amount}}</td>
-                    <td>{{station.ingredients[$index].flow_factor}}</td>
-                    <td><button>edit</button></td>
-                </tr>
 
-                <!-- edit -->
-                <tr ng-repeat="i in station.ingredients track by $index"  ng-show="!actual[$index]">
-                    <td>{{station.ingredients[$index].valve}}</td>
-                    <td><select></select></td>
-                    <td><input type='text' list='list-{{$index+1}}'></input></td>
-                    <td><input type="number" placeholder="" ng-model="station.amount"></input></td>
-                    <td><input type="number" placeholder="" ng-model="station.flow_factor"></input></td>
-                    <td><button>save</button></td>
+                <tr ng-repeat="i in station.ingredients track by $index">
+                    <!-- display -->
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].valve}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].type}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].brand}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].amount}}</td>
+                    <td ng-show="actual[$index]">{{station.ingredients[$index].flow_factor}}</td>
+                    <td ng-show="actual[$index]"><button>edit</button></td>
+
+                    <!-- edit -->
+                    <td ng-show="!actual[$index]">{{station.ingredients[$index].valve}}</td>
+                    <td ng-show="!actual[$index]"><select></select></td>
+                    <td ng-show="!actual[$index]"><input type='text' list='list-{{$index+1}}'></input></td>
+                    <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.amount"></input></td>
+                    <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.flow_factor"></input></td>
+                    <td ng-show="!actual[$index]"><button>save</button></td>
                 </tr>
             </tbody>
         </table>
