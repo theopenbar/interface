@@ -93,8 +93,11 @@ app.factory('WebSocket', function($websocket, $location) {
     var host = $location.host();
     var port = $location.port();
     var protocol = $location.protocol();
+    
+    console.log(host + ':' + port);
+    
     if (protocol === 'https') {
-        var dataStream = $websocket('wss://' + host + ':' + port + '/api/commander','tob_command-protocol');
+        var dataStream = $websocket('wss://' + host + ':8081' /*+ port*/ + '/api/commander','tob_command-protocol');
         console.log("Creating Secure WebSocket");
     }
     else {
