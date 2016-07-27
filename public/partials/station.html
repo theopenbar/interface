@@ -1,4 +1,4 @@
-<div ng-hide="stationSelected">
+<div ng-if="!stationSelected">
     <div class-"page-header">
         <h3>Already have a station?</h3>
     </div>
@@ -11,26 +11,35 @@
             <div class="alert alert-danger" role="alert">{{error}}</div>
         </div>
     </div>
-    
+
     <div class-"page-header">
         <h3>Modify station?</h3>
     </div>
     <button type="button" class="btn btn-default">Register station</button>
 </div>
 
-<div ng-show="stationSelected">
+<div ng-if="stationSelected">
     <div class="page-header">
-        <h3>Local IP Address</h3>
+        <h3>Station IP Address</h3>
     </div>
 
-    <h4>{{station.ip_address}}</h4>
-
-    <div class="page-header">
-        <h3>Number of Ingredients</h3>
+    <div ng-show="!stationIPEdit">
+        <p>{{station.host}}:{{station.port}}
+        <button ng-click="editIPAddress()">Edit</button>
+        </p>
+    </div>
+    <div ng-show=" stationIPEdit">
+        <input type="text" placeholder="" ng-model="station.host"></input> : 
+        <input type="number" placeholder="" ng-model="station.port"></input>
+        <button ng-click="saveIPAddress()">Save</button>
     </div>
 
-    <input type="text" placeholder="" ng-model="station.num_ingredients">
-    <button>Submit</button>
+    <div class="page-header">
+        <h3>Number of Valves</h3>
+    </div>
+
+    <input type="number" placeholder="" ng-model="station.num_valves"></input>
+    <button ng-click="saveNumValves()">Save</button>
 
     <div class="page-header">
         <h3>Ingredients</h3>
@@ -40,7 +49,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <td><b>Ingredient #</b></td>
+                    <td><b>Valve #</b></td>
                     <td><b>Type</b></td>
                     <td><b>Brand</b></td>
                     <td><b>Amount left (oz)</b></td>
@@ -49,25 +58,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="i in details track by $index">
-                    <!-- ingredient # -->
-                    <td>{{$index+1}}</td>
-                    <!-- ng-show will display data from database if type selected -->
-                    <!-- selection box if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][0]}}</td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><select></select></td>
-                    <!-- input field if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}"></td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><input type='text' list='list-{{$index+1}}'></input></td>
-                    <!-- input field if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][1]}}</td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
-                    <!-- input field if no type chosen -->
-                    <td ng-show="{{ details[$index+1][0].length}}">{{details[$index+1][2]}}</td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><input></input></td>
-                    <!-- edit/save button -->
-                    <td ng-show="{{ details[$index+1][0].length}}"><button>edit</button></td>
-                    <td ng-show="{{!details[$index+1][0].length}}"><button>save</button></td>
+                <tr ng-repeat="i in station.ingredients track by $index">
+
+                    <!-- valve # -->
+                    <td>{{station.ingredients[$index].valve}}</td>
+
+                    <!-- display -->
+                    <div ng-show=" station.ingredients[$index].type.length">
+                        <td>{{station.ingredients[$index].type}}</td>
+                        <td>{{station.ingredients[$index].brand}}</td>
+                        <td>{{station.ingredients[$index].amount}}</td>
+                        <td>{{station.ingredients[$index].flow_factor}}</td>
+                        <td><button>edit</button></td>
+                    </div>
+
+                    <!-- edit -->
+                    <div ng-show="!station.ingredients[$index].type.length">
+                        <td><select></select></td>
+                        <td><input type='text' list='list-{{$index+1}}'></input></td>
+                        <td><input type="number" placeholder="" ng-model="station.amount"></input></td>
+                        <td><input type="number" placeholder="" ng-model="station.flow_factor"></input></td>
+                        <td><button>save</button></td>
+                    </div>
                 </tr>
             </tbody>
         </table>

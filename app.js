@@ -10,6 +10,8 @@ var db = require('./db_connection');
 var routes = require('./routes/index');
 var user = require('./routes/user');
 var station = require('./routes/station');
+var station_ip = require('./routes/station_ip');
+var station_valves = require('./routes/station_valves');
 var drinks = require('./routes/drinks');
 var commander = require('./routes/commander');
 
@@ -36,6 +38,8 @@ app.use(function(req,res,next){
 app.use('/', routes);
 app.use('/api/user', user);
 app.use('/api/station', station);
+app.use('/api/station/ip', station_ip);
+app.use('/api/station/valves', station_valves);
 app.use('/api/drinks', drinks);
 app.use('/api/commander', commander);
 
