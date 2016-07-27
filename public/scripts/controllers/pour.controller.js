@@ -26,6 +26,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
             // hide additional ingredients alert when selecting a new drink
             $scope.addYourself = false;
             $scope.drinkSelected = drink;
+            WebSocket.messages.length = 0;
 
             // need timeout so it runs after DOM is updated to show 'recipe'
             // http://stackoverflow.com/a/19889541
@@ -37,7 +38,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 
         $scope.pourDrink = function(drink) {
             // Make Recipe selected for the user of ID
-            WebSocket.messages.length = 0;
+            
             WebSocket.sendCommand(station_id, '01', drink._id);
 
             // hide recipe after successfully pouring
