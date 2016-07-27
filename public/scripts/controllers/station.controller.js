@@ -51,4 +51,20 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
             stationService.saveNumValves($scope.station._id, $scope.station.num_valves);
         };
 
+        // edit an ingredient
+        $scope.editIngredient = function(event) {
+            // http://stackoverflow.com/a/31956122
+            // and index is higher by 1
+            var index = event.target.id - 1;
+            $scope.actual[index] = false;
+        };
+
+        // save an ingredient
+        $scope.saveIngredient = function(event) {
+            // http://stackoverflow.com/a/31956122
+            // and index is higher by 1
+            var index = event.target.id - 1;
+            $scope.actual[index] = true;
+        };
+
 }]);
