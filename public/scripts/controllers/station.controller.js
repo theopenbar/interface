@@ -1,5 +1,5 @@
-app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
-    function($scope,  $localStorage, stationService){
+app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService', 'drinksService',
+    function($scope,  $localStorage, stationService, drinksService){
         var station_id = $localStorage.stationId;
         $scope.stationSelected = false;
         if (station_id != undefined) {
@@ -31,6 +31,11 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService',
                 }
             });
         }
+
+        var promise = drinksService.getTypes();
+        promise.then(function (types) {
+            $scope.types = types;
+        });
 
         $scope.stationIPEdit = false;
 

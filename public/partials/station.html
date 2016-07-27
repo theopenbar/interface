@@ -70,7 +70,7 @@
 
                     <!-- edit -->
                     <td ng-show="!actual[$index]">{{station.ingredients[$index].valve}}</td>
-                    <td ng-show="!actual[$index]"><select></select></td>
+                    <td ng-show="!actual[$index]"><input list="types" ng-model="station.ingredients[$index].type"/></td>
                     <td ng-show="!actual[$index]"><input type='text' list='list-{{$index+1}}' value='{{station.ingredients[$index].brand}}'></input></td>
                     <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.ingredients[$index].amount"></input></td>
                     <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.ingredients[$index].flow_factor"></input></td>
@@ -81,14 +81,12 @@
     </div>
 </div>
 
+<select list="types"></select>
 
-<!-- example data for Brand -->
-<datalist id='list-11'>
-    <option value='value1'>
-    <option value='value2'>
-</datalist>
-
-<datalist id='list-12'>
-    <option value='data1'>
-    <option value='data2'>
+<!-- list of types -->
+<datalist id="types">
+    <select>
+        <!-- Yo, dawg. I heard you like types. -->
+        <option ng-repeat="type in types" value="{{type.type}}"></option>
+    </select>
 </datalist>
