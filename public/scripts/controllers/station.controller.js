@@ -1,20 +1,31 @@
-app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService', 'drinksService',
-    function($scope,  $localStorage, stationService, drinksService){
-        var station_id = $localStorage.stationId;
-        $scope.stationSelected = false;
-        if (station_id != undefined) {
+app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationService', 'drinksService',
+    function($scope, $localStorage, $location, stationService, drinksService){
+
+        // need to declare function before it is used
+        $scope.findStation = function(station_id) {
             var stationPromise = stationService.getStation(station_id);
             stationPromise.then(function (station) {
                 // check for errors
                 if (station.error == "not_valid_objectId") {
-                    $scope.error = "Station ID is not formatted correctly";
+                    // station_id is incorrect
+                    $scope.stationSelected = false;
+                    $scope.error = "Station ID is not formatted correctly.";
                 }
                 else if (station.error == "not_found") {
-                    $scope.error = "Station ID is not found";
+                    // station_id is incorrect
+                    $scope.stationSelected = false;
+                    $scope.error = "Station ID is not found.";
                 }
                 else {
                     // station_id is good
                     $scope.stationSelected = true;
+                    // if it's good, save it locally
+                    $localStorage.stationId = station_id;
+                    // and remove the URL param
+                    $location.url($location.path())
+
+                    // false by default
+                    $scope.stationIPEdit = false;
 
                     // need array of "actual" ingredients to display correctly
                     $scope.actual = [];
@@ -28,16 +39,15 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService', 'dri
                     }
 
                     $scope.station = station;
+
+                    // get Types of drinks for editing
+                    var promise = drinksService.getTypes();
+                    promise.then(function (types) {
+                        $scope.types = types;
+                    });
                 }
             });
         }
-
-        var promise = drinksService.getTypes();
-        promise.then(function (types) {
-            $scope.types = types;
-        });
-
-        $scope.stationIPEdit = false;
 
         // display Edit input
         $scope.editIPAddress = function() {
@@ -79,4 +89,22 @@ app.controller('StationCtrl', ['$scope', '$localStorage', 'stationService', 'dri
             $scope.actual[index] = true;
         };
 
+        // look for station in URL params
+        var url_params = $location.search();
+        var station_id = url_params.station;
+
+        // if it's in the URL param, make sure it's correct
+        if (station_id != undefined) {
+            console.log("URL param");
+            $scope.findStation(station_id);
+        }
+        // maybe it's in localStorage?
+        else if ($localStorage.stationId != undefined){
+            console.log("localStorage");
+            $scope.findStation($localStorage.stationId);
+        }
+        // no station ID
+        else {
+            $scope.stationSelected = false;
+        }
 }]);
