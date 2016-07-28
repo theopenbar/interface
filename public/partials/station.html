@@ -26,6 +26,17 @@
 
 <div ng-if="stationSelected">
     <div class="page-header">
+        <h3>Stored Station ID</h3>
+    </div>
+
+    <div>
+        <p>{{station._id}}
+        <button ng-click="removeStationID()">Remove from storage</button>
+        <button ng-click="sendIDtoController()">Send to controller</button>
+        </p>
+    </div>
+
+    <div class="page-header">
         <h3>Station IP Address</h3>
     </div>
 

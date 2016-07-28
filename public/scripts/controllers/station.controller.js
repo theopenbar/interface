@@ -71,6 +71,12 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
             });
         }
 
+        // remove station ID from localStorage and go back to stationSelect mode
+        $scope.removeStationID = function() {
+            delete $localStorage.stationId;
+            $scope.stationSelected = false;
+        }
+
         // display Edit input
         $scope.editIPAddress = function() {
             $scope.stationIPEdit = true;
