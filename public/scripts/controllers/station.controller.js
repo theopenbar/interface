@@ -60,11 +60,9 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
             promise.then(function (station) {
                 console.log(station);
                 $scope.station = station;
-                // set this now so we can fill up the array
-                $scope.station.num_valves = station.num_valves;
 
                 // fill up with blank ingredients
-                $scope.saveNumValves();
+                $scope.saveNumValves(station.num_valves);
 
                 // set up GUI
                 $scope.stationReady($scope.station);
@@ -90,8 +88,8 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
         };
 
         // change the number of valves
-        $scope.saveNumValves = function() {
-            stationService.saveNumValves($scope.station._id, $scope.station.num_valves);
+        $scope.saveNumValves = function(num_valves) {
+            stationService.saveNumValves($scope.station._id, num_valves);
         };
 
         // edit an ingredient
