@@ -49,6 +49,15 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
             });
         }
 
+        // create a new station and return ID
+        $scope.createStation = function() {
+            var promise = stationService.putStation();
+            promise.then(function (station) {
+                console.log(station);
+                $scope.station = station;
+            });
+        }
+
         // display Edit input
         $scope.editIPAddress = function() {
             $scope.stationIPEdit = true;

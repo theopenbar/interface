@@ -12,6 +12,19 @@ app.service("stationService",
         return deferred.promise;
     };
 
+    this.putStation = function() {
+        var deferred = $q.defer();
+
+        var Station = $resource('/api/station', {}, {
+          update: { method: 'PUT' }
+        });
+        Station.update(function(station){
+            deferred.resolve(station);
+        });
+
+        return deferred.promise;
+    };
+
     this.saveIPAddress = function(station_id, host, port) {
         var Station =  $resource('/api/station/ip/:id', {id: station_id});
         Station.save({"host":host, "port":port});

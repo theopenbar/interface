@@ -72,4 +72,19 @@ router.get('/:id', function(req, res) {
     }
 });
 
+// create a new document in stations and return it's information
+router.put('/', function(req, res) {
+    var db = req.db;
+    var collection = db.get('stations');
+    collection.insert({
+        "ingredients": [],
+        "host": "localhost",
+        "port": 8080,
+        "num_valves": 10
+    }, function(err,id){
+        if (err) throw err;
+        res.json(id);
+    });
+});
+
 module.exports = router;
