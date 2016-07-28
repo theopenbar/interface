@@ -1,4 +1,4 @@
-<div ng-if="!stationSelected">
+<div ng-if="selectStationUI">
     <div class-"page-header">
         <h3>Already have a station?</h3>
     </div>
@@ -24,7 +24,7 @@
     <button class="btn btn-default" ng-click="createStation()">Register station</button>
 </div>
 
-<div ng-if="stationSelected">
+<div ng-if="displayStationUI">
     <div class="page-header">
         <h3>Stored Station ID</h3>
     </div>

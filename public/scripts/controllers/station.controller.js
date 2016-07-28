@@ -5,7 +5,8 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
         // need to declare functions before they are used
         $scope.stationReady = function(station) {
             // station_id is good
-            $scope.stationSelected = true;
+            $scope.selectStationUI = false;
+            $scope.displayStationUI = true;
             // if it's good, save it locally
             $localStorage.stationId = station._id;
             // and remove the URL param
@@ -40,12 +41,12 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
                 // check for errors
                 if (station.error == "not_valid_objectId") {
                     // station_id is incorrect
-                    $scope.stationSelected = false;
+                    $scope.selectStationUI = true;
                     $scope.error = "Station ID is not formatted correctly.";
                 }
                 else if (station.error == "not_found") {
                     // station_id is incorrect
-                    $scope.stationSelected = false;
+                    $scope.selectStationUI = true;
                     $scope.error = "Station ID is not found.";
                 }
                 else {
@@ -67,7 +68,8 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
         // remove station ID from localStorage and go back to stationSelect mode
         $scope.removeStationID = function() {
             delete $localStorage.stationId;
-            $scope.stationSelected = false;
+            $scope.displayStationUI = false;
+            $scope.selectStationUI = true;
         }
 
         // send station ID to controller so it can GET the data from it
@@ -132,6 +134,6 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
         }
         // no station ID
         else {
-            $scope.stationSelected = false;
+            $scope.selectStationUI = true;
         }
 }]);
