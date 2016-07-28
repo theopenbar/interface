@@ -58,12 +58,6 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
             // create base station
             var promise = stationService.putStation();
             promise.then(function (station) {
-                console.log(station);
-                $scope.station = station;
-
-                // fill up with blank ingredients
-                $scope.saveNumValves(station.num_valves);
-
                 // fill up with blank ingredients and then set up GUI
                 $scope.saveNumValves(station._id, station.num_valves);
             });
