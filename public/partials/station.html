@@ -32,7 +32,6 @@
     <div>
         <p>{{station._id}}
         <button ng-click="removeStationID()">Remove from storage</button>
-        <button ng-click="sendIDtoController()">Send to controller</button>
         </p>
     </div>
 
@@ -43,6 +42,7 @@
     <div ng-show="!stationIPEdit">
         <p>{{station.host}}:{{station.port}}
         <button ng-click="editIPAddress()">Edit</button>
+        <button ng-click="sendIDtoController()">Send ID to controller</button>
         </p>
     </div>
     <div ng-show=" stationIPEdit">
