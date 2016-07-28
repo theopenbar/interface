@@ -1,5 +1,6 @@
-app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationService', 'drinksService',
-    function($scope, $localStorage, $location, stationService, drinksService){
+app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationService',
+               'drinksService', 'WebSocket',
+    function($scope, $localStorage, $location, stationService, drinksService, WebSocket){
 
         // need to declare functions before they are used
         $scope.stationReady = function(station) {
@@ -67,6 +68,11 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
         $scope.removeStationID = function() {
             delete $localStorage.stationId;
             $scope.stationSelected = false;
+        }
+
+        // send station ID to controller so it can GET the data from it
+        $scope.sendIDtoController = function() {
+            WebSocket.sendCommand($scope.station._id, '06', $scope.station._id);
         }
 
         // display Edit input
