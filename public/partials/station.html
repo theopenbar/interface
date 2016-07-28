@@ -29,10 +29,13 @@
         <h3>Stored Station ID</h3>
     </div>
 
-    <div>
-        <p>{{station._id}}
-        <button ng-click="removeStationID()">Remove from storage</button>
-        </p>
+    <div class="row">
+        <div class="col-md-3">
+            <input type="text" class="form-control" ng-value="station._id" readonly>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-default" ng-click="removeStationID()">Remove from storage</button>
+        </div>
     </div>
 
     <div class="page-header">
