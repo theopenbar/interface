@@ -5,10 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// for mongodb
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('mongodb://fakeuser2:fakeuser2@ds035004.mongolab.com:35004/heroku_ff1ms21p');
+var db = require('./db_connection');
+
+var app = express();
+var expressWs = require('express-ws')(app);
 
 var routes = require('./routes/index');
 var user = require('./routes/user');
@@ -20,7 +20,6 @@ var drinks = require('./routes/drinks');
 var types = require('./routes/types');
 var commander = require('./routes/commander');
 
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -81,5 +80,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
+app.listen(8081);
 
 module.exports = app;

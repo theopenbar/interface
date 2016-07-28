@@ -1,8 +1,8 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'stationService', 'commanderService',
-    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, commanderService){
+               'drinksService', 'stationService', 'WebSocket',
+    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, WebSocket){
+               
         var station_id = $localStorage.stationId;
-
         // access the station stored under "station" for the user
         var stationPromise = stationService.getStation(station_id);
         stationPromise.then(function (station) {
@@ -13,6 +13,8 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         drinksPromise.then(function (drinks) {
             $scope.drinks = drinks;
         });
+        
+        $scope.WebSocket = WebSocket;
 
         // these 2 functions are for displaying the list of ingredients
         // so that the user can pour the drink if they wish
@@ -24,6 +26,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
             // hide additional ingredients alert when selecting a new drink
             $scope.addYourself = false;
             $scope.drinkSelected = drink;
+            WebSocket.messages.length = 0;
 
             // need timeout so it runs after DOM is updated to show 'recipe'
             // http://stackoverflow.com/a/19889541
@@ -35,7 +38,8 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 
         $scope.pourDrink = function(drink) {
             // Make Recipe selected for the user of ID
-            commanderService.sendCommand(station_id, '01', drink._id);
+            
+            WebSocket.sendCommand(station_id, '01', drink._id);
 
             // hide recipe after successfully pouring
             // probably want to do this when commander returns with "OK"
@@ -82,3 +86,39 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         };
         */
 }]);
+
+// https://github.com/AngularClass/angular-websocket
+app.factory('WebSocket', function($websocket, $location) {
+    // Open a WebSocket connection
+    var host = $location.host();
+    var port = $location.port();
+    var protocol = $location.protocol();
+    
+    console.log(host + ':' + port);
+    
+    if (protocol === 'https') {
+        var dataStream = $websocket('wss://' + host + ':8081' /*+ port*/ + '/api/commander','tob_command-protocol');
+        console.log("Creating Secure WebSocket");
+    }
+    else {
+        var dataStream = $websocket('ws://' + host + ':' + port + '/api/commander','tob_command-protocol');
+        console.log("Creating Non-Secure WebSocket");
+    }
+
+    var messages = [];
+    
+    dataStream.onMessage(function(message) {
+        messages.push(message.data);
+        console.log(message.data);
+    });
+    dataStream.onOpen(function() {
+        console.log("Established WebSocket Connection to Server")
+    });
+    var methods = {
+        messages: messages,
+        sendCommand: function(stationId, command, commandData) {
+            dataStream.send(JSON.stringify({"stationId":stationId, "command":command, "commandData":commandData}));
+        }
+    };
+    return methods;
+});
