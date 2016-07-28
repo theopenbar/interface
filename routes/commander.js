@@ -137,11 +137,13 @@ function sendCommand(guiConnection, station_host, station_port, command, command
             console.log('Closing Station Socket Connection');
         }
         else {
-            console.log('DATA: ' + data);
             var length = +data.slice(0,2) - 3; //length of message is the byte length -3 header bytes
             var remainder = data.slice(3);        //remainder of data string (should be 1 message)
+            var message = null;
             do {
-                guiConnection.send((remainder.slice(0,length)).toString()); //send the message
+                message = (remainder.slice(0,length)).toString();
+                console.log('DATA: ' + message);
+                guiConnection.send(message); //send the message
                 remainder = remainder.slice(length); // if any further messages, repeat the loop
             }
             while (remainder.length > 0);
