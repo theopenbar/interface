@@ -64,8 +64,8 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
                 // fill up with blank ingredients
                 $scope.saveNumValves(station.num_valves);
 
-                // set up GUI
-                $scope.stationReady($scope.station);
+                // fill up with blank ingredients and then set up GUI
+                $scope.saveNumValves(station._id, station.num_valves);
             });
         }
 
@@ -88,10 +88,9 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
         };
 
         // change the number of valves
-        $scope.saveNumValves = function(num_valves) {
-            var stationPromise = stationService.saveNumValves($scope.station._id, num_valves);
+        $scope.saveNumValves = function(station_id, num_valves) {
+            var stationPromise = stationService.saveNumValves(station_id, num_valves);
             stationPromise.then(function (station) {
-                $scope.station = station;
                 $scope.stationReady(station);
             });
         };
