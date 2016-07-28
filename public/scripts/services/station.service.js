@@ -33,6 +33,16 @@ app.service("stationService",
     this.saveNumValves = function(station_id, num_valves) {
         var Station =  $resource('/api/station/valves/:id', {id: station_id});
         Station.save({"num_valves":num_valves});
+
+        // now, get updated station to return
+        var deferred = $q.defer();
+
+        var Station = $resource('/api/station/:id', {id: station_id});
+        Station.get(function(station){
+            deferred.resolve(station);
+        });
+
+        return deferred.promise;
     }
 
     this.saveIngredient = function(station_id, ingredient) {
