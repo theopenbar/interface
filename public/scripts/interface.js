@@ -1,6 +1,6 @@
 var app = angular.module('interface', ['ngResource', 'ngRoute', 'ngStorage']);
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'partials/home.html'
@@ -28,4 +28,8 @@ app.config(['$routeProvider', function($routeProvider) {
         .otherwise({
             redirectTo: '/'
         });
+
+        // https://scotch.io/tutorials/pretty-urls-in-angularjs-removing-the-hashtag
+        // use the HTML5 History API
+        $locationProvider.html5Mode(true);
 }]);
