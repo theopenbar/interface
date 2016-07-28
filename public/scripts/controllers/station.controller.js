@@ -89,7 +89,11 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
 
         // change the number of valves
         $scope.saveNumValves = function(num_valves) {
-            stationService.saveNumValves($scope.station._id, num_valves);
+            var stationPromise = stationService.saveNumValves($scope.station._id, num_valves);
+            stationPromise.then(function (station) {
+                $scope.station = station;
+                $scope.stationReady(station);
+            });
         };
 
         // edit an ingredient
