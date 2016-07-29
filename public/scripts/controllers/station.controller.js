@@ -27,6 +27,8 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
             }
 
             $scope.station = station;
+            // for displaying "host":"port"
+            $scope.colon = ':';
 
             // get Types of drinks for editing
             var promise = drinksService.getTypes();

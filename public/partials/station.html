@@ -45,16 +45,13 @@
     <div ng-show="!stationIPEdit">
         <div class="row">
             <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        {{station.host}}:{{station.port}}
-                    </div>
-                </div>
+                <input type="text" class="form-control" ng-value="station.host+colon+station.port" readonly>
             </div>
             <div class="col-md-1">
                 <button class="btn btn-default" ng-click="editIPAddress()">Edit</button>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-md-1">
                 <button class="btn btn-success" ng-click="sendIDtoController()">Send ID to controller</button>
