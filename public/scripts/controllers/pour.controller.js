@@ -39,7 +39,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         $scope.pourDrink = function(drink) {
             // Make Recipe selected for the user of ID
             
-            WebSocket.sendCommand(station_id, '01', drink._id);
+            WebSocket.sendCommand($scope.station.host, $scope.station.port, '01', drink._id);
 
             // hide recipe after successfully pouring
             // probably want to do this when commander returns with "OK"

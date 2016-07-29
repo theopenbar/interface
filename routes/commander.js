@@ -51,15 +51,7 @@ router.ws('/', function(ws, req) {
           try {
               var command = JSON.parse(message);
               console.log('Received Command: ' + command.command);
-              // Get the provided station's details from the database (need host and port for station)
-              var db = req.db;
-              var collection = db.get('stations');
-              collection.findOne({ "_id": mongo.ObjectID(command.stationId) },function(err,station){
-                  if (err) throw err;
-                  if (station !== null) {
-                      sendCommand(ws, station.host, station.port, command.command, command.commandData);
-                  }
-              });
+              sendCommand(ws, command.host, command.port, command.command, command.commandData);
           }
           catch(e) {
               console.log(e);
