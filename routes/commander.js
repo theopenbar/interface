@@ -120,31 +120,56 @@ function sendCommand(guiConnection, station_host, station_port, command, command
         }
     );
     // Add a 'data' event handler for the client socket
-    // data is what the station sent to this server to be passed to the GUI
+    // the station sends 'data' to this server to be passed to the GUI
     client.on('data', function(data) {
-        // Close the client socket completely
-        if (data == '08 ERROR' || data == '07 DONE'){
-            console.log("END: " + data);
-            client.destroy();
-            console.log('Closing Station Socket Connection');
-        }
-        else {
-            var length = +data.slice(0,2) - 3; //length of message is the byte length -3 header bytes
-            var remainder = data.slice(3);        //remainder of data string (should be 1 message)
-            var message = null;
-            do {
-                message = (remainder.slice(0,length)).toString();
-                console.log('DATA: ' + message);
-                guiConnection.send(message); //send the message
-                remainder = remainder.slice(length); // if any further messages, repeat the loop
+        // loop through raw data and parse it into coherent messages
+        do {
+            // length of message is in the header
+            // message format is: '10 message'
+            // the 3 character header is always a 2 digit number and a space
+            // minus 3 because the header includes the first 3 digits
+            var length = data.slice(0,2) - 3;
+            //console.log("length:", length);
+
+            // remainder of data string
+            // remove the length header from the front
+            var data = data.slice(3);
+            //console.log("headless data:", data.toString());
+
+            // just the good part of the remainder
+            // slice it up as long as the length
+            var message = (data.slice(0,length)).toString();
+            //console.log("message:", message.toString());
+
+            // special statuses
+            if (message == '07 DONE'){
+                console.log("END: " + message);
+                console.log('Closing Station Socket Connection');
             }
-            while (remainder.length > 0);
+            else if (message == '08 ERROR'){
+                console.log("END: " + message);
+                client.destroy();
+            }
+            // regular ol' data
+            else {
+               console.log('DATA: ' + message);
+            }
+
+            // send the message regardless
+            guiConnection.send(message);
+
+            // if any further messages, repeat the loop after removing the previous message
+            data = data.slice(length);
+            //console.log("final data:", data.toString());
         }
+        while (data.length > 0);
     });
+
     // Add a 'close' event handler for the client socket
     client.on('close', function() {
         console.log('Station Socket Connection Closed');
     });
+
     // Add a 'error' event handler for the client socket
     client.on('error', function() {
         guiConnection.send("Station Controller Socket Error");
