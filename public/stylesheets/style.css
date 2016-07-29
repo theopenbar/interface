@@ -21,6 +21,10 @@ a {
     color: #fff;
 }
 
+.page-header {
+    margin-top: 20px;
+}
+
 .page-header.stored {
     margin-top: 0px;
 }
