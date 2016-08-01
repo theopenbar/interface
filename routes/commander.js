@@ -47,7 +47,7 @@ router.ws('/', function(ws, req) {
           return;
     }
     ws.on('message', function(message) {
-          console.log(message);
+          //console.log(message);
           try {
               var command = JSON.parse(message);
               console.log('Received Command: ' + command.command);
