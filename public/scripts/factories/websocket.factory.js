@@ -88,8 +88,8 @@ app.factory('WebSocket', function($websocket, $location) {
             pourInProgress = false;
             pourComplete = false;
         },
-        sendCommand: function(host, port, command, commandData) {
-            dataStream.send(JSON.stringify({"host":host, "port":port, "command":command, "commandData":commandData}));
+        sendCommand: function(stationId, command, commandData) {
+            dataStream.send(JSON.stringify({"stationId":stationId, "command":command, "commandData":commandData}));
         }
     };
     return methods;

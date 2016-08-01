@@ -76,7 +76,7 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
 
         // send station ID to controller so it can GET the data from it
         $scope.sendIDtoController = function() {
-            WebSocket.sendCommand($scope.station.host, $scope.station.port, '06', $scope.station._id);
+            WebSocket.sendCommand($scope.station._id, '06', $scope.station._id);
         }
 
         // display Edit input

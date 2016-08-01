@@ -47,7 +47,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 
         $scope.pourDrink = function(drink) {
             // tell the station to pour the drink
-            WebSocket.sendCommand($scope.station.host, $scope.station.port, '01', drink._id);
+            WebSocket.sendCommand(station_id, '01', drink._id);
 
             // hide recipe after we start pouring
             $scope.listIngredients = false;
