@@ -10,7 +10,6 @@ var net = require('net');
 //var http = require('http');
 //var app = require('../app');
 
-
 // Setup a websocket server to receive commands from the Browser GUI client to send to the station
 // controller and return status messages from the station controller back to the Browser GUI client
 
@@ -47,15 +46,22 @@ router.ws('/', function(ws, req) {
           return;
     }
     ws.on('message', function(message) {
-          //console.log(message);
-          try {
-              var command = JSON.parse(message);
-              console.log('Received Command: ' + command.command);
-              sendCommand(ws, command.host, command.port, command.command, command.commandData);
-          }
-          catch(e) {
-              console.log(e);
-          }
+        //console.log(message);
+
+        // keep connection alive
+        if (message === 'PING') {
+            ws.send('PONG');
+        }
+        else {
+            try {
+                var command = JSON.parse(message);
+                console.log('Received Command: ' + command.command);
+                sendCommand(ws, command.host, command.port, command.command, command.commandData);
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
     });
 });
 
