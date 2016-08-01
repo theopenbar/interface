@@ -35,7 +35,15 @@ app.factory('WebSocket', function($websocket, $location) {
     });
 
     dataStream.onOpen(function() {
-        console.log("Established WebSocket Connection to Server")
+        console.log("Established WebSocket Connection to Server");
+    });
+
+    dataStream.onClose(function(close) {
+        console.log("Close:", close);
+    });
+
+    dataStream.onError(function(error) {
+        console.log("Error:", error);
     });
 
     var methods = {
