@@ -16,19 +16,45 @@ app.factory('WebSocket', function($websocket, $location) {
         console.log("Creating Non-Secure WebSocket");
     }
 
+    var pourInProgress = false;
+    var pourComplete = false;
     var messages = [];
     
     dataStream.onMessage(function(message) {
-        messages.push(message.data);
-        console.log(message.data);
+        console.log("FACTORY:", message.data);
+
+        if (message.data == "Received Command 01") {
+            pourInProgress = true;
+        }
+        else if (message.data == "DONE" | message.data == "ERROR") {
+            pourComplete = true;
+        }
+        else {
+            messages.push(message.data);
+        }
     });
+
     dataStream.onOpen(function() {
         console.log("Established WebSocket Connection to Server")
     });
+
     var methods = {
         messages: messages,
-        sendCommand: function(stationId, command, commandData) {
-            dataStream.send(JSON.stringify({"stationId":stationId, "command":command, "commandData":commandData}));
+        // true while pouring
+        pourInProgress: function() {
+            return pourInProgress;
+        },
+        // true when complete
+        pourComplete: function() {
+            return pourComplete;
+        },
+        // used to reset variables after pour is complete
+        dismissPourStatus: function() {
+            pourInProgress = false;
+            pourComplete = false;
+        },
+        sendCommand: function(host, port, command, commandData) {
+            dataStream.send(JSON.stringify({"host":host, "port":port, "command":command, "commandData":commandData}));
         }
     };
     return methods;
