@@ -16,13 +16,7 @@
 
 </br>
 
-<ul>
-    <li ng-repeat="message in WebSocket.messages track by $index">
-        <span> {{message}} </span>
-    </li>
-</ul> 
-
-<div class="panel panel-primary" id="recipe" ng-if="drinkSelected">
+<div class="panel panel-primary" id="recipe" ng-if="listIngredients">
     <div class="panel-heading">{{drinkSelected.name}}</div>
 
     <ul class="list-group">
@@ -35,17 +29,15 @@
     </ul>
 </div>
 
-<div class="alert alert-info alert-dismissible" role="alert" ng-if="addYourself">
-    <button type="button" class="close" aria-label="Close" ng-click=selectDrink(false)>
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <div class="page-header">
-        <h4>After your drink has poured, add these ingredients:</h4>
-    </div>
+<div class="panel panel-primary" ng-if="WebSocket.pourInProgress()">
+    <div class="panel-heading">{{drinkSelected.name}}</div>
 
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat='(ingredient, amount) in addYourself'>
-            {{amount/100}} oz of {{ingredient}}
+        <li class="list-group-item" ng-repeat="message in WebSocket.messages track by $index">
+            {{message}}
+        </li>
+        <li class="list-group-item" ng-if="WebSocket.pourComplete()">
+            <button type="button" class="btn btn-primary" ng-click="WebSocket.dismissPourStatus()">Close</button>
         </li>
     </ul>
 </div>
