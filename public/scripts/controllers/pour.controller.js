@@ -3,11 +3,6 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
     function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, WebSocket){
                
         var station_id = $localStorage.stationId;
-        // access the station stored under "station" for the user
-        var stationPromise = stationService.getStation(station_id);
-        stationPromise.then(function (station) {
-            $scope.station = station;
-        });
 
         var drinksPromise = drinksService.getDrinks();
         drinksPromise.then(function (drinks) {
