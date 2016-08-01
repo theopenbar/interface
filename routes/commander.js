@@ -142,7 +142,7 @@ function sendCommand(guiConnection, station_host, station_port, command, command
             //console.log("message:", message.toString());
 
             // special statuses
-            if (message == '07 DONE' || message == '08 ERROR'){
+            if (message == 'DONE' || message == 'ERROR'){
                 console.log("END: " + message);
                 client.destroy();
             }
