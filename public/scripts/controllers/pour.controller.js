@@ -16,34 +16,41 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
         
         $scope.WebSocket = WebSocket;
 
-        // these 2 functions are for displaying the list of ingredients
-        // so that the user can pour the drink if they wish
-        $scope.isDrinkSelected = function(drink) {
-            return $scope.drinkSelected == drink;
-        };
-
+        // display the list of ingredients
+        // so that the user can pour the drink
         $scope.selectDrink = function(drink) {
-            // hide additional ingredients alert when selecting a new drink
-            $scope.addYourself = false;
-            $scope.drinkSelected = drink;
-            WebSocket.messages.length = 0;
+            // only allow user to select a new drink if the previous one is done pouring
+            // !pourInProgress is true while NOT pouring
+            // pourComplete is true afterwards
+            if (!WebSocket.pourInProgress() || WebSocket.pourComplete()) {
+                // dismiss old status in case user didn't hit close first
+                WebSocket.dismissPourStatus();
 
-            // need timeout so it runs after DOM is updated to show 'recipe'
-            // http://stackoverflow.com/a/19889541
-            setTimeout(function() {
-                $location.hash('recipe');
-                $anchorScroll();
-            }, 0);
+                // select drink and display ingredients
+                $scope.drinkSelected = drink;
+                $scope.listIngredients = true;
+
+                // clear out old messages from previous pour
+                WebSocket.messages.length = 0;
+
+                // need timeout so it runs after DOM is updated to show 'recipe'
+                // http://stackoverflow.com/a/19889541
+                setTimeout(function() {
+                    $location.hash('recipe');
+                    $anchorScroll();
+                }, 0);
+            }
+            else {
+                alert("Please wait until pour is complete to select another drink")
+            }
         };
 
         $scope.pourDrink = function(drink) {
-            // Make Recipe selected for the user of ID
-            
+            // tell the station to pour the drink
             WebSocket.sendCommand($scope.station.host, $scope.station.port, '01', drink._id);
 
-            // hide recipe after successfully pouring
-            // probably want to do this when commander returns with "OK"
-            //$scope.drinkSelected = false;
+            // hide recipe after we start pouring
+            $scope.listIngredients = false;
         };
 
         /*
