@@ -26,7 +26,7 @@ app.factory('WebSocket', function($websocket, $location) {
     dataStream.onMessage(function(message) {
         //console.log("FACTORY:", message.data);
 
-        //
+        // keep connection alive
         if (message.data === 'PONG') {
             // reset the counter for missed heartbeats
             missed_heartbeats = 0;
