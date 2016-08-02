@@ -1,35 +1,41 @@
-var app = angular.module('interface', ['ngResource', 'ngRoute', 'ngStorage', 'ngWebSocket']);
+var app = angular.module('interface', ['ngResource', 'ui.router', 'ngStorage', 'ngWebSocket']);
 
-app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-    $routeProvider
-        .when('/', {
+// https://scotch.io/tutorials/angular-routing-using-ui-router
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('home', {
+            url: '/',
             templateUrl: 'partials/home.html'
         })
-        .when('/drinks', {
+        .state('drinks', {
+            url: '/drinks',
             templateUrl: 'partials/drinks.html',
             controller: 'DrinksCtrl'
         })
-        .when('/add-drink', {
+        .state('add-drink', {
+            url: '/add-drink',
             templateUrl: 'partials/add-drink.html',
             controller: 'AddDrinkCtrl'
         })
-        .when('/pour', {
+        .state('pour', {
+            url: '/pour',
             templateUrl: 'partials/pour.html',
-            controller: 'PourCtrl',
+            controller: 'PourCtrl'
         })
-        .when('/queuer', {
+        .state('queuer', {
+            url: '/queuer',
             templateUrl: 'partials/queuer.html',
             controller: 'QueueRCtrl'
         })
-        .when('/station', {
+        .state('station', {
+            url: '/station',
             templateUrl: 'partials/station.html',
             controller: 'StationCtrl'
         })
-        .otherwise({
-            redirectTo: '/'
-        });
 
         // https://scotch.io/tutorials/pretty-urls-in-angularjs-removing-the-hashtag
         // use the HTML5 History API
         $locationProvider.html5Mode(true);
-}]);
+});

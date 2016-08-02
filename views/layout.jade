@@ -1,5 +1,5 @@
 doctype html
-html(ng-app='interface')
+html
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible' content='IE=edge')
@@ -8,7 +8,7 @@ html(ng-app='interface')
     title= title
     script(src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular-resource.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular-route.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js')
     script(src='https://rawgit.com/gdi2290/angular-websocket/v1.0.9/angular-websocket.js')
     // main angular file
@@ -27,8 +27,8 @@ html(ng-app='interface')
     script(src='scripts/services/user.service.js')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+  body(ng-app='interface')
     div.container-fluid
       nav(class='navbar navbar-fixed-top navbar-dark bg-primary')
-        a(class='navbar-brand', href='/#/') The Open Bar
+        a(class='navbar-brand', href='/') The Open Bar
       block content
