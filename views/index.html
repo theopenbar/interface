@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/">
+    <title>The Open Bar</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular-resource.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+    <script src="https://rawgit.com/gdi2290/angular-websocket/v1.0.9/angular-websocket.js"></script>
+    <!-- main angular file-->
+    <script src="scripts/interface.js"></script>
+    <!-- controllers-->
+    <script src="scripts/controllers/add-drink.controller.js"></script>
+    <script src="scripts/controllers/drinks.controller.js"></script>
+    <script src="scripts/controllers/pour.controller.js"></script>
+    <script src="scripts/controllers/queuer.controller.js"></script>
+    <script src="scripts/controllers/station.controller.js"></script>
+    <!-- factories-->
+    <script src="scripts/factories/websocket.factory.js"></script>
+    <!-- services-->
+    <script src="scripts/services/drinks.service.js"></script>
+    <script src="scripts/services/station.service.js"></script>
+    <script src="scripts/services/user.service.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  </head>
+  <body ng-app="interface">
+    <div class="container-fluid">
+      <nav class="navbar navbar-fixed-top navbar-dark bg-primary"><a href="/" class="navbar-brand">The Open Bar</a></nav>
+      <div ui-view></div>
+    </div>
+  </body>
+</html>
