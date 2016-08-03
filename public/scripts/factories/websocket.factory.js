@@ -38,6 +38,10 @@ app.factory('WebSocket', function($websocket, $location) {
         else if (message.data == "DONE" | message.data == "ERROR") {
             pourComplete = true;
         }
+        else if (message.data == "BUSY") {
+            pourComplete = true;
+            alert("The station is currently busy pouring a drink. Please wait until that pour is complete to select another drink.");
+        }
         else {
             messages.push(message.data);
         }
