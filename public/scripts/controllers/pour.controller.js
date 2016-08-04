@@ -1,6 +1,6 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'stationService', 'WebSocket',
-    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, stationService, WebSocket){
+               'drinksService', 'WebSocket',
+    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, WebSocket){
                
         var station_id = $localStorage.stationId;
 
