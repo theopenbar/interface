@@ -5,7 +5,7 @@ FROM resin/raspberrypi3-buildpack-deps:latest
 
 # grab newest 6.x version of node and install MongoDB
 RUN \
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && \
 apt-get update && \
 apt-get install -y nodejs mongodb-server
 
