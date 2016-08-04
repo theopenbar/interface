@@ -5,7 +5,7 @@
 #
 
 # Pull base image.
-#FROM dockerfile/ubuntu
+FROM resin/rpi-raspbian:latest
 
 # Install MongoDB.
 RUN \
