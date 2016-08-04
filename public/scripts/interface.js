@@ -34,6 +34,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             templateUrl: 'partials/station.html',
             controller: 'StationCtrl'
         })
+        .state('select-station', {
+            url: '/select-station',
+            templateUrl: 'partials/select-station.html',
+            controller: 'SelectStationCtrl'
+        })
 
         // https://scotch.io/tutorials/pretty-urls-in-angularjs-removing-the-hashtag
         // use the HTML5 History API
