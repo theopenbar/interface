@@ -1,0 +1,23 @@
+<div class-"page-header">
+    <h3>Already have a station?</h3>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Enter Station ID" ng-model="station.id">
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-default" ng-click="findStation(station.id)">Find station</button>
+    </div>
+</div>
+
+<div ng-show="error" class="row">
+    <br>
+    <div class="col-md-4">
+        <div class="alert alert-danger" role="alert">{{error}}</div>
+    </div>
+</div>
+
+<div class-"page-header">
+    <h3>Set up a new station?</h3>
+</div>
+<button class="btn btn-default" ng-click="createStation()">Register station</button>
