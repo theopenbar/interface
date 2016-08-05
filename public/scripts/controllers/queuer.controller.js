@@ -1,6 +1,6 @@
 app.controller('QueueRCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'userService', 'drinksService', 'stationService',
-    function($scope, $localStorage, $location, $anchorScroll, $http, userService, drinksService, stationService){
+               'userService', 'drinksService',
+    function($scope, $localStorage, $location, $anchorScroll, $http, userService, drinksService){
         var user_id = $localStorage.userId;
 
         // retreive that user's data from users collection
@@ -18,10 +18,12 @@ app.controller('QueueRCtrl', ['$scope', '$localStorage', '$location', '$anchorSc
             */
 
             // access the station stored under "station" for the user
+            /*
             var stationPromise = stationService.getStation(user.station);
             stationPromise.then(function (station) {
                 $scope.station = station;
             });
+            */
         });
 
         var drinksPromise = drinksService.getDrinks();
@@ -47,6 +49,7 @@ app.controller('QueueRCtrl', ['$scope', '$localStorage', '$location', '$anchorSc
         };
 
         $scope.queueDrink = function(drink, station) {
+            /*
             var esp_recipe = {};
 
             // loop through all ingredients in selected drink
@@ -65,6 +68,7 @@ app.controller('QueueRCtrl', ['$scope', '$localStorage', '$location', '$anchorSc
                 "name": drink.name,
                 "recipe": esp_recipe
             });
+            */
 
             $scope.storedDrink = drink.name;
         };
