@@ -1,17 +1,9 @@
-app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationService',
-               'drinksService', 'WebSocket',
-    function($scope, $localStorage, $location, stationService, drinksService, WebSocket){
+app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage', '$location', 'stationService',
+               'drinksService', 'SelectStation', 'WebSocket',
+    function($rootScope, $scope, $state, $localStorage, $location, stationService, drinksService, SelectStation, WebSocket){
 
         // need to declare functions before they are used
         $scope.stationReady = function(station) {
-            // station_id is good
-            $scope.selectStationUI = false;
-            $scope.displayStationUI = true;
-            // if it's good, save it locally
-            $localStorage.stationId = station._id;
-            // and remove the URL param
-            $location.url($location.path())
-
             // false by default
             $scope.stationIPEdit = false;
 
@@ -37,41 +29,13 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
             });
         }
 
-        $scope.findStation = function(station_id) {
-            var stationPromise = stationService.getStation(station_id);
-            stationPromise.then(function (station) {
-                // check for errors
-                if (station.error == "not_valid_objectId") {
-                    // station_id is incorrect
-                    $scope.selectStationUI = true;
-                    $scope.error = "Station ID is not formatted correctly.";
-                }
-                else if (station.error == "not_found") {
-                    // station_id is incorrect
-                    $scope.selectStationUI = true;
-                    $scope.error = "Station ID is not found.";
-                }
-                else {
-                    $scope.stationReady(station);
-                }
-            });
-        }
-
-        // create a new station and return ID
-        $scope.createStation = function() {
-            // create base station
-            var promise = stationService.putStation();
-            promise.then(function (station) {
-                // fill up with blank ingredients and then set up GUI
-                $scope.saveNumValves(station._id, station.num_valves);
-            });
-        }
-
-        // remove station ID from localStorage and go back to stationSelect mode
+        // remove station ID from localStorage and go back to station-select mode
         $scope.removeStationID = function() {
             delete $localStorage.stationId;
-            $scope.displayStationUI = false;
-            $scope.selectStationUI = true;
+            // store current state in rootScope so we can return to it later
+            $rootScope.returnToState = $state.current.name;
+            // go to select-station view
+            $state.go('select-station');
         }
 
         // send station ID to controller so it can GET the data from it
@@ -122,20 +86,13 @@ app.controller('StationCtrl', ['$scope', '$localStorage', '$location', 'stationS
             $scope.actual[index] = true;
         };
 
-        // look for station in URL params
-        var url_params = $location.search();
-        var station_id = url_params.station;
-
-        // if it's in the URL param, make sure it's correct
-        if (station_id != undefined) {
-            $scope.findStation(station_id);
+        // tries to find the station ID,
+        // and if it is there, query the database for it
+        if (SelectStation.findStationOnPage() == true) {
+            var stationPromise = stationService.getStation($localStorage.stationId);
+            stationPromise.then(function (station) {
+                $scope.stationReady(station);
+            });
         }
-        // maybe it's in localStorage?
-        else if ($localStorage.stationId != undefined){
-            $scope.findStation($localStorage.stationId);
-        }
-        // no station ID
-        else {
-            $scope.selectStationUI = true;
-        }
+        // if it's not there, findStationOnPage will redirect to /select-station
 }]);
