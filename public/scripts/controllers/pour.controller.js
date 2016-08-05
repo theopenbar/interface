@@ -1,8 +1,10 @@
-app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$http',
-               'drinksService', 'WebSocket',
-    function($scope, $localStorage, $location, $anchorScroll, $http, drinksService, WebSocket){
+app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll',
+               'SelectStation', 'drinksService', 'WebSocket',
+    function($scope, $localStorage, $location, $anchorScroll, SelectStation, drinksService, WebSocket){
                
-        var station_id = $localStorage.stationId;
+        // tries to find the station ID
+        // if it's not there, findStationOnPage will redirect to /select-station
+        SelectStation.findStationOnPage();
 
         var drinksPromise = drinksService.getDrinks();
         drinksPromise.then(function (drinks) {
@@ -42,7 +44,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
 
         $scope.pourDrink = function(drink) {
             // tell the station to pour the drink
-            WebSocket.sendCommand(station_id, '01', drink._id);
+            WebSocket.sendCommand($localStorage.stationId, '01', drink._id);
 
             // hide recipe after we start pouring
             $scope.listIngredients = false;
