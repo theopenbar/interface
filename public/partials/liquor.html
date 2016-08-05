@@ -1,3 +1,4 @@
+<!--
 <div class="page-header">
     <h3>Types of Liquors</h3>
 </div>
@@ -5,47 +6,38 @@
 <ul>
     <li ng-repeat='liquor in liquors'>{{liquor.type}}</li>
 </ul>
-
+-->
+<br>
 
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
-                <td><b>Valve #</b></td>
                 <td><b>Type</b></td>
                 <td><b>Brand</b></td>
-                <td><b>Amount left (oz)</b></td>
-                <td><b>Pressurized?</b></td>
+                <td><b>Description</b></td>
+                <td><b>Amount</b></td>
+                <td><b>Barcode</b></td>
                 <td></td>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="i in station.ingredients track by $index">
-                <!-- display -->
-                <td ng-show="actual[$index]">{{station.ingredients[$index].valve}}</td>
-                <td ng-show="actual[$index]">{{station.ingredients[$index].type}}</td>
-                <td ng-show="actual[$index]">{{station.ingredients[$index].brand}}</td>
-                <td ng-show="actual[$index]">{{station.ingredients[$index].amount}}</td>
-                <td ng-show="actual[$index]">{{station.ingredients[$index].pressurized}}</td>
-                <td ng-show="actual[$index]"><button id="{{station.ingredients[$index].valve}}" ng-click="editIngredient($event)">edit</button></td>
+            <tr>
 
-                <!-- edit -->
-                <td ng-show="!actual[$index]">{{station.ingredients[$index].valve}}</td>
-                <td ng-show="!actual[$index]"><input list="types" ng-model="station.ingredients[$index].type"/></td>
-                <td ng-show="!actual[$index]"><input type='text' list='list-{{$index+1}}' value='{{station.ingredients[$index].brand}}'></input></td>
-                <td ng-show="!actual[$index]"><input type="number" placeholder="" ng-model="station.ingredients[$index].amount"></input></td>
-                <td ng-show="!actual[$index]"><select placeholder="" ng-model="station.ingredients[$index].pressurized"><option value="true">true</option><option value="false">false</option></input></td>
-                <td ng-show="!actual[$index]"><button id="{{station.ingredients[$index].valve}}" ng-click="saveIngredient($event)">save</button></td>
+                <!-- enter details -->
+                <td>
+                    <select>
+                        <option ng-repeat="liquor in liquors" value="{{liquor.type}}">{{liquor.type}}</option>
+                    </select>
+                
+                </td>
+                <td><input list="types" ng-model="station.ingredients[$index].type"/></td>
+                <td><input type='text'></input></td>
+                <td><input type='number'></input></td>
+                <td><input type='text'></input></td>
+                <td><button ng-click="saveIngredient($event)">save</button></td>
+
             </tr>
         </tbody>
     </table>
 </div>
-
-
-<!-- list of types -->
-<datalist id="types">
-    <select>
-        <!-- Yo, dawg. I heard you like types. -->
-        <option ng-repeat="type in types" value="{{type.type}}"></option>
-    </select>
-</datalist>
