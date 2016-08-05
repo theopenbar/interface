@@ -14,6 +14,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             templateUrl: 'partials/drinks.html',
             controller: 'DrinksCtrl'
         })
+        .state('liquor', {
+            url: '/liquor',
+            templateUrl: 'partials/liquor.html',
+            controller: 'LiquorCtrl'
+        })
         .state('add-drink', {
             url: '/add-drink',
             templateUrl: 'partials/add-drink.html',
