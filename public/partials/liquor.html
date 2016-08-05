@@ -1,69 +1,11 @@
 <div class="page-header">
-    <h3>Stored Station ID</h3>
+    <h3>Types of Liquors</h3>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <input type="text" class="form-control" ng-value="station._id" readonly>
-    </div>
-    <div class="col-md-1">
-        <button class="btn btn-danger" ng-click="removeStationID()">Remove from local storage</button>
-    </div>
-</div>
+<ul>
+    <li ng-repeat='liquor in liquors'>{{liquor.type}}</li>
+</ul>
 
-<div class="page-header">
-    <h3>Station IP Address</h3>
-</div>
-
-<div ng-show="!stationIPEdit">
-    <div class="row">
-        <div class="col-md-4">
-            <input type="text" class="form-control" ng-value="station.host+colon+station.port" readonly>
-        </div>
-        <div class="col-md-1">
-            <button class="btn btn-default" ng-click="editIPAddress()">Edit</button>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-1">
-            <button class="btn btn-success" ng-click="sendIDtoController()">Send ID to controller</button>
-        </div>
-    </div>
-</div>
-<div ng-show=" stationIPEdit">
-    <div class="row">
-        <div class="col-md-2">
-            <input type="text" class="form-control" ng-model="station.host"></input>
-        </div>
-        <div class="col-md-2">
-            <div class="input-group">
-                <span class="input-group-addon">:</span>
-                <input type="number" class="form-control" ng-model="station.port"></input>
-            </div>
-        </div>
-        <div class="col-md-1">
-            <button class="btn btn-default" ng-click="saveIPAddress()">Save</button>
-        </div>
-    </div>
-</div>
-
-<div class="page-header">
-    <h3>Number of Valves</h3>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <input type="number" class="form-control" ng-model="station.num_valves"></input>
-    </div>
-    <div class="col-md-1">
-        <button class="btn btn-default" ng-click="saveNumValves(station._id, station.num_valves)">Save</button>
-    </div>
-</div>
-
-<div class="page-header">
-    <h3>Ingredients</h3>
-</div>
 
 <div class="table-responsive">
     <table class="table table-bordered">

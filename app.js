@@ -39,6 +39,7 @@ app.use('/api/station', require('./routes/station'));
 app.use('/api/station/ip', require('./routes/station_ip'));
 app.use('/api/station/valves', require('./routes/station_valves'));
 app.use('/api/station/ingredient', require('./routes/station_ingredient'));
+app.use('/api/liquor', require('./routes/liquor'));
 app.use('/api/drinks', require('./routes/drinks'));
 app.use('/api/types', require('./routes/types'));
 app.use('/api/commander', require('./routes/commander'));
