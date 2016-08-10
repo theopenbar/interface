@@ -12,13 +12,11 @@ router.get('/', function(req, res) {
     });
 });
 
-/*
-// will need to change to support new document structure
 
 // create a new document in stations and return it's information
 router.put('/', function(req, res) {
     var db = req.db;
-    var collection = db.get('stations');
+    var collection = db.get('liquor');
     collection.insert({
         "ingredients": [],
         "host": "localhost",
@@ -29,6 +27,5 @@ router.put('/', function(req, res) {
         res.json(id);
     });
 });
-*/
 
 module.exports = router;
