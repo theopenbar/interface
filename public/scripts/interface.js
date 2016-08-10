@@ -9,6 +9,18 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: '/',
             templateUrl: 'partials/home.html'
         })
+        .state('register', {
+            url: '/register',
+            templateUrl: 'partials/register.html'
+        })
+        .state('login', {
+            url: '/login',
+            templateUrl: 'partials/login.html'
+        })
+        .state('logout', {
+            url: '/logout',
+            templateUrl: '/logout'
+        })
         .state('drinks', {
             url: '/drinks',
             templateUrl: 'partials/drinks.html',
