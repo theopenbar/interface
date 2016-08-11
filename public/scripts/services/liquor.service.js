@@ -4,7 +4,7 @@ app.service("liquorService",
         this.getTypes = function() {
             var deferred = $q.defer();
     
-            var Types = $resource('/api/liquor');
+            var Types = $resource('/api/liquor/types');
             Types.query(function(types){
                 deferred.resolve(types);
             });
