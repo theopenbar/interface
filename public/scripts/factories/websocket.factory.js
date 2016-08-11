@@ -2,17 +2,14 @@
 app.factory('WebSocket', function($websocket, $location) {
     // Open a WebSocket connection
     var host = $location.host();
-    var port = $location.port();
     var protocol = $location.protocol();
-    
-    console.log(host + ':' + port);
-    
+
     if (protocol === 'https') {
-        var dataStream = $websocket('wss://' + host + ':8081' /*+ port*/ + '/api/commander','tob_command-protocol');
+        var dataStream = $websocket('wss://' + host + '/api/commander','tob_command-protocol');
         console.log("Creating Secure WebSocket");
     }
     else {
-        var dataStream = $websocket('ws://' + host + ':' + port + '/api/commander','tob_command-protocol');
+        var dataStream = $websocket('ws://' + host + '/api/commander','tob_command-protocol');
         console.log("Creating Non-Secure WebSocket");
     }
 
@@ -22,7 +19,7 @@ app.factory('WebSocket', function($websocket, $location) {
     var pourInProgress = false;
     var pourComplete = false;
     var messages = [];
-    
+
     dataStream.onMessage(function(message) {
         //console.log("FACTORY:", message.data);
 

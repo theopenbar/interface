@@ -8,8 +8,6 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var users = require('./routes/users');
-
 // create app using express
 var app = express();
 
@@ -57,6 +55,7 @@ var routes = require('./routes/index');
 app.use('/', routes);
 
 // server-side routing for APIs
+app.use('/api/account', require('./routes/account'));
 app.use('/api/user', require('./routes/user'));
 app.use('/api/station', require('./routes/station'));
 app.use('/api/station/ip', require('./routes/station_ip'));
@@ -67,7 +66,5 @@ app.use('/api/drinks', require('./routes/drinks'));
 app.use('/api/types', require('./routes/types'));
 app.use('/api/commander', require('./routes/commander'));
 
-// use this port
-app.listen(8081);
 
 module.exports = app;

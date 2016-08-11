@@ -1,5 +1,16 @@
 var app = angular.module('interface', ['ngResource', 'ui.router', 'ngStorage', 'ngWebSocket']);
 
+app.run(function ($rootScope, $state, $location, AuthService) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromParams) {
+        AuthService.getUserStatus()
+            .then(function(){
+                if (toState.access.restricted && !AuthService.isLoggedIn()) {
+                    $location.path('/login');
+                }
+            })
+    });
+});
+
 // https://scotch.io/tutorials/angular-routing-using-ui-router
 app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/');
@@ -7,54 +18,68 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
         .state('home', {
             url: '/',
-            templateUrl: 'partials/home.html'
+            templateUrl: 'partials/home.html',
+            controller: 'homeController',
+            access: {restricted: false}
         })
         .state('register', {
             url: '/register',
-            templateUrl: 'partials/register.html'
+            templateUrl: 'partials/register.html',
+            controller: 'registerController',
+            access: {restricted: false}
         })
         .state('login', {
             url: '/login',
-            templateUrl: 'partials/login.html'
+            templateUrl: 'partials/login.html',
+            controller: 'loginController',
+            access: {restricted: false}
         })
         .state('logout', {
             url: '/logout',
-            templateUrl: '/logout'
+            controller: 'logoutController',
+            access: {restricted: true}
         })
         .state('drinks', {
             url: '/drinks',
             templateUrl: 'partials/drinks.html',
-            controller: 'DrinksCtrl'
+            controller: 'DrinksCtrl',
+            access: {restricted: false}
         })
         .state('liquor', {
             url: '/liquor',
             templateUrl: 'partials/liquor.html',
-            controller: 'LiquorCtrl'
+            controller: 'LiquorCtrl',
+            access: {restricted: false}
         })
         .state('add-drink', {
             url: '/add-drink',
             templateUrl: 'partials/add-drink.html',
-            controller: 'AddDrinkCtrl'
+            controller: 'AddDrinkCtrl',
+            access: {restricted: true}
         })
         .state('pour', {
             url: '/pour',
             templateUrl: 'partials/pour.html',
-            controller: 'PourCtrl'
+            controller: 'PourCtrl',
+            access: {restricted: false}
         })
         .state('queuer', {
             url: '/queuer',
             templateUrl: 'partials/queuer.html',
-            controller: 'QueueRCtrl'
+            controller: 'QueueRCtrl',
+            access: {restricted: true}
         })
         .state('station', {
             url: '/station',
             templateUrl: 'partials/station.html',
-            controller: 'StationCtrl'
+            controller: 'StationCtrl',
+            access: {restricted: false}
         })
         .state('select-station', {
             url: '/select-station',
             templateUrl: 'partials/select-station.html',
-            controller: 'SelectStationCtrl'
+            controller: 'SelectStationCtrl',
+            access: {restricted: false}
         })
 
         // https://scotch.io/tutorials/pretty-urls-in-angularjs-removing-the-hashtag

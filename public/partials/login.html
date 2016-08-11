@@ -1,14 +1,17 @@
-<div class="container">
-  <h1>Login Page</h1>
-  <p class="lead">Login to The Open Bar!</p><br/>
-  <form role="form" action="/login" method="post" style="max-width: 300px;">
+<div class="col-md-4">
+  <h1>Login</h1>
+  <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
+  <form class="form" ng-submit="login()">
     <div class="form-group">
-      <input type="text" name="username" placeholder="Enter Username" class="form-control"/>
+      <label>Username</label>
+      <input type="text" class="form-control" name="username" ng-model="loginForm.username" required>
     </div>
     <div class="form-group">
-      <input type="password" name="password" placeholder="Password" class="form-control"/>
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>&nbsp;<a href="/">
-      <button type="button" class="btn btn-primary">Cancel</button></a>
+      <label>Password</label>
+        <input type="password" class="form-control" name="password" ng-model="loginForm.password" required>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-default" ng-disabled="disabled">Login</button>
+      </div>
   </form>
 </div>
