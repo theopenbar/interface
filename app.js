@@ -53,6 +53,8 @@ mongoose.connect('mongodb://localhost/passport_local_mongoose_express4');
 // client-side routing
 var routes = require('./routes/index');
 app.use('/', routes);
+// allow GET requests to specific $state from address bar
+app.use('/:partials', routes);
 
 // server-side routing for APIs
 app.use('/api/account', require('./routes/account'));
