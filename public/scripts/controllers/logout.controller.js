@@ -4,7 +4,7 @@ app.controller('logoutController', ['$scope', '$location', 'AuthService',
             // call logout from service
             AuthService.logout()
                 .then(function () {
-                    $location.path('/login');
+                    $location.path('/');
                 });
         };
 }]);
