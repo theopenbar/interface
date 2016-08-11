@@ -8,6 +8,7 @@
   "dependencies": {
     "angular-websocket": "^2.0.0",
     "body-parser": "~1.13.2",
+    "cookie-parser": "^1.4.3",
     "debug": "~2.2.0",
     "ejs": "^2.5.1",
     "express": "~4.13.1",
