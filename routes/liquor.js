@@ -10,23 +10,23 @@ router.get('/types', function(req, res) {
     })
 });
 
-/*
-// will need to change to support new document structure
-
-// create a new document in stations and return it's information
-router.put('/', function(req, res) {
-    var db = req.db;
-    var collection = db.get('stations');
-    collection.insert({
-        "ingredients": [],
-        "host": "localhost",
-        "port": 8080,
-        "num_valves": 10
-    }, function(err,id){
-        if (err) throw err;
-        res.json(id);
+router.post('/save', function(req, res) {
+    // add the data into the type's document
+    Liquor.update({"type": req.body.type},
+    {
+        $push: {
+            item : {
+                "brand": req.body.brand,
+                "description": req.body.description,
+                "amount": req.body.amount,
+                "barcode": req.body.barcode
+            }
+        }
+    },
+    function (err, status) {
+        if (err) return (err);
+        res.json(status);
     });
 });
-*/
 
 module.exports = router;

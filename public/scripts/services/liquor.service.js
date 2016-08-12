@@ -11,4 +11,9 @@ app.service("liquorService",
     
             return deferred.promise;
         };
+
+        this.saveIngredient = function(ingredient) {
+            var Ingredients = $resource('/api/liquor/save');
+            Ingredients.save(ingredient);
+        };
 });
