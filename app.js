@@ -51,7 +51,7 @@ passport.deserializeUser(Account.deserializeUser());
 var Liquor = require('./models/liquor.model');
 
 // mongoose for passport user accounts
-mongoose.connect('mongodb://localhost/passport_local_mongoose_express4');
+mongoose.connect('mongodb://fakeuser2:fakeuser2@ds035004.mongolab.com:35004/heroku_ff1ms21p');
 
 // client-side routing
 var routes = require('./routes/index');
