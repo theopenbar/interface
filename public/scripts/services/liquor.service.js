@@ -13,7 +13,13 @@ app.service("liquorService",
         };
 
         this.saveIngredient = function(ingredient) {
+            var deferred = $q.defer();
+
             var Ingredients = $resource('/api/liquor/save');
-            Ingredients.save(ingredient);
+            Ingredients.save(ingredient, function(ingredient){
+                deferred.resolve(ingredient);
+            });
+
+            return deferred.promise;
         };
 });

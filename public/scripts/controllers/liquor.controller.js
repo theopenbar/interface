@@ -17,12 +17,20 @@ app.controller('LiquorCtrl', ['$scope', 'liquorService',
             // check that each form is filled in
             for (var member in ingredient) {
                 if (ingredient[member] == null) {
+                    $scope.messageError = "Please fill in all forms.";
+                    $scope.messageSuccess = null;
                     // return an error
                     return false;
                 }
             }
 
             // OK to save to database
-            liquorService.saveIngredient(ingredient);
+            liquorService.saveIngredient(ingredient).then(function (types) {
+                if(types) {
+                    $scope.messageError = null;
+                    $scope.messageSuccess = "Ingredient saved successfully.";
+                    $scope.ingredient = {type: null, brand: null, description: null, amount: null, barcode: null};
+                }
+            });
         };
 }]);
