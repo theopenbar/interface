@@ -11,7 +11,6 @@ app.controller('LiquorCtrl', ['$scope', 'liquorService',
         $scope.ingredient = {type: null, brand: null, description: null, amount: null, barcode: null};
 
         $scope.getBrands = function() {
-            console.log("selected a type:", $scope.ingredient.type);
             // get all Brands from that Type
             var promise = liquorService.getBrands($scope.ingredient.type);
             promise.then(function (brands) {
