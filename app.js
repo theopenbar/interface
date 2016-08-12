@@ -47,6 +47,9 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
+// schema for mongoose
+var Liquor = require('./models/liquor.model');
+
 // mongoose for passport user accounts
 mongoose.connect('mongodb://localhost/passport_local_mongoose_express4');
 
