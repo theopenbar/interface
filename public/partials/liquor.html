@@ -25,11 +25,11 @@
             <tr>
 
                 <td>
-                    <select ng-model="ingredient.type">
+                    <select ng-model="ingredient.type" ng-change="getBrands()">
                         <option ng-repeat="choice in types" value="{{choice.type}}">{{choice.type}}</option>
                     </select>
                 </td>
-                <td><input list="brand" ng-model="ingredient.brand"/></td>
+                <td><input list="type-brands" ng-model="ingredient.brand"/></td>
                 <td><input type='text' ng-model="ingredient.description"></input></td>
                 <td><input type='number' ng-model="ingredient.amount"></input></td>
                 <td><input type='text' ng-model="ingredient.barcode"></input></td>
@@ -59,3 +59,11 @@
         {{messageSuccess}}
     </div>
 </div>
+
+<!-- list of Types cooresponding to the selected Brand-->
+<datalist id="type-brands">
+    <select>
+        <!-- Yo, dawg. I heard you like types. -->
+        <option ng-repeat="brand in brands" value="{{brand.brand}}"></option>
+    </select>
+</datalist>

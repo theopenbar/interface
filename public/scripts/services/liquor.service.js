@@ -12,6 +12,17 @@ app.service("liquorService",
             return deferred.promise;
         };
 
+        this.getBrands = function(type) {
+            var deferred = $q.defer();
+
+            var Types = $resource('/api/liquor/brands/:type', {type: type});
+            Types.query(type, function(brands){
+                deferred.resolve(brands);
+            });
+
+            return deferred.promise;
+        };
+
         this.saveIngredient = function(ingredient) {
             var deferred = $q.defer();
 
