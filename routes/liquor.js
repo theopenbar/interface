@@ -1,30 +1,48 @@
 var express = require('express');
 var router = express.Router();
-var mongo = require('mongodb');
-var dbHelper = require('./dbHelper');
+var Liquor = require('../models/liquor.model');
 
-router.get('/', function(req, res) {
-    var db = req.db;
-    var collection = db.get('liquor');
-    collection.find({},function(err, types){
-        if (err) throw err;
-        res.json(types);
-    });
+router.get('/types', function(req, res) {
+    // specifically remove _id
+    Liquor.find({}, 'type -_id', function (err, type) {
+        if (err) return (err);
+        res.json(type);
+    })
 });
 
+router.get('/brands/:type', function(req, res) {
+    // query based on Type and get all Brands associated with it
+    // specifically remove _id
+    Liquor.findOne({"type": req.params.type}, 'item.brand -_id', function (err, type) {
+        if (err) return (err);
 
-// create a new document in stations and return it's information
-router.put('/', function(req, res) {
-    var db = req.db;
-    var collection = db.get('liquor');
-    collection.insert({
-        "ingredients": [],
-        "host": "localhost",
-        "port": 8080,
-        "num_valves": 10
-    }, function(err,id){
-        if (err) throw err;
-        res.json(id);
+        // remove duplicate Brands
+        // http://stackoverflow.com/a/31963129
+        var uniq_brands = type.item.reduceRight(function (r, a) {
+            r.some(function (b) { return a.brand === b.brand; }) || r.push(a);
+            return r;
+        }, []);
+
+        res.json(uniq_brands);
+    })
+});
+
+router.post('/save', function(req, res) {
+    // add the data into the type's document
+    Liquor.findOne({"type": req.body.type}, function (err, type) {
+        if (err) return (err);
+
+        type.item.push({
+            "brand": req.body.brand,
+            "description": req.body.description,
+            "amount": req.body.amount,
+            "barcode": req.body.barcode
+        });
+
+        type.save(function (err, status) {
+            if (err) return (err);
+            res.json(status);
+        });
     });
 });
 

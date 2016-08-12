@@ -1,13 +1,25 @@
 <!-- keep # for older browsers -->
 <ul class="nav nav-pills nav-stacked">
+    <li class="nav-item" ng-show="!loggedIn">
+        <a class="nav-link" ui-sref="register">Register</a>
+    </li>
+
+    <li class="nav-item" ng-show="!loggedIn">
+        <a class="nav-link" ui-sref="login">Log In</a>
+    </li>
+
+    <li class="nav-item" ng-show="loggedIn" ng-controller="logoutController">
+        <a class="nav-link" ui-sref="logout" ng-click="logout()">Log Out</a>
+    </li>
+
     <li class="nav-item">
         <a class="nav-link" ui-sref="drinks">Display all drinks</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" ng-show="loggedIn">
         <a class="nav-link" ui-sref="add-drink">Manage drinks</a>
     </li>
-    
+
     <li class="nav-item">
         <a class="nav-link" ui-sref="liquor">Tyler's Liquor Adder Interface</a>
     </li>
@@ -20,7 +32,7 @@
         <a class="nav-link" ui-sref="pour">Pour a drink</a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" ng-show="loggedIn">
         <a class="nav-link" ui-sref="queuer">Queue a drink</a>
     </li>
 </ul>
