@@ -15,8 +15,6 @@ router.post('/save', function(req, res) {
     Liquor.findOne({"type": req.body.type}, function (err, type) {
         if (err) return (err);
 
-        var newLiquor = new Liquor(type);
-
         type.item.push({
             "brand": req.body.brand,
             "description": req.body.description,
