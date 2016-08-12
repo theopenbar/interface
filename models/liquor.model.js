@@ -6,12 +6,10 @@ var liquor = new Schema({
       $oid: Schema.Types.ObjectId  
     },
     type: String,
-    item: [{
-        brand: String,
-        description: String,
-        amount: Number,
-        barcode: String
-    }]
+    item: {
+        type: Array,
+        "default" : []
+    }
 }, {collection: 'liquor'});
 
 
