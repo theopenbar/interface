@@ -24,18 +24,16 @@
         <tbody>
             <tr>
 
-                <!-- enter details -->
                 <td>
-                    <select>
-                        <option ng-repeat="liquor in liquors" value="{{liquor.type}}">{{liquor.type}}</option>
+                    <select ng-model="ingredient.type">
+                        <option ng-repeat="choice in types" value="{{choice.type}}">{{choice.type}}</option>
                     </select>
-                
                 </td>
-                <td><input list="types" ng-model="station.ingredients[$index].type"/></td>
-                <td><input type='text'></input></td>
-                <td><input type='number'></input></td>
-                <td><input type='text'></input></td>
-                <td><button ng-click="saveIngredient($event)">save</button></td>
+                <td><input list="brand" ng-model="ingredient.brand"/></td>
+                <td><input type='text' ng-model="ingredient.description"></input></td>
+                <td><input type='number' ng-model="ingredient.amount"></input></td>
+                <td><input type='text' ng-model="ingredient.barcode"></input></td>
+                <td><button ng-click="saveIngredient()">save</button></td>
 
             </tr>
         </tbody>
