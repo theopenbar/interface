@@ -12,20 +12,22 @@ router.get('/types', function(req, res) {
 
 router.post('/save', function(req, res) {
     // add the data into the type's document
-    Liquor.update({"type": req.body.type},
-    {
-        $push: {
-            item : {
-                "brand": req.body.brand,
-                "description": req.body.description,
-                "amount": req.body.amount,
-                "barcode": req.body.barcode
-            }
-        }
-    },
-    function (err, status) {
+    Liquor.findOne({"type": req.body.type}, function (err, type) {
         if (err) return (err);
-        res.json(status);
+
+        var newLiquor = new Liquor(type);
+
+        type.item.push({
+            "brand": req.body.brand,
+            "description": req.body.description,
+            "amount": req.body.amount,
+            "barcode": req.body.barcode
+        });
+
+        type.save(function (err, status) {
+            if (err) return (err);
+            res.json(status);
+        });
     });
 });
 
