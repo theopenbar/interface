@@ -1,16 +1,17 @@
 // https://github.com/AngularClass/angular-websocket
-app.factory('WebSocket', function($websocket, $location) {
+app.factory('WebSocket', function($location) {
     // Open a WebSocket connection
     var host = $location.host();
     var protocol = $location.protocol();
+    var port = $location.port();
 
     if (protocol === 'https') {
-        var dataStream = $websocket('wss://' + host + '/api/commander','tob_command-protocol');
         console.log("Creating Secure WebSocket");
+        var dataStream = io.connect('https://' + host + ':' + port);
     }
     else {
-        var dataStream = $websocket('ws://' + host + '/api/commander','tob_command-protocol');
         console.log("Creating Non-Secure WebSocket");
+        var dataStream = io.connect('http://' + host + ':' + port);
     }
 
     // http://django-websocket-redis.readthedocs.io/en/latest/heartbeats.html
@@ -20,31 +21,29 @@ app.factory('WebSocket', function($websocket, $location) {
     var pourComplete = false;
     var messages = [];
 
-    dataStream.onMessage(function(message) {
-        //console.log("FACTORY:", message.data);
-
+    dataStream.on('message', function(message) {
         // keep connection alive
-        if (message.data === 'PONG') {
+        if (message === 'PONG') {
             // reset the counter for missed heartbeats
             missed_heartbeats = 0;
             return;
         }
-        else if (message.data == "Received Command 01") {
+        else if (message == "Received Command 01") {
             pourInProgress = true;
         }
-        else if (message.data == "DONE" | message.data == "ERROR") {
+        else if (message == "DONE" | message == "ERROR") {
             pourComplete = true;
         }
-        else if (message.data == "BUSY") {
+        else if (message == "BUSY") {
             pourComplete = true;
             alert("The station is currently busy pouring a drink. Please wait until that pour is complete to select another drink.");
         }
         else {
-            messages.push(message.data);
+            messages.push(message);
         }
     });
 
-    dataStream.onOpen(function() {
+    dataStream.on('connect', function() {
         console.log("Established WebSocket Connection to Server");
 
         // keep connection alive
@@ -66,11 +65,11 @@ app.factory('WebSocket', function($websocket, $location) {
         }
     });
 
-    dataStream.onClose(function(close) {
+    dataStream.on('disconnect',function(close) {
         console.log("Close:", close);
     });
 
-    dataStream.onError(function(error) {
+    dataStream.on('error',function(error) {
         console.log("Error:", error);
     });
 

@@ -1,4 +1,4 @@
-var app = angular.module('interface', ['ngResource', 'ui.router', 'ngStorage', 'ngWebSocket']);
+var app = angular.module('interface', ['ngResource', 'ui.router', 'ngStorage']);
 
 app.run(function ($rootScope, $state, $location, AuthService) {
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromParams) {

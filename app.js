@@ -10,9 +10,10 @@ var LocalStrategy = require('passport-local').Strategy;
 
 // create app using express
 var app = express();
+var server = module.exports = require('http').createServer(app);
 
-// create WebSocket
-var expressWs = require('express-ws')(app);
+// setup socket.io server
+var io = require('socket.io').listen(server);
 
 // use HTML view engine
 app.engine('html', require('ejs').renderFile);
@@ -69,7 +70,5 @@ app.use('/api/station/ingredient', require('./routes/station_ingredient'));
 app.use('/api/liquor', require('./routes/liquor'));
 app.use('/api/drinks', require('./routes/drinks'));
 app.use('/api/types', require('./routes/types'));
-app.use('/api/commander', require('./routes/commander'));
-
-
-module.exports = app;
+//user commander to handle socket.io connections
+io.sockets.on('connection', require('./routes/commander'));

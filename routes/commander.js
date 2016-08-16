@@ -1,36 +1,24 @@
 var mongo = require('mongodb');
-var express = require('express');
-var router = express.Router();
 var net = require('net');
+var db = require('../db_connection');
 
-router.get('/', function(req, res, next){
-  console.log('get route');
-  res.end();
-});
-
-router.ws('/', function(ws, req) {
-    if (ws.protocol !== 'tob_command-protocol') {
-          console.log((new Date()) + ' Rejected WebSocket Connection From: ' + req.ip);
-          return;
-    }
-    ws.on('message', function(message) {
-        //console.log(message);
-
+module.exports = function (socket) {
+    console.log('Socket.IO Connection Established');
+    socket.on('message', function (message) {
         // keep connection alive
         if (message === 'PING') {
-            ws.send('PONG');
+            socket.send('PONG');
         }
         else {
             try {
                 var command = JSON.parse(message);
                 console.log('Received Command: ' + command.command);
                 // Get the provided station's details from the database (need host and port for station)
-                var db = req.db;
                 var collection = db.get('stations');
                 collection.findOne({ "_id": mongo.ObjectID(command.stationId) },function(err,station){
                     if (err) throw err;
                     if (station !== null) {
-                        sendCommand(ws, station.host, station.port, command.command, command.commandData);
+                        sendCommand(socket, station.host, station.port, command.command, command.commandData);
                     }
                 });
             }
@@ -39,7 +27,11 @@ router.ws('/', function(ws, req) {
             }
         }
     });
-});
+    socket.on('disconnect', function () {
+        console.log('WebSocket Closed');
+    });
+
+};
 
 // Function to send a command to a station controller and receive status updates back
 // These status updates are then returned to the Browser GUI through a passed websocket connection
@@ -114,5 +106,3 @@ function sendCommand(guiConnection, station_host, station_port, command, command
         // calls 'close' event afterwards
     });
 };
-
-module.exports = router;
