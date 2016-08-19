@@ -51,10 +51,10 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'LiquorCtrl',
             access: {restricted: false}
         })
-        .state('add-drink', {
-            url: '/add-drink',
-            templateUrl: 'partials/add-drink.html',
-            controller: 'AddDrinkCtrl',
+        .state('create-recipe', {
+            url: '/create-recipe',
+            templateUrl: 'partials/create-recipe.html',
+            controller: 'RecipeCtrl',
             access: {restricted: true}
         })
         .state('pour', {
