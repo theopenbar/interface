@@ -2,11 +2,52 @@
     <h1>Create a Recipe</h1>
 </div>
 
-<form>
+<div class="form-group">
+    <label>Name</label>
+    <input class="form-control" ng-model="recipe.name"></input>
+</div>
+
+<form class="form-inline">
     <div class="form-group">
-        <label>Name</label>
-        <input class="form-control" ng-model="recipe.name"></input>
+        <label for="type">Type</label>
+        <input type="text" class="form-control" id="type">
     </div>
 
-    <input type="button" class="btn btn-primary" value="Save" ng-click="saveRecipe()"></input>
+    <div class="form-group">
+        <label for="brand">Brand</label>
+        <input type="text" class="form-control" id="brand">
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description">
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" class="form-control" id="amount">
+    </div>
+    
+    <div class="form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" type="checkbox"> Requirement
+        </label>
+    </div>
 </form>
+
+<form class="form-inline">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name">
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" class="form-control" id="amount">
+    </div>
+</form>
+
+<input type="button" class="btn btn-primary" value="Add Drink" ng-click="addDrink()"></input>
+<input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
+<input type="button" class="btn btn-success" value="Save" ng-click="saveRecipe()"></input>
+
