@@ -2,17 +2,18 @@
 app.controller('RecipeCtrl', ['$scope', '$compile', 'recipeService',
     function($scope, $compile, recipeService) {
 
-        $scope.drinks = [];
-        $scope.garnishes = [];
+        $scope.recipe = {"name": null};
+        $scope.recipe.drinks = [];
+        $scope.recipe.garnishes = [];
 
         $scope.addDrink = function(){
-            var newDrinkNum = $scope.drinks.length+1;
-            $scope.drinks.push({'id':'drink'+newDrinkNum});
+            var newDrinkNum = $scope.recipe.drinks.length+1;
+            $scope.recipe.drinks.push({'id':'drink'+newDrinkNum});
         };
 
         $scope.addGarnish = function(){
-            var newGarnishNum = $scope.garnishes.length+1;
-            $scope.garnishes.push({'id':'garnish'+newGarnishNum});
+            var newGarnishNum = $scope.recipe.garnishes.length+1;
+            $scope.recipe.garnishes.push({'id':'garnish'+newGarnishNum});
         };
 
         $scope.saveRecipe = function() {
