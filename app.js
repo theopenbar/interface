@@ -68,6 +68,7 @@ app.use('/api/station/ip', require('./routes/station_ip'));
 app.use('/api/station/valves', require('./routes/station_valves'));
 app.use('/api/station/ingredient', require('./routes/station_ingredient'));
 app.use('/api/liquor', require('./routes/liquor'));
+app.use('/api/recipe', require('./routes/recipe'));
 app.use('/api/drinks', require('./routes/drinks'));
 app.use('/api/types', require('./routes/types'));
 //user commander to handle socket.io connections
