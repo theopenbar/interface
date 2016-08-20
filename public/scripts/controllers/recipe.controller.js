@@ -2,8 +2,7 @@
 app.controller('RecipeCtrl', ['$scope', '$compile', 'recipeService',
     function($scope, $compile, recipeService) {
 
-        var recipeTemplate = {name: null, drinks: [], garnishes: []};
-        $scope.recipe = recipeTemplate;
+        $scope.recipe = {name: null, drinks: [], garnishes: []};
 
         $scope.addDrink = function(){
             var newDrinkNum = $scope.recipe.drinks.length+1;
@@ -72,7 +71,7 @@ app.controller('RecipeCtrl', ['$scope', '$compile', 'recipeService',
                     $scope.messageError = null;
                     $scope.messageSuccess = "Recipe saved successfully.";
                     // clear to start a new recipe
-                    $scope.recipe = recipeTemplate;
+                    $scope.recipe = {name: null, drinks: [], garnishes: []};
                 }
             });
         };
