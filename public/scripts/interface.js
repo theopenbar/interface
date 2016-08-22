@@ -39,12 +39,6 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'logoutController',
             access: {restricted: true}
         })
-        .state('drinks', {
-            url: '/drinks',
-            templateUrl: 'partials/drinks.html',
-            controller: 'DrinksCtrl',
-            access: {restricted: false}
-        })
         .state('liquor', {
             url: '/liquor',
             templateUrl: 'partials/liquor.html',
