@@ -16,7 +16,7 @@
 
                 <td>
                     <select ng-model="ingredient.type" ng-change="getBrands()">
-                        <option ng-repeat="choice in types" value="{{choice.type}}">{{choice.type}}</option>
+                        <option ng-repeat="choice in types | orderBy:'type'" value="{{choice.type}}">{{choice.type}}</option>
                     </select>
                 </td>
                 <td><input list="type-brands" ng-model="ingredient.brand"/></td>
