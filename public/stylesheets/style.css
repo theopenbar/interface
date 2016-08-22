@@ -28,3 +28,7 @@ a {
 .page-header.stored {
     margin-top: 0px;
 }
+
+.navbar-right {
+    margin-right: 15px;
+}
