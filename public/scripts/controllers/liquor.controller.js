@@ -32,6 +32,9 @@ app.controller('LiquorCtrl', ['$scope', 'liquorService',
                 }
             }
 
+            // convert ingredient amount from text to number
+            ingredient.amount = Number(ingredient.amount);
+
             // OK to save to database
             liquorService.saveIngredient(ingredient).then(function (types) {
                 if(types) {
