@@ -21,6 +21,14 @@ a {
     color: #fff;
 }
 
+.navbar-default {
+    background-color: #337ab7;
+}
+
+.navbar-default .navbar-toggle {
+    background-color: #fff;
+}
+
 .page-header {
     margin-top: 20px;
 }
