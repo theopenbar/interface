@@ -39,7 +39,13 @@
   </head>
   <body ng-app="interface">
     <div class="container-fluid">
-      <nav class="navbar navbar-fixed-top navbar-dark bg-primary"><a href="/" class="navbar-brand">The Open Bar</a></nav>
+      <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
+        <a href="/" class="navbar-brand">The Open Bar</a>
+        <ul class="nav navbar-nav navbar-right">
+          <button type="button" class="btn btn-default navbar-btn">Log in</button>
+          <button type="button" class="btn btn-default navbar-btn">Log out</button>
+        </ul>
+      </nav>
       <div ui-view></div>
     </div>
   </body>
