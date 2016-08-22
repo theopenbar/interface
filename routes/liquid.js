@@ -10,6 +10,15 @@ router.get('/types', function(req, res) {
     })
 });
 
+router.post('/types', function(req, res) {
+    var liquid = new Liquid(req.body);
+    
+    liquid.save(function (err, status) {
+        if (err) return (err);
+        res.json(status);
+    });
+});
+
 router.get('/brands/:type', function(req, res) {
     // query based on Type and get all Brands associated with it
     // specifically remove _id

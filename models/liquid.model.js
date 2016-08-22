@@ -9,9 +9,6 @@ var itemSchema = new Schema({
 });
 
 var liquidSchema = new Schema({
-    _id: {
-      $oid: Schema.Types.ObjectId  
-    },
     type: String,
     item: [itemSchema]
 }, {collection: 'liquids'});
