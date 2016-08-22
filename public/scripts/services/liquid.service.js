@@ -13,18 +13,21 @@ app.service("liquidService",
             return deferred.promise;
         };
 
+        /*
         this.putIngredient = function() {
             var deferred = $q.defer();
     
             var Ingredient = $resource('/api/liquid', {}, {
               update: { method: 'PUT' }
             });
+
             Ingredient.update(function(ingredient){
                 deferred.resolve(ingredient);
             });
 
             return deferred.promise;
         };
+        */
 
         this.getBrands = function(type) {
             var deferred = $q.defer();
