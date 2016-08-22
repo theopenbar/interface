@@ -61,7 +61,7 @@ app.use('/:partials', routes);
 app.use('/api/account', require('./routes/account'));
 app.use('/api/user', require('./routes/user'));
 app.use('/api/station', require('./routes/station'));
-app.use('/api/liquor', require('./routes/liquor'));
+app.use('/api/liquid', require('./routes/liquid'));
 app.use('/api/recipe', require('./routes/recipe'));
 //user commander to handle socket.io connections
 io.sockets.on('connection', require('./routes/commander'));

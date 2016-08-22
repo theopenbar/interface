@@ -8,12 +8,12 @@ var itemSchema = new Schema({
     barcode: String
 });
 
-var liquorSchema = new Schema({
+var liquidSchema = new Schema({
     _id: {
       $oid: Schema.Types.ObjectId  
     },
     type: String,
     item: [itemSchema]
-}, {collection: 'liquor'});
+}, {collection: 'liquids'});
 
-module.exports = mongoose.model('Liquor', liquorSchema);
+module.exports = mongoose.model('Liquid', liquidSchema);

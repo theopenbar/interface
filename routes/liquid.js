@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var Liquor = require('../models/liquor.model');
+var Liquid = require('../models/liquid.model');
 
 router.get('/types', function(req, res) {
     // specifically remove _id
-    Liquor.find({}, 'type -_id', function (err, type) {
+    Liquid.find({}, 'type -_id', function (err, type) {
         if (err) return (err);
         res.json(type);
     })
@@ -13,7 +13,7 @@ router.get('/types', function(req, res) {
 router.get('/brands/:type', function(req, res) {
     // query based on Type and get all Brands associated with it
     // specifically remove _id
-    Liquor.findOne({"type": req.params.type}, 'item.brand -_id', function (err, type) {
+    Liquid.findOne({"type": req.params.type}, 'item.brand -_id', function (err, type) {
         if (err) return (err);
 
         // remove duplicate Brands
@@ -29,7 +29,7 @@ router.get('/brands/:type', function(req, res) {
 
 router.post('/save', function(req, res) {
     // add the data into the type's document
-    Liquor.findOne({"type": req.body.type}, function (err, type) {
+    Liquid.findOne({"type": req.body.type}, function (err, type) {
         if (err) return (err);
 
         type.item.push({

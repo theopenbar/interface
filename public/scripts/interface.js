@@ -39,10 +39,10 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'logoutController',
             access: {restricted: true}
         })
-        .state('liquor', {
-            url: '/liquor',
-            templateUrl: 'partials/liquor.html',
-            controller: 'LiquorCtrl',
+        .state('liquid', {
+            url: '/liquid',
+            templateUrl: 'partials/liquid.html',
+            controller: 'LiquidCtrl',
             access: {restricted: false}
         })
         .state('create-recipe', {

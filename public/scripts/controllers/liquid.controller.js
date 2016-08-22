@@ -1,8 +1,8 @@
-app.controller('LiquorCtrl', ['$scope', 'liquorService',
-    function($scope, liquorService){
+app.controller('LiquidCtrl', ['$scope', 'liquidService',
+    function($scope, liquidService){
 
         // get all Types on page load
-        var promise = liquorService.getTypes();
+        var promise = liquidService.getTypes();
         promise.then(function (types) {
             $scope.types = types;
         });
@@ -12,7 +12,7 @@ app.controller('LiquorCtrl', ['$scope', 'liquorService',
 
         $scope.getBrands = function() {
             // get all Brands from that Type
-            var promise = liquorService.getBrands($scope.ingredient.type);
+            var promise = liquidService.getBrands($scope.ingredient.type);
             promise.then(function (brands) {
                 $scope.brands = brands;
             });
@@ -36,7 +36,7 @@ app.controller('LiquorCtrl', ['$scope', 'liquorService',
             ingredient.amount = Number(ingredient.amount);
 
             // OK to save to database
-            liquorService.saveIngredient(ingredient).then(function (types) {
+            liquidService.saveIngredient(ingredient).then(function (types) {
                 if(types) {
                     $scope.messageError = null;
                     $scope.messageSuccess = "Ingredient saved successfully.";
