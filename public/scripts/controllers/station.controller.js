@@ -1,6 +1,6 @@
 app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage', '$location', 'stationService',
-               'drinksService', 'SelectStation', 'WebSocket',
-    function($rootScope, $scope, $state, $localStorage, $location, stationService, drinksService, SelectStation, WebSocket){
+               'liquorService', 'SelectStation', 'WebSocket',
+    function($rootScope, $scope, $state, $localStorage, $location, stationService, liquorService, SelectStation, WebSocket){
 
         // need to declare functions before they are used
         $scope.stationReady = function(station) {
@@ -23,7 +23,7 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage'
             $scope.colon = ':';
 
             // get Types of drinks for editing
-            var promise = drinksService.getTypes();
+            var promise = liquorService.getTypes();
             promise.then(function (types) {
                 $scope.types = types;
             });
