@@ -8,9 +8,14 @@ var itemSchema = new Schema({
     barcode: String
 });
 
+var subtypeSchema = new Schema({
+    subtype: String,
+    items: [itemSchema]
+})
+
 var liquidSchema = new Schema({
     type: String,
-    item: [itemSchema]
+    subtypes: [subtypeSchema]
 }, {collection: 'liquids'});
 
 module.exports = mongoose.model('Liquid', liquidSchema);
