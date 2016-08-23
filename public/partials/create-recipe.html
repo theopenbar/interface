@@ -16,7 +16,6 @@
 
 <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
 <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
-<input type="button" class="btn btn-success" value="Sumbit Recipe" ng-click="submitRecipe()"></input>
 
 <div class="row">
     <div class="col-md-6">
@@ -103,6 +102,10 @@
     </div>
 
     <div class="col-md-6">
+        <div class="page-header">
+            <h3>Recipe</h3>
+        </div>
         <p>{{recipe | json}}</p>
+        <input type="button" class="btn btn-success" value="Sumbit Recipe" ng-click="submitRecipe()"></input>
     </div>
 </div>
