@@ -19,6 +19,17 @@ router.post('/types', function(req, res) {
     });
 });
 
+router.get('/subtypes/:type', function(req, res) {
+    // query based on Type and get all Brands associated with it
+    // specifically remove _id
+    console.log(req.params);
+    Liquid.findOne({"type": req.params.type}, 'subtypes.subtype -_id', function (err, subtypes) {
+        if (err) return (err);
+
+        res.json(subtypes.subtypes);
+    })
+});
+
 router.get('/brands/:type', function(req, res) {
     // query based on Type and get all Brands associated with it
     // specifically remove _id

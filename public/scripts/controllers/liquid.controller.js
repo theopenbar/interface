@@ -8,7 +8,15 @@ app.controller('LiquidCtrl', ['$scope', 'liquidService',
         });
 
         // fill up with null to check against
-        $scope.ingredient = {type: null, brand: null, description: null, amount: null, barcode: null};
+        $scope.ingredient = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
+
+        $scope.getSubtypes = function() {
+            // get all Subtypes from that Type
+            var promise = liquidService.getSubtypes($scope.ingredient.type);
+            promise.then(function (subtypes) {
+                $scope.subtypes = subtypes;
+            });
+        }
 
         $scope.getBrands = function() {
             // get all Brands from that Type
@@ -40,7 +48,7 @@ app.controller('LiquidCtrl', ['$scope', 'liquidService',
                 if(types) {
                     $scope.messageError = null;
                     $scope.messageSuccess = "Ingredient saved successfully.";
-                    $scope.ingredient = {type: null, brand: null, description: null, amount: null, barcode: null};
+                    $scope.ingredient = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
                 }
             });
         };
