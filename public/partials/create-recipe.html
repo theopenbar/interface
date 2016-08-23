@@ -3,7 +3,7 @@
 </div>
 
 <!-- for debugging -->
-<p>{{recipe | json}}</p>
+<p>LiquidEdit: {{liquidEdit | json}}</p>
 <p>{{messageError}}</p>
 <p>{{messageSuccess}}</p>
 
@@ -16,7 +16,7 @@
 
 <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
 <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
-<input type="button" class="btn btn-success" value="Save" ng-click="saveRecipe()"></input>
+<input type="button" class="btn btn-success" value="Sumbit Recipe" ng-click="submitRecipe()"></input>
 
 <div class="row">
     <div class="col-md-6">
@@ -26,32 +26,32 @@
             <div class="form-group row">
                 <label for="type" class="col-xs-2 col-form-label">Type</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="liquid.type" ng-change="getSubtypes(liquid.id)">
+                    <select class="form-control" ng-model="liquid.type" ng-change="getSubtypes(liquid.type)">
                         <option ng-repeat="type in types | orderBy:'type'" value="{{type.type}}">{{type.type}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" ng-if="subtypes">
                 <label for="type" class="col-xs-2 col-form-label">Subtype</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="liquid.subtype" ng-change="getBrands(liquid.id)">
+                    <select class="form-control" ng-model="liquid.subtype" ng-change="getBrands(liquid.subtype)">
                         {{liquid.id}}
                         <option ng-repeat="subtype in subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" ng-if="brands">
                 <label for="brand" class="col-xs-2 col-form-label">Brand</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="liquid.brand" ng-change="getDescription(liquid.id)">
+                    <select class="form-control" ng-model="liquid.brand" ng-change="getDescription(liquid.brand)">
                         <option ng-repeat="brand in brands | orderBy:'brand'" value="{{brand.brand}}">{{brand.brand}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" ng-if="descriptions">
                 <label for="description" class="col-xs-2 col-form-label">Description</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquid.description">
@@ -63,7 +63,7 @@
             <div class="form-group row">
                 <label for="amount" class="col-xs-2 col-form-label">Amount (oz)</label>
                 <div class="col-xs-10">
-                    <input class="form-control" type="number" id="amount" ng-model="liquid.amount">
+                    <input class="form-control" type="number" id="amount" ng-model="liquidEdit.amount">
                 </div>
             </div>
 
@@ -71,15 +71,19 @@
                 <label for="requirement" class="col-xs-2 col-form-label">Requirement</label>
                 <div class="col-xs-10">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" ng-model="liquid.requirement">
+                        <input class="form-check-input" type="checkbox" ng-model="liquidEdit.requirement">
                     </label>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-6">
-        <fieldset data-ng-repeat="garnish in recipe.garnishes">
+            <div class="form-check row">
+                <div class="col-xs-12">
+                    <input type="button" class="btn btn-primary" value="Add Liquid to Recipe" ng-click="addLiquidToRecipe()"></input>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="garnishEdit">
             <div class="page-header">Garnish {{garnish.id}}</div>
 
             <div class="form-group row">
@@ -95,6 +99,10 @@
                     <input class="form-control" type="text" id="amount" ng-model="garnish.amount">
                 </div>
             </div>
-        </fieldset>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <p>{{recipe | json}}</p>
     </div>
 </div>
