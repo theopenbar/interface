@@ -5,7 +5,7 @@ var Liquid = require('../models/liquid.model');
 router.post('/brands', function(req, res) {
     // query based on Type and Subtype and get all Brands associated with it
     // specifically remove _id
-    Liquid.find(req.body, 'brand -_id', function (err, brands) {
+    Liquid.find(req.body, 'brand', function (err, brands) {
         if (err) return (err);
 
         // remove duplicate Brands

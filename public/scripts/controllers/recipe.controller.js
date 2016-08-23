@@ -8,13 +8,11 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             $scope.types = types;
         });
 
-        $scope.recipe = {name: null, drinks: [], garnishes: []};
+        $scope.recipe = {name: null, liquids: [], garnishes: []};
+        $scope.liquidEdit = false;
 
-        $scope.addDrink = function(){
-            var newDrinkNum = $scope.recipe.drinks.length+1;
-            $scope.recipe.drinks.push(
-                {'id':newDrinkNum, type: null, subtype: null, brand: null, description: null, amount: null, requirement: true}
-            );
+        $scope.addLiquid = function(){
+            $scope.liquidEdit = true;
         };
 
         $scope.addGarnish = function(){

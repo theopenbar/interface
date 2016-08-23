@@ -1,10 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var drinkSchema = new Schema({
-    type: String,
-    brand: String,
-    description: String,
+var liquidSchema = new Schema({
+    id: String,
     amount: Number,
     requirement: Boolean
 });
@@ -16,7 +14,7 @@ var garnishSchema = new Schema({
 
 var recipeSchema = new Schema({
     name: String,
-    drinks: [drinkSchema],
+    liquids: [liquidSchema],
     garnishes: [garnishSchema]
 }, {collection: 'recipes'});
 
