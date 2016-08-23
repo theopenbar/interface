@@ -15,14 +15,13 @@ router.post('/brands', function(req, res) {
             return r;
         }, []);
 
-        res.json(brands);
+        res.json(uniq_brands);
     });
 });
 
 router.post('/descriptions', function(req, res) {
     // query based on Type, Subtype, Brand and get all Descriptions associated with it
-    // specifically remove _id
-    Liquid.find(req.body, '-_id', function (err, descriptions) {
+    Liquid.find(req.body, function (err, descriptions) {
         if (err) return (err);
 
         res.json(descriptions);
