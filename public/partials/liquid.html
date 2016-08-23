@@ -16,20 +16,20 @@
             <tr>
 
                 <td>
-                    <select ng-model="ingredient.type" ng-change="getSubtypes()">
+                    <select class="form-control" ng-model="ingredient.type" ng-change="getSubtypes()">
                         <option ng-repeat="type in types | orderBy:'type'" value="{{type.type}}">{{type.type}}</option>
                     </select>
                 </td>
                 <td>
-                    <select ng-model="ingredient.subtype" ng-change="getBrands()">
+                    <select class="form-control" ng-model="ingredient.subtype" ng-change="getBrands()">
                         <option ng-repeat="subtype in subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
                     </select>
                 </td>
-                <td><input list="type-brands" ng-model="ingredient.brand"/></td>
-                <td><input type='text' ng-model="ingredient.description"></input></td>
+                <td><input class="form-control" list="type-brands" ng-model="ingredient.brand"/></td>
+                <td><input class="form-control" type='text' ng-model="ingredient.description"></input></td>
                 <td>
                     <!-- list of possible amounts-->
-                    <select ng-model="ingredient.amount">
+                    <select class="form-control" ng-model="ingredient.amount">
 						<option value="1.69">1.69oz / 50mL</option>
 						<option value="6.76">6.76oz / 200mL</option>
 						<option value="12.7">12.7oz / 375mL</option>
@@ -42,8 +42,8 @@
 						<option value="101.4">101.4oz / 3000mL</option>
                     </select>
                 </td>
-                <td><input type='text' ng-model="ingredient.barcode"></input></td>
-                <td><button ng-click="saveIngredient()">save</button></td>
+                <td><input class="form-control" type='text' ng-model="ingredient.barcode"></input></td>
+                <td><button class="btn btn-success" ng-click="saveIngredient()">save</button></td>
 
             </tr>
         </tbody>
