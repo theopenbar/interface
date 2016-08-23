@@ -32,6 +32,21 @@ app.service("liquidService",
             return deferred.promise;
         };
 
+        this.getDescriptions = function(query) {
+            var deferred = $q.defer();
+
+            // return an array
+            var Brands = $resource('/api/liquid/descriptions/', {}, {
+                save: {method: 'POST', isArray:true}
+            });
+
+            Brands.save(query, function(descriptions){
+                deferred.resolve(descriptions);
+            });
+
+            return deferred.promise;
+        };
+
         this.saveIngredient = function(ingredient) {
             var deferred = $q.defer();
 

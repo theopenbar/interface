@@ -49,7 +49,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: '/create-recipe',
             templateUrl: 'partials/create-recipe.html',
             controller: 'RecipeCtrl',
-            access: {restricted: true}
+            access: {restricted: false}
         })
         .state('pour', {
             url: '/pour',

@@ -21,31 +21,47 @@
 <div class="row">
     <div class="col-md-6">
         <fieldset data-ng-repeat="drink in recipe.drinks">
-            <div class="page-header">{{drink.id}}</div>
+            <div class="page-header">Drink {{drink.id}}</div>
 
             <div class="form-group row">
                 <label for="type" class="col-xs-2 col-form-label">Type</label>
                 <div class="col-xs-10">
-                    <input class="form-control" type="text" id="type"  ng-model="drink.type">
+                    <select class="form-control" ng-model="drink.type" ng-change="getSubtypes(drink.id)">
+                        <option ng-repeat="type in types | orderBy:'type'" value="{{type.type}}">{{type.type}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="type" class="col-xs-2 col-form-label">Subtype</label>
+                <div class="col-xs-10">
+                    <select class="form-control" ng-model="drink.subtype" ng-change="getBrands(drink.id)">
+                        {{drink.id}}
+                        <option ng-repeat="subtype in subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="brand" class="col-xs-2 col-form-label">Brand</label>
                 <div class="col-xs-10">
-                    <input class="form-control" type="text" id="brand"  ng-model="drink.brand">
+                    <select class="form-control" ng-model="drink.brand" ng-change="getDescription(drink.id)">
+                        <option ng-repeat="brand in brands | orderBy:'brand'" value="{{brand.brand}}">{{brand.brand}}</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="description" class="col-xs-2 col-form-label">Description</label>
                 <div class="col-xs-10">
-                    <input class="form-control" type="text" id="description" ng-model="drink.description">
+                    <select class="form-control" ng-model="drink.description">
+                        <option ng-repeat="description in descriptions | orderBy:'description'" value="{{description.description}}">{{description.description}}</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label for="amount" class="col-xs-2 col-form-label">Amount</label>
+                <label for="amount" class="col-xs-2 col-form-label">Amount (oz)</label>
                 <div class="col-xs-10">
                     <input class="form-control" type="number" id="amount" ng-model="drink.amount">
                 </div>
@@ -65,7 +81,7 @@
 
     <div class="col-md-6">
         <fieldset data-ng-repeat="garnish in recipe.garnishes">
-            <div class="page-header">{{garnish.id}}</div>
+            <div class="page-header">Garnish {{garnish.id}}</div>
 
             <div class="form-group row">
                 <label for="name" class="col-xs-2 col-form-label">Name</label>
