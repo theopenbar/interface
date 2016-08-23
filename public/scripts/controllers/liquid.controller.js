@@ -1,8 +1,8 @@
-app.controller('LiquidCtrl', ['$scope', 'liquidService',
-    function($scope, liquidService){
+app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
+    function($scope, typeService, liquidService){
 
         // get all Types on page load
-        var promise = liquidService.getTypes();
+        var promise = typeService.getTypes();
         promise.then(function (types) {
             $scope.types = types;
         });
@@ -12,7 +12,7 @@ app.controller('LiquidCtrl', ['$scope', 'liquidService',
 
         $scope.getSubtypes = function() {
             // get all Subtypes from that Type
-            var promise = liquidService.getSubtypes($scope.ingredient.type);
+            var promise = typeService.getSubtypes($scope.ingredient.type);
             promise.then(function (subtypes) {
                 $scope.subtypes = subtypes;
             });
