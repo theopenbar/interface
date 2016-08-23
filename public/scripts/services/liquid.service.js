@@ -17,11 +17,15 @@ app.service("liquidService",
         };
         */
 
-        this.getBrands = function(type) {
+        this.getBrands = function(query) {
             var deferred = $q.defer();
 
-            var Types = $resource('/api/liquid/brands/:type', {type: type});
-            Types.query(type, function(brands){
+            // return an array
+            var Types = $resource('/api/liquid/brands/', {}, {
+                save: {method: 'POST', isArray:true}
+            });
+
+            Types.save(query, function(brands){
                 deferred.resolve(brands);
             });
 

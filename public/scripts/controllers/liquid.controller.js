@@ -19,8 +19,9 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
         }
 
         $scope.getBrands = function() {
-            // get all Brands from that Type
-            var promise = liquidService.getBrands($scope.ingredient.type);
+            // get all Brands from that Type and Subtype
+            var query = {"type":$scope.ingredient.type, "subtype":$scope.ingredient.subtype};
+            var promise = liquidService.getBrands(query);
             promise.then(function (brands) {
                 $scope.brands = brands;
             });

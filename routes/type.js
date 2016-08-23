@@ -11,9 +11,9 @@ router.get('/types', function(req, res) {
 });
 
 router.post('/types', function(req, res) {
-    var liquid = new Type(req.body);
+    var type = new Type(req.body);
     
-    liquid.save(function (err, status) {
+    type.save(function (err, status) {
         if (err) return (err);
         res.json(status);
     });
@@ -22,7 +22,6 @@ router.post('/types', function(req, res) {
 router.get('/subtypes/:type', function(req, res) {
     // query based on Type and get all Brands associated with it
     // specifically remove _id
-    console.log(req.params);
     Type.findOne({"type": req.params.type}, 'subtypes.subtype -_id', function (err, subtypes) {
         if (err) return (err);
 

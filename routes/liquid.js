@@ -2,39 +2,29 @@ var express = require('express');
 var router = express.Router();
 var Liquid = require('../models/liquid.model');
 
-router.get('/brands/:type', function(req, res) {
-    // query based on Type and get all Brands associated with it
+router.post('/brands', function(req, res) {
+    // query based on Type and Subtype and get all Brands associated with it
     // specifically remove _id
-    Liquid.findOne({"type": req.params.type}, 'item.brand -_id', function (err, type) {
+    Liquid.find(req.body, 'brand -_id', function (err, brand) {
         if (err) return (err);
 
         // remove duplicate Brands
         // http://stackoverflow.com/a/31963129
-        var uniq_brands = type.item.reduceRight(function (r, a) {
+        var uniq_brands = brand.reduceRight(function (r, a) {
             r.some(function (b) { return a.brand === b.brand; }) || r.push(a);
             return r;
         }, []);
 
-        res.json(uniq_brands);
-    })
+        res.json(brand);
+    });
 });
 
 router.post('/save', function(req, res) {
-    // add the data into the type's document
-    Liquid.findOne({"type": req.body.type}, function (err, type) {
+    var liquid = new Liquid(req.body);
+
+    liquid.save(function (err, status) {
         if (err) return (err);
-
-        type.item.push({
-            "brand": req.body.brand,
-            "description": req.body.description,
-            "amount": req.body.amount,
-            "barcode": req.body.barcode
-        });
-
-        type.save(function (err, status) {
-            if (err) return (err);
-            res.json(status);
-        });
+        res.json(status);
     });
 });
 

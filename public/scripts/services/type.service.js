@@ -16,7 +16,6 @@ app.service("typeService",
         this.getSubtypes = function(type) {
             var deferred = $q.defer();
 
-            console.log(type);
             var Subtypes = $resource('/api/type/subtypes/:type', {type: type});
 
             Subtypes.query(function(subtypes){
