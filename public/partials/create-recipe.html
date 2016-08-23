@@ -14,8 +14,10 @@
     </div>
 </div>
 
-<input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
-<input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
+<div ng-if="!liquidEdit && !garnishEdit">
+    <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
+    <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
+</div>
 
 <div class="row">
     <div class="col-md-6">
