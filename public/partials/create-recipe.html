@@ -3,8 +3,9 @@
 </div>
 
 <!-- for debugging -->
-<p>LiquidEdit: {{liquidEdit | json}}</p>
-<p>descriptions: {{descriptions | json}}</p>
+<p><b>recipe:</b> {{recipe | json}}</p>
+<p><b>liquidSelection:</b> {{liquidSelection | json}}</p>
+<p><b>liquid:</b> {{liquid | json}}</p>
 <p>{{messageError}}</p>
 <p>{{messageSuccess}}</p>
 
@@ -15,14 +16,14 @@
     </div>
 </div>
 
-<div ng-if="!liquidEdit && !garnishEdit">
+<div ng-if="!liquid && !garnish">
     <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
     <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
 </div>
 
 <div class="row">
     <div class="col-md-6">
-        <div ng-if="liquidEdit">
+        <div ng-if="liquid">
             <div class="page-header">
                 <h3>New Liquid</h3>
             </div>
@@ -36,30 +37,29 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-if="subtypes">
+            <div class="form-group row" ng-if="liquidSelection.subtypes">
                 <label for="type" class="col-xs-2 col-form-label">Subtype</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquid.subtype" ng-change="getBrands(liquid.subtype)">
-                        {{liquid.id}}
-                        <option ng-repeat="subtype in subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
+                        <option ng-repeat="subtype in liquidSelection.subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row" ng-if="brands">
+            <div class="form-group row" ng-if="liquidSelection.brands">
                 <label for="brand" class="col-xs-2 col-form-label">Brand</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquid.brand" ng-change="getDescription(liquid.brand)">
-                        <option ng-repeat="brand in brands | orderBy:'brand'" value="{{brand.brand}}">{{brand.brand}}</option>
+                        <option ng-repeat="brand in liquidSelection.brands | orderBy:'brand'" value="{{brand.brand}}">{{brand.brand}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row" ng-if="descriptions">
+            <div class="form-group row" ng-if="liquidSelection.descriptions">
                 <label for="description" class="col-xs-2 col-form-label">Description</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquid.description" ng-change="chooseDescription(liquid.description)">
-                        <option ng-repeat="description in descriptions | orderBy:'description'" value="{{description.description}}">{{description.description}}</option>
+                        <option ng-repeat="description in liquidSelection.descriptions | orderBy:'description'" value="{{description.description}}">{{description.description}}</option>
                     </select>
                 </div>
             </div>
@@ -67,7 +67,7 @@
             <div class="form-group row">
                 <label for="amount" class="col-xs-2 col-form-label">Amount (oz)</label>
                 <div class="col-xs-10">
-                    <input class="form-control" type="number" id="amount" ng-model="liquidEdit.amount">
+                    <input class="form-control" type="number" id="amount" ng-model="liquid.amount">
                 </div>
             </div>
 
@@ -75,7 +75,7 @@
                 <label for="requirement" class="col-xs-2 col-form-label">Requirement</label>
                 <div class="col-xs-10">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" ng-model="liquidEdit.requirement">
+                        <input class="form-check-input" type="checkbox" ng-model="liquid.requirement">
                     </label>
                 </div>
             </div>
@@ -111,6 +111,14 @@
             <h3>Recipe</h3>
         </div>
         <p>{{recipe | json}}</p>
+
+        <div class="page-header">
+            <h4>Liquids</h4>
+        </div>
+        <div data-ng-repeat="liquid in recipe.liquids">
+            <p>{{liquid.text}}</p>
+        </div>
+
         <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>
     </div>
 </div>
