@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var dbConns = require('../db_connections');
 
 var drinkSchema = new Schema({
     type: String,
@@ -20,4 +21,4 @@ var recipeSchema = new Schema({
     garnishes: [garnishSchema]
 }, {collection: 'recipes'});
 
-module.exports = mongoose.model('Recipe', recipeSchema);
+module.exports = dbConns.old.model('Recipe', recipeSchema);
