@@ -57,4 +57,16 @@ app.service("liquidService",
 
             return deferred.promise;
         };
+
+        this.getLiquid = function(id) {
+            var deferred = $q.defer();
+
+            var Liquid = $resource('/api/liquid/:id', {id: id});
+
+            Liquid.query(function(liquid){
+                deferred.resolve(liquid);
+            });
+
+            return deferred.promise;
+        };
 });

@@ -37,4 +37,11 @@ router.post('/save', function(req, res) {
     });
 });
 
+router.get('/:id', function(req, res) {
+    Liquid.findOne({"_id": req.params.id}, function (err, liquid) {
+        if (err) return (err);
+        res.json(liquid);
+    })
+});
+
 module.exports = router;
