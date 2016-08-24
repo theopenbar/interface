@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var dbConns = require('./db_connections');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 // create app using express
 var app = express();
@@ -26,17 +29,20 @@ app.use(function(req,res,next){
     req.db = db;
     next();
 });
-
 // other things required for app
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('express-session')({
+app.use(session({
   secret: 'da big question',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new MongoStore({
+      mongooseConnection: dbConns.old,
+      ttl: 5*60*60
+  })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -61,5 +67,5 @@ app.use('/api/station', require('./routes/station'));
 app.use('/api/type', require('./routes/type'));
 app.use('/api/liquid', require('./routes/liquid'));
 app.use('/api/recipe', require('./routes/recipe'));
-//user commander to handle socket.io connections
+//use commander to handle socket.io connections
 io.sockets.on('connection', require('./routes/commander'));
