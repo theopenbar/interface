@@ -11,13 +11,13 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         $scope.recipe = {name: null, liquids: [], garnishes: []};
 
         // a fresh, blank liquid
-        $scope.liquidEdit = false;
-        $scope.subtypes = false;
-        $scope.brands = false;
-        $scope.descriptions = false;
+        $scope.liquidEdit = null;
+        $scope.subtypes = null;
+        $scope.brands = null;
+        $scope.descriptions = null;
 
         // a fresh, blank garnish
-        $scope.garnishEdit = false;
+        $scope.garnishEdit = null;
 
         $scope.addLiquid = function(){
             $scope.liquidEdit = {"id": null, "amount": null, "requirement": true};
@@ -46,20 +46,6 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
                 return false;
             }
 
-            // check that all drinks are fully filled in
-            for (var drink in recipe.drinks) {
-                // for each drink
-                var drink = recipe.drinks[drink];
-                for (var member in drink) {
-                    if (drink[member] == null) {
-                        $scope.messageError = "Please fill in all forms for "+drink.id+".";
-                        $scope.messageSuccess = null;
-                        // return an error
-                        return false;
-                    }
-                }
-            }
-
             // check that all garnishes are fully filled in
             for (var garnish in recipe.garnishes) {
                 // for each garnish
@@ -86,6 +72,10 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         };
 
         $scope.getSubtypes = function(type) {
+            $scope.subtypes = null;
+            $scope.brands = null;
+            $scope.descriptions = null;
+            $scope.liquidEdit.id = null;
             // get all Subtypes from that Type
             var promise = typeService.getSubtypes(type);
             promise.then(function (subtypes) {
@@ -94,15 +84,29 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         }
 
         $scope.getBrands = function(subtype) {
-            // get all Brands from that Type and Subtype
-            var query = {"type":$scope.type, "subtype":subtype};
-            var promise = liquidService.getBrands(query);
-            promise.then(function (brands) {
-                $scope.brands = brands;
-            });
+            $scope.brands = null;
+            $scope.descriptions = null;
+            $scope.liquidEdit.id = null;
+            if (subtype == "*Any") {
+                // get ID for "brand" : "*Any"
+                // http://stackoverflow.com/a/7364203
+                $scope.liquidEdit.id = $scope.subtypes.filter(function(v) {
+                    return v.brand === "*Any"; // Filter out the appropriate one
+                })[0]._id;
+            }
+            else {
+                // get all Brands from that Type and Subtype
+                var query = {"type":$scope.type, "subtype":subtype};
+                var promise = liquidService.getBrands(query);
+                promise.then(function (brands) {
+                    $scope.brands = brands;
+                });
+            }
         }
 
         $scope.getDescription = function(brand) {
+            $scope.descriptions = null;
+            $scope.liquidEdit.id = null;
             if (brand == "*Any") {
                 // get ID for "brand" : "*Any"
                 // http://stackoverflow.com/a/7364203
@@ -120,7 +124,23 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             }
         }
 
+        $scope.chooseDescription = function(description) {
+            console.log(description);
+            $scope.liquidEdit.id = $scope.descriptions.filter(function(v) {
+                    return v.description === description;
+            })[0]._id;
+        }
+
         $scope.addLiquidToRecipe = function() {
+            for (var member in $scope.liquidEdit) {
+                if ($scope.liquidEdit[member] == null) {
+                    $scope.messageError = "Please fill in all forms for this liquid.";
+                    $scope.messageSuccess = null;
+                    // return an error
+                    return false;
+                }
+            }
+
             $scope.recipe.liquids.push($scope.liquidEdit);
         }
 }]);
