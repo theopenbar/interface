@@ -31,11 +31,6 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage'
             WebSocket.sendCommand($scope.station._id, '06', $scope.station._id);
         }
 
-        // display Edit input
-        $scope.editIPAddress = function() {
-            $scope.stationIPEdit = true;
-        };
-
         // save details to database and display values
         $scope.saveIPAddress = function() {
             stationService.saveIPAddress($scope.station._id, $scope.station.host, $scope.station.port);
