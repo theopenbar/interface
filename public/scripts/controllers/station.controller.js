@@ -38,6 +38,16 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage'
             $scope.stationIPEdit = false;
         };
 
+        // add an ingredient
+        $scope.addIngredient = function() {
+            $scope.station.ingredients.configured.push({
+                liquid: null,
+                valve: null,
+                amount: null,
+                pressurized: null
+            });
+        };
+
         // edit an ingredient
         $scope.editIngredient = function(event) {
             // http://stackoverflow.com/a/31956122

@@ -52,6 +52,8 @@
     <h3>Ingredients</h3>
 </div>
 
+<p>{{station.ingredients | json}}</p>
+
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -88,6 +90,11 @@
     </table>
 </div>
 
+<div class="row">
+    <div class="col-md-1">
+        <button class="btn btn-primary" ng-click="addIngredient()">Add Ingredient</button>
+    </div>
+</div>
 
 <!-- list of types -->
 <datalist id="types">
