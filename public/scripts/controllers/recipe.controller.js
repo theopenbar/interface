@@ -2,26 +2,31 @@
 app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeService',
     function($scope, typeService, liquidService, recipeService) {
 
+        function defaultValues() {
+            // stores full recipe
+            $scope.recipe = {name: null, liquids: [], garnishes: []};
+
+            // stores actual selections
+            $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
+
+            // store the index of the liquid you're currently editing
+            // and index of null means you're not in "edit" mode
+            $scope.liquidIndex = null;
+            $scope.liquidDisplay = null;
+
+            // same idea for garnish
+            $scope.garnishIndex = null;
+            $scope.garnishDisplay = null;
+        }
+
         // get all Types on page load
         var promise = typeService.getTypes();
         promise.then(function (types) {
             $scope.types = types;
         });
 
-        // stores full recipe
-        $scope.recipe = {name: null, liquids: [], garnishes: []};
-
-        // stores actual selections
-        $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
-
-        // store the index of the liquid you're currently editing
-        // and index of null means you're not in "edit" mode
-        $scope.liquidIndex = null;
-        $scope.liquidDisplay = null;
-
-        // same idea for garnish
-        $scope.garnishIndex = null;
-        $scope.garnishDisplay = null;
+        // set up default values
+        defaultValues();
 
         $scope.addLiquid = function(){
             $scope.recipe.liquids.push({"id": null, "amount": null, "requirement": true});
@@ -39,7 +44,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
                 if(status) {
                     $scope.messageSuccess = "Recipe saved successfully.";
                     // clear to start a new recipe
-                    $scope.recipe = {name: null, drinks: [], garnishes: []};
+                    defaultValues();
                 }
             });
         };
