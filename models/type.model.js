@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var dbConns = require('../db_connections');
 
 var subtypeSchema = new Schema({
     subtype: String
@@ -10,4 +11,4 @@ var typeSchema = new Schema({
     subtypes: [subtypeSchema]
 }, {collection: 'types'});
 
-module.exports = mongoose.model('Type', typeSchema);
+module.exports = dbConns.old.model('Type', typeSchema);

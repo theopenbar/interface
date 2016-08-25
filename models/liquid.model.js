@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var dbConns = require('../db_connections');
 
 var liquidSchema = new Schema({
     type: String,
@@ -10,4 +11,4 @@ var liquidSchema = new Schema({
     barcode: String
 }, {collection: 'liquids'});
 
-module.exports = mongoose.model('Liquid', liquidSchema);
+module.exports = dbConns.old.model('Liquid', liquidSchema);

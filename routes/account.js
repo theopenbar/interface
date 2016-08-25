@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var Account = require('../models/account');
+var Account = require('../models/account.model');
 
 router.post('/register', function(req, res) {
     Account.register(new Account({ username: req.body.username }),req.body.password,
