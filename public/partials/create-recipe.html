@@ -115,7 +115,7 @@
             <h4>Liquids</h4>
         </div>
         <div ng-repeat="liquid in recipe.liquids track by $index">
-            <p>{{liquid}}</p>
+            <p>{{liquid.amount}}oz {{liquid.type}} {{liquid.subtype}} {{liquid.brand}} {{liquid.description}} {{liquid.requirement}}</p>
         </div>
 
         <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>
