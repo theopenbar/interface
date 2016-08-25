@@ -6,17 +6,6 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage'
             // false by default
             $scope.stationIPEdit = false;
 
-            // need array of "actual" ingredients to display correctly
-            $scope.actual = [];
-            for (var ingredient in station.ingredients) {
-                if (station.ingredients[ingredient].type == ""){
-                    $scope.actual.push(false);
-                }
-                else {
-                    $scope.actual.push(true);
-                }
-            }
-
             $scope.station = station;
             // for displaying "host":"port"
             $scope.colon = ':';
