@@ -15,13 +15,13 @@
     </div>
 </div>
 
-<div ng-if="liquidIndex==null && garnishIndex==null">
-    <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
-    <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
-</div>
-
 <div class="row">
     <div class="col-md-6">
+        <div ng-if="liquidIndex==null && garnishIndex==null">
+            <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
+            <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
+        </div>
+
         <div ng-if="liquidIndex!=null">
             <div class="page-header">
                 <h3>New Liquid</h3>
