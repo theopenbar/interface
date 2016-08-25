@@ -119,21 +119,39 @@
         <div class="panel panel-primary" ng-if="liquidDisplay">
             <div class="panel-heading">Liquids</div>
 
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="liquid in recipe.liquids track by $index" ng-if="$index!=liquidDisplay">
-                    {{liquid.amount}}oz {{liquid.type}} {{liquid.subtype}} {{liquid.brand}} {{liquid.description}} {{liquid.requirement}}
-                </li>
-            </ul>
+            <table class="table">
+                <tr>
+                    <th>Type</th>
+                    <th>Subtype</th>
+                    <th>Brand</th>
+                    <th>Description</th>
+                    <th>Amount (oz)</th>
+                    <th>Requirement</th>
+                </tr>
+                <tr ng-repeat="liquid in recipe.liquids track by $index" ng-if="$index!=liquidDisplay">
+                    <td>{{liquid.type}}</td>
+                    <td>{{liquid.subtype}}</td>
+                    <td>{{liquid.brand}}</td>
+                    <td>{{liquid.description}}</td>
+                    <td>{{liquid.amount}}</td>
+                    <td>{{liquid.requirement}}</td>
+                </tr>
+            </table>
         </div>
 
         <div class="panel panel-primary" ng-if="garnishDisplay">
             <div class="panel-heading">Garnishes</div>
 
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="garnish in recipe.garnishes track by $index" ng-if="$index!=garnishDisplay">
-                    {{garnish.name}} {{garnish.amount}}
-                </li>
-            </ul>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                </tr>
+                <tr ng-repeat="garnish in recipe.garnishes track by $index" ng-if="$index!=garnishDisplay">
+                    <td>{{garnish.name}}</td>
+                    <td>{{garnish.amount}}</td>
+                </tr>
+            </table>
         </div>
 
         <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>
