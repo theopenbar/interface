@@ -109,6 +109,17 @@
                 </div>
             </div>
         </div>
+
+        <div ng-show="ingredientError">
+            <br>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="ingredientError=null">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                {{ingredientError}}
+            </div>
+        </div>
     </div>
 
     <div class="col-md-6">
@@ -155,7 +166,7 @@
         </div>
 
         <div ng-if="recipe.name==null || liquidDisplay<1">
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-warning" role="alert">
                 <p ng-if="recipe.name==null">
                     A name is required to submit this recipe.
                 </p>

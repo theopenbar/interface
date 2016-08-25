@@ -19,7 +19,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         $scope.liquidIndex = null;
         $scope.liquidDisplay = null;
 
-        // a fresh, blank garnish
+        // same idea for garnish
         $scope.garnishIndex = null;
         $scope.garnishDisplay = null;
 
@@ -34,42 +34,9 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         };
 
         $scope.submitRecipe = function() {
-            // check that each form is filled in
-            var recipe = $scope.recipe;
-
-            // check that name is not blank
-            if (recipe.name == null || recipe.name == "") {
-                $scope.messageError = "Please enter a name for this recipe.";
-                $scope.messageSuccess = null;
-                return false;
-            }
-
-            // check that there is at least one ingredient
-            if (recipe.drinks.length == 0) {
-                $scope.messageError = "Please add at least one drink.";
-                $scope.messageSuccess = null;
-                // return an error
-                return false;
-            }
-
-            // check that all garnishes are fully filled in
-            for (var garnish in recipe.garnishes) {
-                // for each garnish
-                var garnish = recipe.garnishes[garnish];
-                for (var member in garnish) {
-                    if (garnish[member] == null) {
-                        $scope.messageError = "Please fill in all forms for "+garnish.id+".";
-                        $scope.messageSuccess = null;
-                        // return an error
-                        return false;
-                    }
-                }
-            }
-
-            // OK to save to database
-            recipeService.saveRecipe(recipe).then(function (status) {
+            // save to database
+            recipeService.saveRecipe($scope.recipe).then(function (status) {
                 if(status) {
-                    $scope.messageError = null;
                     $scope.messageSuccess = "Recipe saved successfully.";
                     // clear to start a new recipe
                     $scope.recipe = {name: null, drinks: [], garnishes: []};
@@ -148,33 +115,45 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         }
 
         $scope.addLiquidToRecipe = function() {
-            // doesn't work
-            for (var member in $scope.liquid) {
-                if ($scope.liquid[member] == null) {
-                    $scope.messageError = "Please fill in all forms for this liquid.";
-                    $scope.messageSuccess = null;
+            // check that liquid is fully filled in
+            var liquid = $scope.recipe.liquids[$scope.liquidIndex];
+            for (var member in liquid) {
+                if (liquid[member] == null) {
+                    $scope.ingredientError = "Please fill in all forms for this liquid.";
                     // return an error
                     return false;
                 }
             }
+            // otherwise good, clear error if there
+            $scope.ingredientError = null;
 
+            // reset selections for next liquid
             $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
+
+            // display this liquid in the Recipe pane
             $scope.liquidDisplay++;
+
+            // stop displaying liquid edit GUI
             $scope.liquidIndex = null;
         }
 
         $scope.addGarnishToRecipe = function() {
-            // doesn't work
-            for (var member in $scope.liquid) {
-                if ($scope.liquid[member] == null) {
-                    $scope.messageError = "Please fill in all forms for this liquid.";
-                    $scope.messageSuccess = null;
+            // check that garnish is fully filled in
+            var garnish = $scope.recipe.garnishes[$scope.garnishIndex];
+            for (var member in garnish) {
+                if (garnish[member] == null) {
+                    $scope.ingredientError = "Please fill in all forms for this garnish.";
                     // return an error
                     return false;
                 }
             }
+            // otherwise good, clear error if there
+            $scope.ingredientError = null;
 
+            // display this garnish in the Recipe pane
             $scope.garnishDisplay++;
+
+            // stop displaying garnish edit GUI
             $scope.garnishIndex = null;
         }
 }]);
