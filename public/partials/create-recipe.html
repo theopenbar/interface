@@ -126,11 +126,14 @@
             <p>{{liquid.amount}}oz {{liquid.type}} {{liquid.subtype}} {{liquid.brand}} {{liquid.description}} {{liquid.requirement}}</p>
         </div>
 
-        <div class="page-header">
-            <h4>Garnishes</h4>
-        </div>
-        <div ng-repeat="garnish in recipe.garnishes track by $index">
-            <p>{{garnish.name}} {{garnish.amount}}</p>
+        <div class="panel panel-primary" ng-if="garnishDisplay">
+            <div class="panel-heading">Garnishes</div>
+
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="garnish in recipe.garnishes track by $index" ng-if="$index!=garnishDisplay">
+                    {{garnish.name}} {{garnish.amount}}
+                </li>
+            </ul>
         </div>
 
         <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>

@@ -20,6 +20,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
 
         // a fresh, blank garnish
         $scope.garnishIndex = null;
+        $scope.garnishDisplay = null;
 
         $scope.addLiquid = function(){
             $scope.recipe.liquids.push({"id": null, "amount": null, "requirement": true});
@@ -172,6 +173,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
                 }
             }
 
+            $scope.garnishDisplay++;
             $scope.garnishIndex = null;
         }
 
