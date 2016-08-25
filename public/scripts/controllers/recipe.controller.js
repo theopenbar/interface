@@ -14,22 +14,21 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         // stores actual selections
         $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
 
-        // a fresh, blank liquid
-        //$scope.liquid = null;
+        // store the index of the liquid you're currently editing
+        // and index of null means you're not in "edit" mode
         $scope.liquidIndex = null;
 
         // a fresh, blank garnish
-        $scope.garnishEdit = null;
+        $scope.garnishIndex = null;
 
         $scope.addLiquid = function(){
-            // construct with the bare necessities
-            //$scope.liquid = {"id": null, "amount": null, "requirement": true};//, "text": null};
             $scope.recipe.liquids.push({"id": null, "amount": null, "requirement": true});
             $scope.liquidIndex = $scope.recipe.liquids.length-1;
         };
 
         $scope.addGarnish = function(){
-            $scope.garnishEdit = {"name": null, "amount": true};
+            $scope.recipe.garnishes.push({"name": null, "amount": null});
+            $scope.garnishIndex = $scope.recipe.garnishes.length-1;
         };
 
         $scope.submitRecipe = function() {
@@ -148,9 +147,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         }
 
         $scope.addLiquidToRecipe = function() {
-            // create a user-friendly display of the liquid
-            //$scope.createText();
-
+            // doesn't work
             for (var member in $scope.liquid) {
                 if ($scope.liquid[member] == null) {
                     $scope.messageError = "Please fill in all forms for this liquid.";
@@ -160,29 +157,23 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
                 }
             }
 
-            //$scope.recipe.liquids.push($scope.liquid);
             $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
             $scope.liquidIndex = null;
         }
 
-        /*$scope.createText = function() {
-            // handle how descriptive the text needs to be
-            if ($scope.liquid.subtype == "*Any") {
-                $scope.liquid.text = $scope.liquid.amount+"oz of any type of "+$scope.liquid.type;
-            }
-            else if ($scope.liquid.brand == "*Any") {
-                $scope.liquid.text = $scope.liquid.amount+"oz of any type of "+$scope.liquid.subtype+" "+$scope.liquid.type;
-            }
-            else {
-                $scope.liquid.text = $scope.liquid.amount+"oz of "+$scope.liquid.brand+" "+$scope.liquid.description+" "+$scope.liquid.subtype+" "+$scope.liquid.type;
+        $scope.addGarnishToRecipe = function() {
+            // doesn't work
+            for (var member in $scope.liquid) {
+                if ($scope.liquid[member] == null) {
+                    $scope.messageError = "Please fill in all forms for this liquid.";
+                    $scope.messageSuccess = null;
+                    // return an error
+                    return false;
+                }
             }
 
-            // handle "requirement" checkmark
-            if ($scope.liquid.requirement) {
-                $scope.liquid.text += " (requirement)"
-            }
-            else {
-                $scope.liquid.text += " (optional)"
-            }
-        }*/
+            $scope.garnishIndex = null;
+        }
+
+
 }]);
