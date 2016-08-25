@@ -3,7 +3,6 @@
 </div>
 
 <!-- for debugging -->
-<p><b>recipe:</b> {{recipe | json}}</p>
 <p><b>liquidSelection:</b> {{liquidSelection | json}}</p>
 <p><b>liquid:</b> {{liquid | json}}</p>
 <p>{{messageError}}</p>
@@ -115,8 +114,8 @@
         <div class="page-header">
             <h4>Liquids</h4>
         </div>
-        <div data-ng-repeat="liquid in recipe.liquids">
-            <p>{{liquid.text}}</p>
+        <div ng-repeat="liquid in recipe.liquids track by $index">
+            <p>{{liquid}}</p>
         </div>
 
         <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>

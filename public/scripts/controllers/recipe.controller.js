@@ -22,7 +22,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
 
         $scope.addLiquid = function(){
             // construct with the bare necessities
-            $scope.liquid = {"id": null, "amount": null, "requirement": true, "text": null};
+            $scope.liquid = {"id": null, "amount": null, "requirement": true};//, "text": null};
         };
 
         $scope.addGarnish = function(){
@@ -145,7 +145,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
 
         $scope.addLiquidToRecipe = function() {
             // create a user-friendly display of the liquid
-            $scope.liquid.text = $scope.liquid.amount+"oz of any type of "+$scope.liquid.subtype+" "+$scope.liquid.type;
+            //$scope.createText();
 
             for (var member in $scope.liquid) {
                 if ($scope.liquid[member] == null) {
@@ -158,4 +158,25 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
 
             $scope.recipe.liquids.push($scope.liquid);
         }
+
+        /*$scope.createText = function() {
+            // handle how descriptive the text needs to be
+            if ($scope.liquid.subtype == "*Any") {
+                $scope.liquid.text = $scope.liquid.amount+"oz of any type of "+$scope.liquid.type;
+            }
+            else if ($scope.liquid.brand == "*Any") {
+                $scope.liquid.text = $scope.liquid.amount+"oz of any type of "+$scope.liquid.subtype+" "+$scope.liquid.type;
+            }
+            else {
+                $scope.liquid.text = $scope.liquid.amount+"oz of "+$scope.liquid.brand+" "+$scope.liquid.description+" "+$scope.liquid.subtype+" "+$scope.liquid.type;
+            }
+
+            // handle "requirement" checkmark
+            if ($scope.liquid.requirement) {
+                $scope.liquid.text += " (requirement)"
+            }
+            else {
+                $scope.liquid.text += " (optional)"
+            }
+        }*/
 }]);
