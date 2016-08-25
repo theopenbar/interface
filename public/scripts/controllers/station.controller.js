@@ -54,14 +54,6 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage'
             $scope.stationIPEdit = false;
         };
 
-        // change the number of valves
-        $scope.saveNumValves = function(station_id, num_valves) {
-            var stationPromise = stationService.saveNumValves(station_id, num_valves);
-            stationPromise.then(function (station) {
-                $scope.stationReady(station);
-            });
-        };
-
         // edit an ingredient
         $scope.editIngredient = function(event) {
             // http://stackoverflow.com/a/31956122
