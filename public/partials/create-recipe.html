@@ -117,13 +117,15 @@
         <div class="page-header">
             <h3>Recipe</h3>
         </div>
-        <p>{{recipe | json}}</p>
 
-        <div class="page-header">
-            <h4>Liquids</h4>
-        </div>
-        <div ng-repeat="liquid in recipe.liquids track by $index">
-            <p>{{liquid.amount}}oz {{liquid.type}} {{liquid.subtype}} {{liquid.brand}} {{liquid.description}} {{liquid.requirement}}</p>
+        <div class="panel panel-primary" ng-if="liquidDisplay">
+            <div class="panel-heading">Liquids</div>
+
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="liquid in recipe.liquids track by $index" ng-if="$index!=liquidDisplay">
+                    {{liquid.amount}}oz {{liquid.type}} {{liquid.subtype}} {{liquid.brand}} {{liquid.description}} {{liquid.requirement}}
+                </li>
+            </ul>
         </div>
 
         <div class="panel panel-primary" ng-if="garnishDisplay">

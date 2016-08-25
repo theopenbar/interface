@@ -17,6 +17,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         // store the index of the liquid you're currently editing
         // and index of null means you're not in "edit" mode
         $scope.liquidIndex = null;
+        $scope.liquidDisplay = null;
 
         // a fresh, blank garnish
         $scope.garnishIndex = null;
@@ -159,6 +160,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             }
 
             $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
+            $scope.liquidDisplay++;
             $scope.liquidIndex = null;
         }
 
@@ -176,6 +178,4 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             $scope.garnishDisplay++;
             $scope.garnishIndex = null;
         }
-
-
 }]);
