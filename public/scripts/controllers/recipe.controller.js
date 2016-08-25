@@ -78,7 +78,6 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         };
 
         $scope.getSubtypes = function(type) {
-            console.log(type);
             // set selection
              $scope.recipe.liquids[$scope.liquidIndex].type = type;
             // erase all values afterwards
