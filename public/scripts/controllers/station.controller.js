@@ -1,6 +1,5 @@
-app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage', '$location', 'stationService',
-               'liquidService', 'SelectStation', 'WebSocket',
-    function($rootScope, $scope, $state, $localStorage, $location, stationService, liquidService, SelectStation, WebSocket){
+app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage', 'stationService', 'typeService', 'liquidService', 'SelectStation', 'WebSocket',
+                        function($rootScope, $scope, $state, $localStorage, stationService, typeService, liquidService, SelectStation, WebSocket){
 
         // need to declare functions before they are used
         $scope.stationReady = function(station) {
@@ -22,8 +21,8 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$localStorage'
             // for displaying "host":"port"
             $scope.colon = ':';
 
-            // get Types of drinks for editing
-            var promise = liquidService.getTypes();
+            // get all Types on page load
+            var promise = typeService.getTypes();
             promise.then(function (types) {
                 $scope.types = types;
             });
