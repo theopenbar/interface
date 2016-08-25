@@ -154,6 +154,19 @@
             </table>
         </div>
 
-        <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>
+        <div ng-if="recipe.name==null || liquidDisplay<1">
+            <div class="alert alert-danger" role="alert">
+                <p ng-if="recipe.name==null">
+                    A name is required to submit this recipe.
+                </p>
+                <p ng-if="liquidDisplay<1">
+                    At least one liquid is required to submit this recipe.
+                </p>
+            </div>
+        </div>
+
+        <div ng-if="recipe.name!=null && liquidDisplay>0">
+            <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>
+        </div>
     </div>
 </div>
