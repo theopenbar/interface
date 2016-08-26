@@ -29,8 +29,11 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
 
         $scope.getBrands = function() {
             // get all Brands from that Type and Subtype
-            var query = {"type":$scope.ingredient.type, "subtype":$scope.ingredient.subtype};
-            var promise = liquidService.getBrands(query);
+            var query = {
+                "type" : $scope.ingredient.type,
+                "subtype" : $scope.ingredient.subtype
+            };
+            var promise = liquidService.getLiquids(query);
             promise.then(function (brands) {
                 findAndRemove(brands, "brand", "*Any");
                 $scope.brands = brands;
