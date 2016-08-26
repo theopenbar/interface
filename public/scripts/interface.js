@@ -45,9 +45,9 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'LiquidCtrl',
             access: {restricted: false}
         })
-        .state('create-recipe', {
-            url: '/create-recipe',
-            templateUrl: 'partials/create-recipe.html',
+        .state('recipe', {
+            url: '/recipe',
+            templateUrl: 'partials/recipe.html',
             controller: 'RecipeCtrl',
             access: {restricted: false}
         })
