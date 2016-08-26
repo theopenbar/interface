@@ -17,42 +17,27 @@ app.service("liquidService",
         };
         */
 
-        this.getBrands = function(query) {
-            var deferred = $q.defer();
-
-            // return an array
-            var Types = $resource('/api/liquid/brands/', {}, {
-                save: {method: 'POST', isArray:true}
-            });
-
-            Types.save(query, function(brands){
-                deferred.resolve(brands);
-            });
-
-            return deferred.promise;
-        };
-
-        this.getDescriptions = function(query) {
-            var deferred = $q.defer();
-
-            // return an array
-            var Brands = $resource('/api/liquid/descriptions/', {}, {
-                save: {method: 'POST', isArray:true}
-            });
-
-            Brands.save(query, function(descriptions){
-                deferred.resolve(descriptions);
-            });
-
-            return deferred.promise;
-        };
-
         this.saveIngredient = function(ingredient) {
             var deferred = $q.defer();
 
             var Ingredients = $resource('/api/liquid/save');
             Ingredients.save(ingredient, function(ingredient){
                 deferred.resolve(ingredient);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getLiquids = function(query) {
+            var deferred = $q.defer();
+
+            // return an array
+            var Types = $resource('/api/liquid/query/', {}, {
+                save: {method: 'POST', isArray:true}
+            });
+
+            Types.save(query, function(brands){
+                deferred.resolve(brands);
             });
 
             return deferred.promise;
