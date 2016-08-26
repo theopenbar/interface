@@ -17,12 +17,12 @@ app.service("liquidService",
         };
         */
 
-        this.saveIngredient = function(ingredient) {
+        this.saveLiquid = function(liquid) {
             var deferred = $q.defer();
 
-            var Ingredients = $resource('/api/liquid/save');
-            Ingredients.save(ingredient, function(ingredient){
-                deferred.resolve(ingredient);
+            var Liquids = $resource('/api/liquid/save');
+            Liquids.save(liquid, function(status){
+                deferred.resolve(status);
             });
 
             return deferred.promise;

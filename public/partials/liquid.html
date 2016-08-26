@@ -18,21 +18,21 @@
             <tr>
 
                 <td>
-                    <select class="form-control" ng-model="ingredient.type" ng-change="getSubtypes()">
-                        <option ng-repeat="type in types | orderBy:'type'" value="{{type.type}}">{{type.type}}</option>
+                    <select class="form-control" ng-model="liquid.type" ng-change="getSubtypes()">
+                        <option ng-repeat="type in liquidSelection.types | orderBy:'type'" value="{{type.type}}">{{type.type}}</option>
                     </select>
                 </td>
                 <td>
-                    <select class="form-control" ng-model="ingredient.subtype" ng-change="getBrands()">
-                        <option ng-repeat="subtype in subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
+                    <select class="form-control" ng-model="liquid.subtype" ng-change="getBrands()">
+                        <option ng-repeat="subtype in liquidSelection.subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
                     </select>
                 </td>
-                <td><input class="form-control" list="type-brands" ng-model="ingredient.brand"/></td>
-                <td><input class="form-control" type='text' ng-model="ingredient.description"></input></td>
+                <td><input class="form-control" list="type-brands" ng-model="liquid.brand"/></td>
+                <td><input class="form-control" type='text' ng-model="liquid.description"></input></td>
                 <!--
                 <td>
                     list of possible amounts
-                    <select class="form-control" ng-model="ingredient.amount">
+                    <select class="form-control" ng-model="liquid.amount">
 						<option value="1.69">1.69oz / 50mL</option>
 						<option value="6.76">6.76oz / 200mL</option>
 						<option value="12.7">12.7oz / 375mL</option>
@@ -45,9 +45,9 @@
 						<option value="101.4">101.4oz / 3000mL</option>
                     </select>
                 </td>
-                <td><input class="form-control" type='text' ng-model="ingredient.barcode"></input></td>
+                <td><input class="form-control" type='text' ng-model="liquid.barcode"></input></td>
                 -->
-                <td><button class="btn btn-success" ng-click="saveIngredient()">save</button></td>
+                <td><button class="btn btn-success" ng-click="saveLiquid()">save</button></td>
 
             </tr>
         </tbody>
@@ -78,6 +78,6 @@
 <datalist id="type-brands">
     <select>
         <!-- Yo, dawg. I heard you like types. -->
-        <option ng-repeat="brand in brands" value="{{brand.brand}}"></option>
+        <option ng-repeat="brand in liquidSelection.brands" value="{{brand.brand}}"></option>
     </select>
 </datalist>
