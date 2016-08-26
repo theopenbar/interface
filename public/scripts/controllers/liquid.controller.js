@@ -7,13 +7,22 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             $scope.types = types;
         });
 
-        // fill up with null to check against
-        $scope.ingredient = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
+        // remove "*Any" as an option, because you need to pick a specific liquid
+        // http://stackoverflow.com/a/6310763
+        function findAndRemove(array, property, value) {
+            array.forEach(function(result, index) {
+                if(result[property] === value) {
+                    //Remove from array
+                    array.splice(index, 1);
+                }
+            });
+        }
 
         $scope.getSubtypes = function() {
             // get all Subtypes from that Type
             var promise = typeService.getSubtypes($scope.ingredient.type);
             promise.then(function (subtypes) {
+                findAndRemove(subtypes, "subtype", "*Any");
                 $scope.subtypes = subtypes;
             });
         }
@@ -23,6 +32,7 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             var query = {"type":$scope.ingredient.type, "subtype":$scope.ingredient.subtype};
             var promise = liquidService.getBrands(query);
             promise.then(function (brands) {
+                findAndRemove(brands, "brand", "*Any");
                 $scope.brands = brands;
             });
         }
