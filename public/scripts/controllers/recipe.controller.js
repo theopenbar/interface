@@ -49,14 +49,16 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             });
         };
 
-        $scope.getSubtypes = function(type) {
+        $scope.selectType = function(type) {
             // set selection
              $scope.recipe.liquids[$scope.liquidIndex].type = type;
+
             // erase all values afterwards
             $scope.liquidSelection.subtypes = null;
             $scope.liquidSelection.brands = null;
             $scope.liquidSelection.descriptions = null;
             $scope.recipe.liquids[$scope.liquidIndex].id = null;
+
             // get all Subtypes from that Type
             var promise = typeService.getSubtypes(type);
             promise.then(function (subtypes) {
@@ -64,9 +66,10 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             });
         }
 
-        $scope.getBrands = function(subtype) {
+        $scope.selectSubtype = function(subtype) {
             // set selection
              $scope.recipe.liquids[$scope.liquidIndex].subtype = subtype;
+
             // erase all values afterwards
             $scope.liquidSelection.brands = null;
             $scope.liquidSelection.descriptions = null;
@@ -88,9 +91,10 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             }
         }
 
-        $scope.getDescription = function(brand) {
+        $scope.selectBrand = function(brand) {
             // set selection
              $scope.recipe.liquids[$scope.liquidIndex].brand = brand;
+
             // erase all values afterwards
             $scope.descriptions = null;
              $scope.recipe.liquids[$scope.liquidIndex].id = null;
@@ -111,7 +115,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             }
         }
 
-        $scope.chooseDescription = function(description) {
+        $scope.selectDescription = function(description) {
             // set selection
              $scope.recipe.liquids[$scope.liquidIndex].description = description;
              $scope.recipe.liquids[$scope.liquidIndex].id = $scope.liquidSelection.descriptions.filter(function(v) {

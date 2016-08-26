@@ -34,7 +34,7 @@
             <div class="form-group row">
                 <label for="type" class="col-xs-2 col-form-label">Type</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].type" ng-change="getSubtypes(recipe.liquids[liquidIndex].type)">
+                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].type" ng-change="selectType(recipe.liquids[liquidIndex].type)">
                         <option ng-repeat="type in types | orderBy:'type'" value="{{type.type}}">{{type.type}}</option>
                     </select>
                 </div>
@@ -43,7 +43,7 @@
             <div class="form-group row" ng-if="liquidSelection.subtypes">
                 <label for="type" class="col-xs-2 col-form-label">Subtype</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].subtype" ng-change="getBrands(recipe.liquids[liquidIndex].subtype)">
+                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].subtype" ng-change="selectSubtype(recipe.liquids[liquidIndex].subtype)">
                         <option ng-repeat="subtype in liquidSelection.subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
                     </select>
                 </div>
@@ -52,7 +52,7 @@
             <div class="form-group row" ng-if="liquidSelection.brands">
                 <label for="brand" class="col-xs-2 col-form-label">Brand</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].brand" ng-change="getDescription(recipe.liquids[liquidIndex].brand)">
+                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].brand" ng-change="selectBrand(recipe.liquids[liquidIndex].brand)">
                         <option ng-repeat="brand in liquidSelection.brands | orderBy:'brand'" value="{{brand.brand}}">{{brand.brand}}</option>
                     </select>
                 </div>
@@ -61,7 +61,7 @@
             <div class="form-group row" ng-if="liquidSelection.descriptions">
                 <label for="description" class="col-xs-2 col-form-label">Description</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].description" ng-change="chooseDescription(recipe.liquids[liquidIndex].description)">
+                    <select class="form-control" ng-model="recipe.liquids[liquidIndex].description" ng-change="selectDescription(recipe.liquids[liquidIndex].description)">
                         <option ng-repeat="description in liquidSelection.descriptions | orderBy:'description'" value="{{description.description}}">{{description.description}}</option>
                     </select>
                 </div>
