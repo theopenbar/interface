@@ -6,9 +6,7 @@ var liquidSchema = new Schema({
     type: String,
     subtype: String,
     brand: String,
-    description: String,
-    amount: Number,
-    barcode: String
+    description: String
 }, {collection: 'liquids'});
 
 module.exports = dbConns.old.model('Liquid', liquidSchema);
