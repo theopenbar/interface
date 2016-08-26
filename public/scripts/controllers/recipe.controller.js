@@ -54,9 +54,10 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
              $scope.recipe.liquids[$scope.liquidIndex].type = type;
 
             // erase all values afterwards
-            $scope.liquidSelection.subtypes = null;
-            $scope.liquidSelection.brands = null;
-            $scope.liquidSelection.descriptions = null;
+            delete $scope.recipe.liquids[$scope.liquidIndex]["subtype"];
+            delete $scope.recipe.liquids[$scope.liquidIndex]["brand"];
+            delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
+            // reset ID
             $scope.recipe.liquids[$scope.liquidIndex].id = null;
 
             // get all Subtypes from that Type
@@ -71,24 +72,34 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
              $scope.recipe.liquids[$scope.liquidIndex].subtype = subtype;
 
             // erase all values afterwards
-            $scope.liquidSelection.brands = null;
-            $scope.liquidSelection.descriptions = null;
-             $scope.recipe.liquids[$scope.liquidIndex].id = null;
-            if (subtype == "*Any") {
-                // get ID for "brand" : "*Any"
-                // http://stackoverflow.com/a/7364203
-                 $scope.recipe.liquids[$scope.liquidIndex].id = $scope.liquidSelection.subtypes.filter(function(v) {
-                    return v.brand === "*Any"; // Filter out the appropriate one
-                })[0]._id;
-            }
-            else {
-                // get all Brands from that Type and Subtype
-                var query = {"type":$scope.type, "subtype":subtype};
-                var promise = liquidService.getBrands(query);
-                promise.then(function (brands) {
-                    $scope.liquidSelection.brands = brands;
-                });
-            }
+            delete $scope.recipe.liquids[$scope.liquidIndex]["brand"];
+            delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
+            // reset ID
+            $scope.recipe.liquids[$scope.liquidIndex].id = null;
+
+            // query for liquids from the Type and Subtype
+            var query = {
+                "type" : $scope.recipe.liquids[$scope.liquidIndex].type,
+                "subtype" : subtype
+            };
+            var promise = liquidService.getLiquids(query);
+            promise.then(function (brands) {
+                if (subtype == "*Any") {
+                    // get liquid ID for "subtype" : "*Any"
+                    // http://stackoverflow.com/a/7364203
+                    $scope.recipe.liquids[$scope.liquidIndex].id = brands.filter(function(v) {
+                        return v.subtype === "*Any"; // Filter out the appropriate one
+                    })[0]._id;
+                }
+                else {
+                    // remove duplicate Brands
+                    // http://stackoverflow.com/a/31963129
+                    $scope.liquidSelection.brands = brands.reduceRight(function (r, a) {
+                        r.some(function (b) { return a.brand === b.brand; }) || r.push(a);
+                        return r;
+                    }, []);
+                }
+            });
         }
 
         $scope.selectBrand = function(brand) {
@@ -96,10 +107,12 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
              $scope.recipe.liquids[$scope.liquidIndex].brand = brand;
 
             // erase all values afterwards
-            $scope.descriptions = null;
-             $scope.recipe.liquids[$scope.liquidIndex].id = null;
+            delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
+            // reset ID
+            $scope.recipe.liquids[$scope.liquidIndex].id = null;
+
             if (brand == "*Any") {
-                // get ID for "brand" : "*Any"
+                // get liquid ID for "brand" : "*Any"
                 // http://stackoverflow.com/a/7364203
                  $scope.recipe.liquids[$scope.liquidIndex].id = $scope.liquidSelection.brands.filter(function(v) {
                     return v.brand === "*Any"; // Filter out the appropriate one
@@ -107,8 +120,12 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             }
             else {
                 // get all Descriptions from that Type and Subtype and Brand
-                var query = {"type":$scope.type, "subtype":$scope.subtype, "brand":brand};
-                var promise = liquidService.getDescriptions(query);
+                var query = {
+                    "type" : $scope.recipe.liquids[$scope.liquidIndex].type,
+                    "subtype" : $scope.recipe.liquids[$scope.liquidIndex].subtype,
+                    "brand" : brand
+                };
+                var promise = liquidService.getLiquids(query);
                 promise.then(function (descriptions) {
                     $scope.liquidSelection.descriptions = descriptions;
                 });
