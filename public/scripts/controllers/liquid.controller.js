@@ -55,14 +55,16 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             }
 
             // convert ingredient amount from text to number
-            ingredient.amount = Number(ingredient.amount);
+            //ingredient.amount = Number(ingredient.amount);
 
             // OK to save to database
             liquidService.saveIngredient(ingredient).then(function (types) {
                 if(types) {
                     $scope.messageError = null;
                     $scope.messageSuccess = "Ingredient saved successfully.";
-                    $scope.ingredient = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
+                    //$scope.ingredient = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
+                    // forget about amount and barcode for now
+                    $scope.ingredient = {type: null, subtype: null, brand: null, description: null};
                 }
             });
         };

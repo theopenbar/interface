@@ -7,8 +7,10 @@
                 <td><b>Subtype</b></td>
                 <td><b>Brand</b></td>
                 <td><b>Description</b></td>
+                <!--
                 <td><b>Amount</b></td>
                 <td><b>Barcode</b></td>
+                -->
                 <td></td>
             </tr>
         </thead>
@@ -27,8 +29,9 @@
                 </td>
                 <td><input class="form-control" list="type-brands" ng-model="ingredient.brand"/></td>
                 <td><input class="form-control" type='text' ng-model="ingredient.description"></input></td>
+                <!--
                 <td>
-                    <!-- list of possible amounts-->
+                    list of possible amounts
                     <select class="form-control" ng-model="ingredient.amount">
 						<option value="1.69">1.69oz / 50mL</option>
 						<option value="6.76">6.76oz / 200mL</option>
@@ -43,6 +46,7 @@
                     </select>
                 </td>
                 <td><input class="form-control" type='text' ng-model="ingredient.barcode"></input></td>
+                -->
                 <td><button class="btn btn-success" ng-click="saveIngredient()">save</button></td>
 
             </tr>
