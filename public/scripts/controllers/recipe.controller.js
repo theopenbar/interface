@@ -19,6 +19,25 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             $scope.garnishDisplay = null;
         }
 
+        function deleteFutureChoices(state) {
+            // erase all values after the current state
+            switch (state) {
+                // no "break" because you always want it to fall through
+                case "subtype":
+                    delete $scope.recipe.liquids[$scope.liquidIndex]["subtype"];
+                    delete $scope.liquidSelection.subtypes;
+                case "brand":
+                    delete $scope.recipe.liquids[$scope.liquidIndex]["brand"];
+                    delete $scope.liquidSelection.brands;
+                case "description":
+                    delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
+                    delete $scope.liquidSelection.descriptions;
+                default:
+                    // always reset ID
+                    $scope.recipe.liquids[$scope.liquidIndex].id = null;
+            }
+        }
+
         // get all Types on page load
         var promise = typeService.getTypes();
         promise.then(function (types) {
@@ -54,11 +73,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
              $scope.recipe.liquids[$scope.liquidIndex].type = type;
 
             // erase all values afterwards
-            delete $scope.recipe.liquids[$scope.liquidIndex]["subtype"];
-            delete $scope.recipe.liquids[$scope.liquidIndex]["brand"];
-            delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
-            // reset ID
-            $scope.recipe.liquids[$scope.liquidIndex].id = null;
+            deleteFutureChoices("subtype");
 
             // get all Subtypes from that Type
             var promise = typeService.getSubtypes(type);
@@ -72,10 +87,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
              $scope.recipe.liquids[$scope.liquidIndex].subtype = subtype;
 
             // erase all values afterwards
-            delete $scope.recipe.liquids[$scope.liquidIndex]["brand"];
-            delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
-            // reset ID
-            $scope.recipe.liquids[$scope.liquidIndex].id = null;
+            deleteFutureChoices("brand");
 
             // query for liquids from the Type and Subtype
             var query = {
@@ -107,9 +119,7 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
              $scope.recipe.liquids[$scope.liquidIndex].brand = brand;
 
             // erase all values afterwards
-            delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
-            // reset ID
-            $scope.recipe.liquids[$scope.liquidIndex].id = null;
+            deleteFutureChoices("description");
 
             if (brand == "*Any") {
                 // get liquid ID for "brand" : "*Any"
