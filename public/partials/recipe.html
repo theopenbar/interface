@@ -144,6 +144,8 @@
                     <th>Description</th>
                     <th>Amount (oz)</th>
                     <th>Requirement</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 <tr ng-repeat="liquid in recipe.liquids track by $index" ng-show="$index!=liquidDisplay">
                     <td>{{liquid.type}}</td>
@@ -152,7 +154,8 @@
                     <td>{{liquid.description}}</td>
                     <td>{{liquid.amount}}</td>
                     <td>{{liquid.requirement}}</td>
-                    <td><input type="button" value="Edit" ng-click="editLiquid($index)"></input></td>
+                    <td><input type="button" class="btn btn-warning" value="Edit" ng-click="editLiquid($index)"></input></td>
+                    <td><input type="button" class="btn btn-danger" value="Delete" ng-click="deleteLiquid($index)"></input></td>
                 </tr>
             </table>
         </div>
