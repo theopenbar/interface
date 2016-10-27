@@ -7,7 +7,9 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             $scope.recipe = {name: null, liquids: [], garnishes: []};
 
             // stores actual selections
-            $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
+            $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null,
+                                        "type": null, "subtype": null, "brand": null,
+                                        "amount": null, "requirement": true};
 
             // store the index of the liquid you're currently editing
             // and index of null means you're not in "edit" mode
@@ -24,28 +26,84 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             switch (state) {
                 // no "break" because you always want it to fall through
                 case "subtype":
-                    delete $scope.recipe.liquids[$scope.liquidIndex]["subtype"];
+                    delete $scope.liquidSelection.subtype;
                     delete $scope.liquidSelection.subtypes;
                 case "brand":
-                    delete $scope.recipe.liquids[$scope.liquidIndex]["brand"];
+                    delete $scope.liquidSelection.brand;
                     delete $scope.liquidSelection.brands;
                 case "description":
-                    delete $scope.recipe.liquids[$scope.liquidIndex]["description"];
+                    delete $scope.liquidSelection.description;
                     delete $scope.liquidSelection.descriptions;
                 default:
-                    // always reset ID
-                    $scope.recipe.liquids[$scope.liquidIndex].id = null;
+                    delete $scope.recipe.liquids[$scope.liquidIndex].id;
+
             }
         }
+
+        function querySubtypes() {
+            // first query subtypes
+            var promise = typeService.getSubtypes($scope.liquidSelection.type);
+            promise.then(function (subtypes) {
+                $scope.liquidSelection.subtypes = subtypes;
+            });
+        }
+
+        function queryBrands() {
+            var query = {
+                "type" : $scope.liquidSelection.type,
+                "subtype" : $scope.liquidSelection.subtype
+            };
+            var promise = liquidService.getLiquids(query);
+            promise.then(function (brands) {
+                if ($scope.liquidSelection.subtype == "*Any") {
+                    // get liquid ID for "subtype" : "*Any"
+                    // http://stackoverflow.com/a/7364203
+                    $scope.recipe.liquids[$scope.liquidIndex].id = brands.filter(function(v) {
+                        return v.subtype === "*Any"; // Filter out the appropriate one
+                    })[0]._id;
+                }
+                else if ($scope.liquidSelection.subtype != null) {
+                    // remove duplicate Brands
+                    // http://stackoverflow.com/a/31963129
+                    $scope.liquidSelection.brands = brands.reduceRight(function (r, a) {
+                        r.some(function (b) { return a.brand === b.brand; }) || r.push(a);
+                        return r;
+                    }, []);
+                }
+            });
+        }
+
+        function queryDescriptions() {
+            if ($scope.liquidSelection.brand == "*Any") {
+                // get liquid ID for "brand" : "*Any"
+                // http://stackoverflow.com/a/7364203
+                 $scope.recipe.liquids[$scope.liquidIndex].id = $scope.liquidSelection.brands.filter(function(v) {
+                    return v.brand === "*Any"; // Filter out the appropriate one
+                })[0]._id;
+            }
+            else if ($scope.liquidSelection.brand != null) {
+                // get all Descriptions from that Type and Subtype and Brand
+                var query = {
+                    "type" : $scope.liquidSelection.type,
+                    "subtype" : $scope.liquidSelection.subtype,
+                    "brand" : $scope.liquidSelection.brand
+                };
+                var promise = liquidService.getLiquids(query);
+                promise.then(function (descriptions) {
+                    $scope.liquidSelection.descriptions = descriptions;
+                });
+            }
+        }
+
+
+        // set up default values
+        defaultValues();
 
         // get all Types on page load
         var promise = typeService.getTypes();
         promise.then(function (types) {
             $scope.types = types;
         });
-
-        // set up default values
-        defaultValues();
 
         $scope.addLiquid = function(){
             $scope.recipe.liquids.push({"id": null, "amount": null, "requirement": true});
@@ -68,90 +126,49 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             });
         };
 
-        $scope.selectType = function(type) {
-            // set selection
-             $scope.recipe.liquids[$scope.liquidIndex].type = type;
-
+        $scope.selectType = function() {
             // erase all values afterwards
             deleteFutureChoices("subtype");
 
             // get all Subtypes from that Type
-            var promise = typeService.getSubtypes(type);
-            promise.then(function (subtypes) {
-                $scope.liquidSelection.subtypes = subtypes;
-            });
+            querySubtypes();
         }
 
-        $scope.selectSubtype = function(subtype) {
-            // set selection
-             $scope.recipe.liquids[$scope.liquidIndex].subtype = subtype;
-
+        $scope.selectSubtype = function() {
             // erase all values afterwards
             deleteFutureChoices("brand");
 
             // query for liquids from the Type and Subtype
-            var query = {
-                "type" : $scope.recipe.liquids[$scope.liquidIndex].type,
-                "subtype" : subtype
-            };
-            var promise = liquidService.getLiquids(query);
-            promise.then(function (brands) {
-                if (subtype == "*Any") {
-                    // get liquid ID for "subtype" : "*Any"
-                    // http://stackoverflow.com/a/7364203
-                    $scope.recipe.liquids[$scope.liquidIndex].id = brands.filter(function(v) {
-                        return v.subtype === "*Any"; // Filter out the appropriate one
-                    })[0]._id;
-                }
-                else {
-                    // remove duplicate Brands
-                    // http://stackoverflow.com/a/31963129
-                    $scope.liquidSelection.brands = brands.reduceRight(function (r, a) {
-                        r.some(function (b) { return a.brand === b.brand; }) || r.push(a);
-                        return r;
-                    }, []);
-                }
-            });
+            queryBrands();
         }
 
-        $scope.selectBrand = function(brand) {
-            // set selection
-             $scope.recipe.liquids[$scope.liquidIndex].brand = brand;
-
+        $scope.selectBrand = function() {
             // erase all values afterwards
             deleteFutureChoices("description");
 
-            if (brand == "*Any") {
-                // get liquid ID for "brand" : "*Any"
-                // http://stackoverflow.com/a/7364203
-                 $scope.recipe.liquids[$scope.liquidIndex].id = $scope.liquidSelection.brands.filter(function(v) {
-                    return v.brand === "*Any"; // Filter out the appropriate one
-                })[0]._id;
-            }
-            else {
-                // get all Descriptions from that Type and Subtype and Brand
-                var query = {
-                    "type" : $scope.recipe.liquids[$scope.liquidIndex].type,
-                    "subtype" : $scope.recipe.liquids[$scope.liquidIndex].subtype,
-                    "brand" : brand
-                };
-                var promise = liquidService.getLiquids(query);
-                promise.then(function (descriptions) {
-                    $scope.liquidSelection.descriptions = descriptions;
-                });
-            }
+            // query for descriptions from the Type, Subtype, and Brand
+            queryDescriptions();
         }
 
-        $scope.selectDescription = function(description) {
-            // set selection
-             $scope.recipe.liquids[$scope.liquidIndex].description = description;
+        $scope.selectDescription = function() {
+            // last liquid option, so get id of liquid and set it in recipe
              $scope.recipe.liquids[$scope.liquidIndex].id = $scope.liquidSelection.descriptions.filter(function(v) {
-                    return v.description === description;
+                    return v.description === $scope.liquidSelection.description;
             })[0]._id;
         }
 
         $scope.addLiquidToRecipe = function() {
             // check that liquid is fully filled in
+            $scope.recipe.liquids[$scope.liquidIndex].type = $scope.liquidSelection.type;
+            $scope.recipe.liquids[$scope.liquidIndex].subtype = $scope.liquidSelection.subtype;
+            if ($scope.liquidSelection.subtype != "*Any") {
+                $scope.recipe.liquids[$scope.liquidIndex].brand = $scope.liquidSelection.brand;
+                if ($scope.liquidSelection.brand != "*Any")
+                    $scope.recipe.liquids[$scope.liquidIndex].description = $scope.liquidSelection.description;
+            }
+            $scope.recipe.liquids[$scope.liquidIndex].amount = $scope.liquidSelection.amount;
+            $scope.recipe.liquids[$scope.liquidIndex].requirement = $scope.liquidSelection.requirement;
+
             var liquid = $scope.recipe.liquids[$scope.liquidIndex];
             for (var member in liquid) {
                 if (liquid[member] == null) {
@@ -164,8 +181,9 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             $scope.ingredientError = null;
 
             // reset selections for next liquid
-            $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null};
-
+            $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null,
+                                        "type": null, "subtype": null, "brand": null,
+                                        "amount": null, "requirement": true};
             // display this liquid in the Recipe pane
             $scope.liquidDisplay++;
 
@@ -191,5 +209,17 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
 
             // stop displaying garnish edit GUI
             $scope.garnishIndex = null;
+        }
+
+        $scope.editLiquid = function(index) {
+            $scope.liquidIndex = index;
+            $scope.liquidSelection = $scope.recipe.liquids[index];
+            querySubtypes();
+            queryBrands();
+            queryDescriptions();
+        }
+
+        $scope.editGarnish = function(index) {
+            $scope.garnishIndex = index;
         }
 }]);
