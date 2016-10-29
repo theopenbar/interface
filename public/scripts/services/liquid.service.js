@@ -4,7 +4,7 @@ app.service("liquidService",
         /*
         this.putIngredient = function() {
             var deferred = $q.defer();
-    
+
             var Ingredient = $resource('/api/liquid', {}, {
               update: { method: 'PUT' }
             });
@@ -48,7 +48,7 @@ app.service("liquidService",
 
             var Liquid = $resource('/api/liquid/:id', {id: id});
 
-            Liquid.query(function(liquid){
+            Liquid.get(function(liquid){
                 deferred.resolve(liquid);
             });
 

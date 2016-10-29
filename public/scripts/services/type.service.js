@@ -1,6 +1,5 @@
 app.service("typeService",
     function($resource, $q) {
-
         this.getTypes = function() {
             var deferred = $q.defer();
 
@@ -11,7 +10,7 @@ app.service("typeService",
             });
 
             return deferred.promise;
-        };
+        }
 
         this.getSubtypes = function(type) {
             var deferred = $q.defer();
@@ -23,5 +22,5 @@ app.service("typeService",
             });
 
             return deferred.promise;
-        };
+        }
 });

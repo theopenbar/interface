@@ -1,208 +1,35 @@
 var express = require('express');
 var router = express.Router();
-var mongo = require('mongodb');
-var dbHelper = require('./dbHelper');
+var Station = require('../models/station.model');
 
-/* we'll want this on the main page later
-
-function findDrinks(req, res, next) {
-
-    // Let's find all the recipes
-    var db = req.db;
-    var collection = db.get('drinks');
-    collection.find({},function(err,result){
-        if (!err) {
-            // array of drinks we can make
-            var drinks = [];
-
-            // go through each recipe in collection 'drinks'
-            result.forEach(function(item, index) {
-                // assume true -- will be false if we can't find one ingredient
-                var canMake = true;
-
-                // go through each ingedient in the recipe
-                for(var ingredient in item.recipe){
-                    // make sure that ingredient is in req.ingredients
-                    // returns -1 if not found
-                    if (req.ingredients.indexOf(ingredient) < 0) {
-                        // if there's an ingedient in the recipe that we don't have,
-                        // make it false
-                        canMake = false;
-                    }
-                }
-
-                // as long as we have all ingredients, add recipe to drinks[]
-                if (canMake) {
-                    drinks.push(item.name);
-                }
-            });
-
-            res.render('station', { id: req.id, details: req.json, valves: req.ingredients, "drinks": drinks });
-        } else {
-            res.end('Error in second query. ' + err)
-        }
-    });
-}
-*/
-
-// determines if the id passed as a parameter is valid for the database,
-// and that it is found in the database,
-// and then finally passes the ID on if its good,
-// otherwise returns an error in JSON
 router.get('/:id', function(req, res) {
-    var station_id = req.params.id;
-
-    if (dbHelper.isValidObjectID(station_id))
-    {
-        // look in the stations database for key with id from URL parameter
-        var db = req.db;
-        var collection = db.get('stations');
-        collection.findOne({ "_id": mongo.ObjectID(station_id) },function(err,station){
-            if (err) throw err;
-            if (station !== null) {
-                res.json(station);
-            }
-            else {
-                res.json({"error" : "not_found"});
-            }
-        });
-    }
-    else {
-        res.json({"error" : "not_valid_objectId"});
-    }
+    Station.findById(req.params.id, function (err, station) {
+        if (err) return (err);
+        res.json(station);
+    })
 });
 
-// create a new document in stations and return it's information
-router.put('/', function(req, res) {
-    var db = req.db;
-    var collection = db.get('stations');
-    collection.insert({
-        "ingredients": [],
-        "host": "localhost",
-        "port": 8080,
-        "num_valves": 10
-    }, function(err,id){
-        if (err) throw err;
-        res.json(id);
+router.post('/', function(req, res) {
+    station = new Station(req.body);
+    station.save(function (err, status) {
+        if(err) return (err);
+        res.json(station);
     });
 });
 
-router.post('/ip/:id', function(req, res) {
-    var db = req.db;
-    var collection = db.get('stations');
-    collection.update({ "_id": mongo.ObjectID(req.params.id) },
-        {$set:
-            {
-                host: req.body.host,
-                port: req.body.port
-            }
-        },
-        function(err, ip){
-            if (err) throw err;
-            res.json(ip);
-        });
-});
-
-// http://stackoverflow.com/a/21976486
-function isTrue(value){
-    if (typeof(value) == 'string'){
-        value = value.toLowerCase();
-    }
-    switch(value){
-        case true:
-        case "true":
-        case 1:
-        case "1":
-        case "on":
-        case "yes":
-            return true;
-        default:
-            return false;
-    }
-}
-
-router.post('/ingredient/:id', function(req, res) {
-    var db = req.db;
-    var collection = db.get('stations');
-    // edit item in ingredients array
-    collection.update({ "_id": mongo.ObjectID(req.params.id), "ingredients.valve":parseInt(req.body.valve) },
-        { $set:
-            { 
-                "ingredients.$.type": req.body.type,
-                "ingredients.$.amount": parseFloat(req.body.amount),
-                "ingredients.$.pressurized": isTrue(req.body.pressurized)
-            }
-        },
-        function(err,station){
-            if (err) throw err;
-            res.json({"status":"done"});
-    });
-});
-
-router.post('/valves/:id', function(req, res) {
-    var db = req.db;
-    var collection = db.get('stations');
-
-    // first, update the number of valves in the database
-    collection.update({ "_id": mongo.ObjectID(req.params.id) },
-        {$set:
-            {num_valves: req.body.num_valves}
-        },
-        function(err, valves){
-            if (err) throw err;
-            // don't return here -- more to do
-            //res.json(valves);
-        });
-
-    // add/remove items in ingredients array based on num_valves
-    collection.findOne({ "_id": mongo.ObjectID(req.params.id) },function(err,station){
-        if (err) throw err;
-        if (station !== null) {
-
-            // if less ingredients than num_valves, add some
-            if (station.ingredients.length < station.num_valves) {
-                // loop through new, large num_valves
-                for (var valve_num = 1; valve_num <= station.num_valves; valve_num++) {
-                    var found = false;
-                    // try to find that valve_num
-                    for (var v in station.ingredients) {
-                        if(station.ingredients[v].valve == valve_num){
-                            found = true;
-                        }
-                    }
-                    // if we can't find that valve_num, add it to the array
-                    if (found == false) {
-                        collection.update({ "_id": mongo.ObjectID(req.params.id) },
-                            { $addToSet:
-                                { ingredients:
-                                    {
-                                        "type": "",
-                                        "valve": valve_num,
-                                        "amount": 0,
-                                        "pressurized": false
-                                    }
-                                }
-                            },
-                            function(err,station){
-                                if (err) throw err;
-                        });
-                    }
-                }
-            }
-            // if more ingredients than num_valves, delete some
-            else if (station.ingredients.length > station.num_valves){
-                // loop through valves that are too high
-                for (var valve_num = station.ingredients.length; valve_num > station.num_valves; valve_num--) {
-                    // remove that valve_num
-                    collection.update({ "_id": mongo.ObjectID(req.params.id) },
-                            { $pull : {ingredients: {"valve": valve_num}} },
-                            function(err,station){
-                                if (err) throw err;
-                        });
-                }
-            }
+router.put('/:id', function(req, res) {
+    Station.findById(req.params.id, function(err, station) {
+        if (!station) return next(new Error('Could not find Station'));
+        else {
+            station.modified = new Date();
+            station.update(req.body, function(err, status) {
+                if(err) return (err);
+                Station.findById(req.params.id, function(err, updated_station) {
+                    if(err) return(err);
+                    res.status(status).json(updated_station);
+                });
+            });
         }
-        res.json({"status":"done"});
     });
 });
 

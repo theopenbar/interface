@@ -1,4 +1,208 @@
 <div class="page-header">
+    <h1>Station Configuration</h1>
+</div>
+
+<div class="form-group row">
+    <label for="name" class="col-xs-2 col-md-1 col-form-label">Station Name</label>
+    <div class="col-xs-10">
+        <input class="form-control" type="text" ng-model="station.name">
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="name" class="col-xs-2 col-md-1 col-form-label">Station ID</label>
+    <div class="col-xs-10">
+        <input type="text" class="form-control" ng-value="station._id" readonly>
+        <button class="btn btn-danger" ng-click="removeStationID()">Remove from local storage</button>
+    </div>
+</div>
+
+
+<div ng-show="!stationIPEdit">
+    <div class="form-group row">
+        <label for="address" class="col-xs-2 col-md-1 col-form-label">Station Address</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" ng-value="station.host+':'+station.port" readonly>
+            <button class="btn btn-default" ng-click="editIPAddress()">Edit</button>
+            <button class="btn btn-success" ng-click="sendIDtoController()">Send ID to controller</button>
+        </div>
+    </div>
+</div>
+
+<div ng-show="stationIPEdit">
+    <div class="form-group row">
+        <label for="name" class="col-xs-2 col-md-1 col-form-label">IP/Host :Port</label>
+        <div class="col-xs-10">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="station.host"></input>
+                <span class="input-group-addon">:</span>
+                <input type="number" class="form-control" ng-model="station.port"></input>
+            </div>
+            <button class="btn btn-default" ng-click="saveIPAddress()">Save</button>
+        </div>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="name" class="col-xs-2 col-md-1 col-form-label">Number of Valves</label>
+    <div class="col-xs-10">
+        <input type="number" class="form-control" ng-model="station.numValves"></input>
+        <button class="btn btn-default" ng-click="saveNumValves(station._id, station.numValves)">Save</button>
+    </div>
+</div>
+
+<div ng-show="messageSuccess">
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageSuccess=null">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{messageSuccess}}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="page-header">
+            <h3>Configured Liquids</h3>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Connected Liquids</div>
+
+            <table class="table">
+                <tr>
+                    <th>Valve</th>
+                    <th>Type</th>
+                    <th>Subtype</th>
+                    <th>Brand</th>
+                    <th>Description</th>
+                    <th>Amount Left(oz)</th>
+                    <th>Pressurized</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="liquid in liquidDisplay.connectedLiquids | orderBy: 'liquid.valve' track by $index">
+                    <td>{{liquid.valve}}</td>
+                    <td>{{liquid.type}}</td>
+                    <td>{{liquid.subtype}}</td>
+                    <td>{{liquid.brand}}</td>
+                    <td>{{liquid.description}}</td>
+                    <td>{{liquid.amount}}</td>
+                    <td>{{liquid.pressurized}}</td>
+                    <td>
+                        <input type="button" class="btn btn-warning" value="Edit" ng-click="editConnectedLiquid($index)"></input>
+                        <input type="button" class="btn btn-danger" value="Delete" ng-click="deleteConnectedLiquid($index)"></input>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">On-Hand Liquids</div>
+
+            <table class="table">
+                <tr>
+                    <th>Type</th>
+                    <th>Subtype</th>
+                    <th>Brand</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="liquid in liquidDisplay.onHandLiquids | orderBy: 'liquid.type' track by $index">
+                    <td>{{liquid.type}}</td>
+                    <td>{{liquid.subtype}}</td>
+                    <td>{{liquid.brand}}</td>
+                    <td>{{liquid.description}}</td>
+                    <td>
+                        <input type="button" class="btn btn-warning" value="Edit" ng-click="editOnHandLiquid($index)"></input>
+                        <input type="button" class="btn btn-danger" value="Delete" ng-click="deleteOnHandLiquid($index)"></input>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div ng-show="selectedValve==null && editOnHandLiquidIndex == null">
+            <input type="button" class="btn btn-primary" value="Add On-Hand Liquid" ng-click="addOnHandLiquid()"></input>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div ng-show="selectedValve!=null || editOnHandLiquidIndex!=null">
+            <div class="page-header">
+                <h3>Add Liquid</h3>
+            </div>
+
+            <div class="form-group row">
+                <label for="type" class="col-xs-2 col-form-label">Type</label>
+                <div class="col-xs-10">
+                    <select class="form-control" ng-model="liquidSelection.type" ng-change="selectType()"
+                        ng-options="o.type as o.type for o in types">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" ng-show="liquidSelection.subtypes">
+                <label for="subtype" class="col-xs-2 col-form-label">Subtype</label>
+                <div class="col-xs-10">
+                    <select class="form-control" ng-model="liquidSelection.subtype" ng-change="selectSubtype()"
+                            ng-options="o.subtype as o.subtype for o in liquidSelection.subtypes">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" ng-show="liquidSelection.brands">
+                <label for="brand" class="col-xs-2 col-form-label">Brand</label>
+                <div class="col-xs-10">
+                    <select class="form-control" ng-model="liquidSelection.brand" ng-change="selectBrand()"
+                        ng-options="o.brand as o.brand for o in liquidSelection.brands">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" ng-show="liquidSelection.descriptions">
+                <label for="description" class="col-xs-2 col-form-label">Description</label>
+                <div class="col-xs-10">
+                    <select class="form-control" ng-model="liquidSelection.description" ng-change="selectDescription()"
+                        ng-options="o.description as o.description for o in liquidSelection.descriptions">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" ng-show="liquidSelection.amounts">
+                <label for="amount" class="col-xs-2 col-form-label">Amount (oz)</label>
+                <div class="col-xs-10">
+                    <select class="form-control" ng-model="liquidSelection.amount" ng-change="selectAmount()"
+                        ng-options="o.description as o.description for o in liquidSelection.amounts">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-check row" ng-show="editOnHandLiquidIndex == null">
+                <label for="requirement" class="col-xs-2 col-form-label">Pressurized</label>
+                <div class="col-xs-10">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" ng-model="liquidSelection.pressurized">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="ingredientError">
+            <br>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="ingredientError=null">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ingredientError}}
+            </div>
+        </div>
+        <div ng-show="liquidSelection.id != null">
+            <input type="button" class="btn btn-primary" value="Add Liquid to Station" ng-click="addLiquidToStation()"></input>
+        </div>
+        <br>
+    </div>
+</div>
+
+
+<!--
+<div class="page-header">
     <h3>Stored Station ID</h3>
 </div>
 
@@ -79,7 +283,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="i in station.ingredients track by $index">
-                <!-- display -->
+
                 <td ng-show="actual[$index]">{{station.ingredients[$index].valve}}</td>
                 <td ng-show="actual[$index]">{{station.ingredients[$index].type}}</td>
                 <td ng-show="actual[$index]">{{station.ingredients[$index].brand}}</td>
@@ -87,7 +291,7 @@
                 <td ng-show="actual[$index]">{{station.ingredients[$index].pressurized}}</td>
                 <td ng-show="actual[$index]"><button id="{{station.ingredients[$index].valve}}" ng-click="editIngredient($event)">edit</button></td>
 
-                <!-- edit -->
+
                 <td ng-show="!actual[$index]">{{station.ingredients[$index].valve}}</td>
                 <td ng-show="!actual[$index]"><input list="types" ng-model="station.ingredients[$index].type"/></td>
                 <td ng-show="!actual[$index]"><input type='text' list='list-{{$index+1}}' value='{{station.ingredients[$index].brand}}'></input></td>
@@ -100,10 +304,12 @@
 </div>
 
 
-<!-- list of types -->
+
 <datalist id="types">
     <select>
-        <!-- Yo, dawg. I heard you like types. -->
+
         <option ng-repeat="type in types" value="{{type.type}}"></option>
     </select>
 </datalist>
+
+-->

@@ -38,7 +38,7 @@ app.controller('SelectStationCtrl', ['$rootScope', '$scope', '$state', '$localSt
        // create a new station and return ID
         $scope.createStation = function() {
             // create base station
-            var promise = stationService.putStation();
+            var promise = stationService.createStation();
             promise.then(function (station) {
                 $scope.stationReady(station);
             });

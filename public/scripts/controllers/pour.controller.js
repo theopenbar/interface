@@ -1,10 +1,10 @@
 app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll',
-               'SelectStation', 'drinksService', 'WebSocket',
-    function($scope, $localStorage, $location, $anchorScroll, SelectStation, drinksService, WebSocket){
+               'drinksService', 'WebSocket', 'stationService',
+    function($scope, $localStorage, $location, $anchorScroll, stationService, drinksService, WebSocket){
                
         // tries to find the station ID
         // if it's not there, findStationOnPage will redirect to /select-station
-        SelectStation.findStationOnPage();
+        stationService.findStationOnPage();
 
         var drinksPromise = drinksService.getDrinks();
         drinksPromise.then(function (drinks) {
