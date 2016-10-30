@@ -32,7 +32,7 @@ app.service("liquidService",
             var deferred = $q.defer();
 
             // return an array
-            var Types = $resource('/api/liquid/query/', {}, {
+            var Types = $resource('/api/liquid/query', {}, {
                 save: {method: 'POST', isArray:true}
             });
 

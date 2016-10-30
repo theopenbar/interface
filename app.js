@@ -24,11 +24,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 
 // Make our db accessible to our router
-var db = require('./db_connection');
-app.use(function(req,res,next){
-    req.db = db;
-    next();
-});
+// var db = dbConns.old;
+// app.use(function(req,res,next){
+//     req.db = db;
+//     next();
+// });
 // other things required for app
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -62,7 +62,6 @@ app.use('/:partials', routes);
 
 // server-side routing for APIs
 app.use('/api/account', require('./routes/account'));
-app.use('/api/user', require('./routes/user'));
 app.use('/api/station', require('./routes/station'));
 app.use('/api/type', require('./routes/type'));
 app.use('/api/liquid', require('./routes/liquid'));

@@ -1,21 +1,26 @@
-app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll',
-               'drinksService', 'WebSocket', 'stationService',
-    function($scope, $localStorage, $location, $anchorScroll, stationService, drinksService, WebSocket){
-               
-        // tries to find the station ID
-        // if it's not there, findStationOnPage will redirect to /select-station
-        stationService.findStationOnPage();
+app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScroll', '$q',
+               'stationService', 'liquidService', 'WebSocket',
+    function($scope, $localStorage, $location, $anchorScroll, $q, stationService,
+        liquidService, WebSocket){
 
-        var drinksPromise = drinksService.getDrinks();
-        drinksPromise.then(function (drinks) {
-            $scope.drinks = drinks;
-        });
-        
+        $scope.recipes = [];
         $scope.WebSocket = WebSocket;
+
+
+        // tries to find the station ID,
+        // and if it is there, query the database for it
+        if (stationService.findStationOnPage() == true) {
+            var stationPromise = stationService.getStation($localStorage.stationId);
+            stationPromise.then(function(station) {
+                $scope.station = station;
+                getRecipes();
+            });
+        }
+        // if it's not there, findStationOnPage will redirect to /select-station
 
         // display the list of ingredients
         // so that the user can pour the drink
-        $scope.selectDrink = function(drink) {
+        $scope.selectRecipe = function(recipe) {
             // only allow user to select a new drink if the previous one is done pouring
             // !pourInProgress is true while NOT pouring
             // pourComplete is true afterwards
@@ -24,7 +29,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
                 WebSocket.dismissPourStatus();
 
                 // select drink and display ingredients
-                $scope.drinkSelected = drink;
+                $scope.recipeSelected = recipe;
                 $scope.listIngredients = true;
 
                 // clear out old messages from previous pour
@@ -42,51 +47,54 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
             }
         };
 
-        $scope.pourDrink = function(drink) {
+        $scope.pourDrink = function(recipe) {
             // tell the station to pour the drink
-            WebSocket.sendCommand($localStorage.stationId, '01', drink._id);
+            WebSocket.sendCommand($localStorage.stationId, '01', recipe._id);
 
             // hide recipe after we start pouring
             $scope.listIngredients = false;
         };
 
-        /*
-        Keep this logic in case we want to add the ability to pour drinks
-        where we don't have all available ingredients.
-
-        $scope.pourDrink = function(drink, station) {
-            // stores any additional ingredients you need to add after
-            // the machine pours what it can
-            var addYourself = {};
-
-            // loop through all ingredients in selected drink
-            for(var ingredient in drink.recipe) {
-                var station_ingredient = station.ingredients[ingredient];
-                // see if that ingredient is in station
-                if (station_ingredient == undefined){
-                    // if not, add to addYourself object
-                    addYourself[ingredient] = drink.recipe[ingredient];
+        function getRecipes() {
+            var recipePromise = stationService.getRecipes($scope.station);
+            recipePromise.then(function (recipes) {
+                console.log("Got Recipes");
+                for(i=0; i<recipes.length; i++) {
+                    console.log(recipes[i].name);
+                    $scope.recipes[i] = recipes[i];
+                    setLiquidsInfo();
                 }
-                else{
-                    // cobble together a request
-                    var time = drink.recipe[ingredient] * station_ingredient.oz2time;
-                    var request = "http://" + station.ip_address + "?gpio=" + station_ingredient.pin + "&time=" + time;
-                    // send it out
-                    $http.get(request)
-                        .then(function(response) {
-                            // Should we do anything with the response?
-                            // Should add code to deal with errors or timeout
-                        });
+            });
+        }
+
+        function setLiquidsInfo() {
+            var connectedPromises = [];
+            var onHandPromises = [];
+            for(i=0; i<$scope.station.connectedLiquids.length; i++) {
+                connectedPromises[i] = liquidService.getLiquid($scope.station.connectedLiquids[i].id);
+            }
+            for(i=0; i<$scope.station.onHandLiquids.length; i++) {
+                onHandPromises[i] = liquidService.getLiquid($scope.station.onHandLiquids[i].id);
+            }
+            $q.all(connectedPromises).then(function(liquids) {
+                for(i=0;i<$scope.recipes.length;i++) {
+                    for(j=0;j<$scope.recipes[i].liquids.length;j++) {
+                        $scope.recipes[i].liquids[j].info =
+                            liquids.find(function(liquid){
+                                return liquid._id == $scope.recipes[i].liquids[j].id;
+                            });
+                    }
                 }
-            }
-
-            // hide recipe after successfully pouring
-            $scope.drinkSelected = false;
-
-            // if additional ingredients, show alert
-            if (Object.keys(addYourself).length != 0){
-                $scope.addYourself = addYourself;
-            }
-        };
-        */
+            });
+            $q.all(onHandPromises).then(function(liquids) {
+                for(i=0;i<$scope.recipes.length;i++) {
+                    for(j=0;j<$scope.recipes[i].liquids.length;j++) {
+                        $scope.recipes[i].liquids[j].info =
+                            liquids.find(function(liquid){
+                                return liquid._id == $scope.recipes[i].liquids[j].id;
+                            });
+                    }
+                }
+            });
+        }
 }]);

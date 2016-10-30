@@ -1,6 +1,6 @@
 var mongo = require('mongodb');
 var net = require('net');
-var db = require('../db_connection');
+var Station = require('../models/station.model');
 
 module.exports = function (socket) {
     console.log('Socket.IO Connection Established');
@@ -14,12 +14,11 @@ module.exports = function (socket) {
                 var command = JSON.parse(message);
                 console.log('Received Command: ' + command.command);
                 // Get the provided station's details from the database (need host and port for station)
-                var collection = db.get('stations');
-                collection.findOne({ "_id": mongo.ObjectID(command.stationId) },function(err,station){
-                    if (err) throw err;
-                    if (station !== null) {
-                        sendCommand(socket, station.host, station.port, command.command, command.commandData);
-                    }
+                Station.findById(command.stationId,function(err, station){
+                     if (err) throw err;
+                     if (station !== null) {
+                         sendCommand(socket, station.host, station.port, command.command, command.commandData);
+                     }
                 });
             }
             catch(e) {

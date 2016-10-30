@@ -1,14 +1,15 @@
 <div class="page-header">
-      <h1>Choose a drink</h1>
+      <h1>{{station.name}}</h1>
+      <h2>Choose a drink</h2>
 </div>
 
 <!-- http://stackoverflow.com/a/32358013 -->
 <div class="row">
-    <div ng-repeat="drink in drinks">
+    <div ng-repeat="recipe in recipes">
         <div class="col-lg-2 col-md-3 col-xs-6">
             <button type="button" class="btn padding btn-default btn-block"
-                ng-click="selectDrink(drink)">
-                {{drink.name}}
+                ng-click="selectRecipe(recipe)">
+                {{recipe.name}}
             </button>
         </div>
     </div>
@@ -17,20 +18,24 @@
 </br>
 
 <div class="panel panel-primary" id="recipe" ng-if="listIngredients">
-    <div class="panel-heading">{{drinkSelected.name}}</div>
+    <div class="panel-heading">{{recipeSelected.name}}</div>
 
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat="i in drinkSelected.recipe track by $index">
-            {{drinkSelected.recipe[$index].amount}} oz of {{drinkSelected.recipe[$index].ingredient}}
+        <li class="list-group-item" ng-repeat="i in recipeSelected.liquids track by $index">
+            {{recipeSelected.liquids[$index].amount}} oz of
+            {{recipeSelected.liquids[$index].info.description}}
+            {{recipeSelected.liquids[$index].info.brand}}
+            {{recipeSelected.liquids[$index].info.subtype}} 
+            {{recipeSelected.liquids[$index].info.type}}
         </li>
         <li class="list-group-item">
-            <button type="button" class="btn btn-primary" ng-click="pourDrink(drinkSelected)">Pour drink</button>
+            <button type="button" class="btn btn-primary" ng-click="pourDrink(recipeSelected)">Pour drink</button>
         </li>
     </ul>
 </div>
 
 <div class="panel panel-primary" ng-if="WebSocket.pourInProgress()">
-    <div class="panel-heading">{{drinkSelected.name}}</div>
+    <div class="panel-heading">{{recipeSelected.name}}</div>
 
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="message in WebSocket.messages track by $index">

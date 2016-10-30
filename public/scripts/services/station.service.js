@@ -61,4 +61,17 @@ app.service("stationService",
             return false;
         }
     }
+
+    this.getRecipes = function(station) {
+        var deferred = $q.defer();
+
+        var Recipes = $resource('/api/station/recipes/:id', {id:station._id}, {
+            get: { isArray:true }
+        });
+        Recipes.get(function(recipes){
+            deferred.resolve(recipes);
+        });
+
+        return deferred.promise;
+    }
 });

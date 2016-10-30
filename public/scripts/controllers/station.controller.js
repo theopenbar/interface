@@ -13,6 +13,7 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
         $scope.selectedValve = null;
         $scope.editOnHandLiquidIndex = null;
         $scope.ingredientError = null;
+        $scope.station = {"name":null, "connectedLiquids":[],"onHandLiquids":[],"numValves":0};
 
         // tries to find the station ID,
         // and if it is there, query the database for it
@@ -22,9 +23,6 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
                 $scope.station = station;
                 updateLiquidDisplay();
             });
-        }
-        else {
-            $scope.station = null;
         }
         // if it's not there, findStationOnPage will redirect to /select-station
 

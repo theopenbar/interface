@@ -9,4 +9,4 @@ var liquidSchema = new Schema({
     description: String
 }, {collection: 'liquids'});
 
-module.exports = dbConns.old.model('Liquid', liquidSchema);
+module.exports = dbConns.pub.model('Liquid', liquidSchema);
