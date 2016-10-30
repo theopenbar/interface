@@ -68,59 +68,32 @@ function getMatchingRecipes(liquids, next) {
     var ids = [];
     for (i=0; i<liquids.length; i++)
         ids[i] = liquids[i]._id;
-    var query = {"liquids":{$elemMatch:{"id":{$in:ids}}}};
-    Recipe.find(query, function(err, recipes){
-        var recipes_filtered = [];
 
-        // for each recipe returned
-        for(i=0;i<recipes.length;i++)
-        {
-            // for each liquid in a recipe
-            for(j=0;j<recipes[i].liquids.length;j++){
-                // if the liquid id is not found in the stations liquids
-                // and it is required
-                if(!ids.find(function(element,index,array){
-                    return (element == recipes[i].liquids[j].id
-                        || !(recipes[i].liquids[j].requirement));
-                })) {
-                    // break out of the loop for this recipe's liquids
-                    break;
-                }
-                else if(j==recipes[i].liquids.length-1) {
-                    //else if all liquids have been found, add this recipe
-                    recipes_filtered.push(recipes[i]);
-                }
-            }
-        }
+    // query for all recipes that match at least one of the ids
+    var query = {"liquids":{$elemMatch:{"id":{$in:ids}}}};
+
+    Recipe.find(query, function(err, recipes){
+        if(err) return (err);
+
+        // filter the returned recipes
+        var recipes_filtered = recipes.filter(function(recipe,recipeIndex,recipes){
+            // filter all liquids of each returned reciped to make sure we have all required ingredients
+            var liquids_filtered =  recipe.liquids.filter(function(liquid,liquidIndex,liquids){
+                var ids_filtered = ids.filter(function(id){
+                    return (id == liquid.id || !(liquid.requirement));
+                });
+                // if an Id was found in the station, we have this liquid
+                if(ids_filtered.length > 0) return true;
+                else return false;
+            });
+            // if the number of liquids that we have in the station matches the
+            // number in the recipe, we have all that we need for the recipe
+            if(liquids_filtered.length == recipe.liquids.length) return true;
+            else return false;
+        });
+
         next(err, recipes_filtered);
     });
-}
-
-// define find function for arrays if it isn't already
-if (!Array.prototype.find) {
-  Object.defineProperty(Array.prototype, "find", {
-    value: function(predicate) {
-     'use strict';
-     if (this == null) {
-       throw new TypeError('Array.prototype.find called on null or undefined');
-     }
-     if (typeof predicate !== 'function') {
-       throw new TypeError('predicate must be a function');
-     }
-     var list = Object(this);
-     var length = list.length >>> 0;
-     var thisArg = arguments[1];
-     var value;
-
-     for (var i = 0; i < length; i++) {
-       value = list[i];
-       if (predicate.call(thisArg, value, i, list)) {
-         return value;
-       }
-     }
-     return undefined;
-    }
-  });
 }
 
 module.exports = router;

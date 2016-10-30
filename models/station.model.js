@@ -22,4 +22,4 @@ var stationSchema = new Schema({
     onHandLiquids: [onHandLiquidSchema]
 }, {collection: 'stations'});
 
-module.exports = dbConns.priv.model('Station', stationSchema);
+module.exports = dbConns.old.model('Station', stationSchema);

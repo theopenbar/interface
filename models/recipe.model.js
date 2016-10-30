@@ -19,4 +19,4 @@ var recipeSchema = new Schema({
     garnishes: [garnishSchema]
 }, {collection: 'recipes'});
 
-module.exports = dbConns.pub.model('Recipe', recipeSchema);
+module.exports = dbConns.old.model('Recipe', recipeSchema);
