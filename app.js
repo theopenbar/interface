@@ -9,7 +9,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var dbConns = require('./db_connections');
 var session = require('express-session');
-//var MongoStore = require('connect-mongo')(session);
+var MongoStore = require('connect-mongo')(session);
 
 // create app using express
 var app = express();
@@ -39,10 +39,10 @@ app.use(session({
   secret: 'da big question',
   resave: false,
   saveUninitialized: false,
-  // store: new MongoStore({
-  //     mongooseConnection: dbConns.old,
-  //     ttl: 5*60*60
-  // })
+  store: new MongoStore({
+    mongooseConnection: dbConns.old,
+    ttl: 5*60*60
+  })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
