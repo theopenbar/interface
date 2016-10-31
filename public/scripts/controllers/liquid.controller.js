@@ -69,7 +69,13 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             var promise = liquidService.getLiquids(query);
             promise.then(function (brands) {
                 findAndRemove(brands, "brand", "*Any");
-                $scope.liquidSelection.brands = brands;
+
+                // remove duplicate Brands
+                // http://stackoverflow.com/a/31963129
+                $scope.liquidSelection.brands = brands.reduceRight(function (r, a) {
+                    r.some(function (b) { return a.brand === b.brand; }) || r.push(a);
+                    return r;
+                }, []);
             });
         }
 
