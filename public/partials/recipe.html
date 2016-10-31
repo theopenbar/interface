@@ -23,7 +23,7 @@
     <div class="col-md-6">
         <div ng-show="!addLiquidDisplay">
             <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquidDisplay=true"></input>
-            <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
+            <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnishDisplay=true"></input>
         </div>
 
         <div ng-show="addLiquidDisplay">
@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div ng-show="garnishIndex!=null">
+        <div ng-show="addGarnishDisplay">
             <div class="page-header">
                 <h3>Garnish</h3>
             </div>
@@ -99,20 +99,21 @@
             <div class="form-group row">
                 <label for="name" class="col-xs-2 col-form-label">Name</label>
                 <div class="col-xs-10">
-                    <input class="form-control" type="text" id="name" ng-model="recipe.garnishes[garnishIndex].name">
+                    <input class="form-control" type="text" id="name" ng-model="garnishSelection.name">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="amount" class="col-xs-2 col-form-label">Amount</label>
                 <div class="col-xs-10">
-                    <input class="form-control" type="text" id="amount" ng-model="recipe.garnishes[garnishIndex].amount">
+                    <input class="form-control" type="text" id="amount" ng-model="garnishSelection.amount">
                 </div>
             </div>
 
             <div class="form-check row">
                 <div class="col-xs-12">
                     <input type="button" class="btn btn-primary" value="Add Garnish to Recipe" ng-click="addGarnishToRecipe()"></input>
+                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelGarnish()"></input>
                 </div>
             </div>
         </div>
@@ -162,7 +163,7 @@
             </table>
         </div>
 
-        <div class="panel panel-primary" ng-show="garnishDisplay">
+        <div class="panel panel-primary" ng-show="recipe.garnishes.length">
             <div class="panel-heading">Garnishes</div>
 
             <table class="table">
@@ -172,7 +173,7 @@
                     <th></th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="garnish in recipe.garnishes track by $index" ng-show="$index!=garnishDisplay">
+                <tr ng-repeat="garnish in recipe.garnishes track by $index">
                     <td>{{garnish.name}}</td>
                     <td>{{garnish.amount}}</td>
                     <td><input type="button" class="btn btn-warning" value="Edit" ng-click="editGarnish($index)"></input></td>

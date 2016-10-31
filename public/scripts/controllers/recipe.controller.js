@@ -11,11 +11,6 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             $scope.types = types;
         });
 
-        $scope.addGarnish = function(){
-            $scope.recipe.garnishes.push({"name": null, "amount": null});
-            $scope.garnishIndex = $scope.recipe.garnishes.length-1;
-        };
-
         $scope.submitRecipe = function() {
             // save to database
             recipeService.saveRecipe($scope.recipe).then(function (status) {
@@ -85,9 +80,16 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             }
         }
 
+        $scope.cancelGarnish = function() {
+            // hide add garnish box
+            $scope.addGarnishDisplay = false;
+            // reset selection for next time
+            resetGarnishSelection();
+        }
+
         $scope.addGarnishToRecipe = function() {
             // check that garnish is fully filled in
-            var garnish = $scope.recipe.garnishes[$scope.garnishIndex];
+            var garnish = $scope.garnishSelection;
             for (var member in garnish) {
                 if (garnish[member] == null) {
                     $scope.ingredientError = "Please fill in all forms for this garnish.";
@@ -98,11 +100,14 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             // otherwise good, clear error if there
             $scope.ingredientError = null;
 
-            // display this garnish in the Recipe pane
-            $scope.garnishDisplay++;
+            // hide add garnish box
+            $scope.addGarnishDisplay = false;
 
-            // stop displaying garnish edit GUI
-            $scope.garnishIndex = null;
+            // add garnish to recipe
+            $scope.recipe.garnishes.push($scope.garnishSelection);
+
+            // reset selections for next garnish
+            resetGarnishSelection();
         }
 
         $scope.editLiquid = function(index) {
@@ -123,7 +128,17 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         }
 
         $scope.editGarnish = function(index) {
-            $scope.garnishIndex = index;
+            // copy selected garnish into garnishSelection
+            $scope.garnishSelection = $scope.recipe.garnishes[index];
+            // remove selected garnish from recipe
+            $scope.recipe.garnishes.splice(index,1);
+            // show add garnish box
+            $scope.addGarnishDisplay = true;
+        }
+
+        $scope.deleteGarnish = function(index) {
+            // remove selected garnish from recipe
+            $scope.recipe.garnishes.splice(index,1);
         }
 
         function resetLiquidSelection() {
@@ -132,19 +147,22 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
                                         "amount": null, "requirement": true};
         }
 
+        function resetGarnishSelection() {
+            $scope.garnishSelection = {"name": null, "amount": null};
+        }
+
         function defaultValues() {
             // hide add liquid box
             $scope.addLiquidDisplay = false;
+            // hide add garnish box
+            $scope.addGarnishDisplay = false;
 
-            // stores full recipe
+            // reset full recipe
             $scope.recipe = {name: null, liquids: [], garnishes: []};
 
-            // stores actual selections
+            // reset actual selections
             resetLiquidSelection();
-
-            // same idea for garnish
-            $scope.garnishIndex = null;
-            $scope.garnishDisplay = null;
+            resetGarnishSelection();
         }
 
         function deleteFutureChoices(state) {
