@@ -134,10 +134,7 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
                 }
                 if(index > -1) {
                     // found... we're editing a liquid
-                    $scope.station.connectedLiquids[index] =
-                        {"valve":$scope.selectedValve,"id":$scope.liquidSelection.id,
-                        "amount":$scope.liquidSelection.amount,
-                        "pressurized":$scope.liquidSelection.pressurized};
+                    $scope.station.connectedLiquids[index] = $scope.liquidSelection.id;
                 }
                 else {
                     // this is a new liquid
@@ -147,8 +144,7 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
             }
             else if ($scope.editOnHandLiquidIndex != null) {
                 // we're editing an on-hand liquid
-                $scope.station.onHandLiquids[$scope.editOnHandLiquidIndex] =
-                    {"id":$scope.liquidSelection.id};
+                $scope.station.onHandLiquids[$scope.editOnHandLiquidIndex] = $scope.liquidSelection.id;
                 updateStation();
             }
             // else something is wrong

@@ -3,14 +3,10 @@ var Schema = mongoose.Schema;
 var dbConns = require('../db_connections');
 
 var connectedLiquidSchema = new Schema({
-    id: String,
+    id: {type: Schema.Types.ObjectId, ref:'Liquid'},
     amount: Number,
     pressurized: Boolean,
     valve: Number
-});
-
-var onHandLiquidSchema = new Schema({
-    id: String
 });
 
 var stationSchema = new Schema({
@@ -19,7 +15,7 @@ var stationSchema = new Schema({
     port: Number,
     numValves: Number,
     connectedLiquids: [connectedLiquidSchema],
-    onHandLiquids: [onHandLiquidSchema]
+    onHandLiquids: [{type: Schema.Types.ObjectId, ref: 'Liquid'}]
 }, {collection: 'stations'});
 
 module.exports = dbConns.old.model('Station', stationSchema);

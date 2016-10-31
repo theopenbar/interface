@@ -62,13 +62,13 @@ app.service("stationService",
         }
     }
 
-    this.getRecipes = function(station) {
+    this.getRecipes = function(station, query) {
         var deferred = $q.defer();
 
         var Recipes = $resource('/api/station/recipes/:id', {id:station._id}, {
-            get: { isArray:true }
+            retrieve: { method:'PUT', isArray:true }
         });
-        Recipes.get(function(recipes){
+        Recipes.retrieve(query, function(recipes){
             deferred.resolve(recipes);
         });
 

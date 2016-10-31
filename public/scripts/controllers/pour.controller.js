@@ -13,7 +13,7 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
             var stationPromise = stationService.getStation($localStorage.stationId);
             stationPromise.then(function(station) {
                 $scope.station = station;
-                getRecipes();
+                getAllRecipes();
             });
         }
         // if it's not there, findStationOnPage will redirect to /select-station
@@ -55,46 +55,11 @@ app.controller('PourCtrl', ['$scope', '$localStorage', '$location', '$anchorScro
             $scope.listIngredients = false;
         };
 
-        function getRecipes() {
-            var recipePromise = stationService.getRecipes($scope.station);
+        function getAllRecipes() {
+            var query = {"name":{$exists: true}};
+            var recipePromise = stationService.getRecipes($scope.station, query);
             recipePromise.then(function (recipes) {
-                console.log("Got Recipes");
-                for(i=0; i<recipes.length; i++) {
-                    console.log(recipes[i].name);
-                    $scope.recipes[i] = recipes[i];
-                    setLiquidsInfo();
-                }
-            });
-        }
-
-        function setLiquidsInfo() {
-            var connectedPromises = [];
-            var onHandPromises = [];
-            for(i=0; i<$scope.station.connectedLiquids.length; i++) {
-                connectedPromises[i] = liquidService.getLiquid($scope.station.connectedLiquids[i].id);
-            }
-            for(i=0; i<$scope.station.onHandLiquids.length; i++) {
-                onHandPromises[i] = liquidService.getLiquid($scope.station.onHandLiquids[i].id);
-            }
-            $q.all(connectedPromises).then(function(liquids) {
-                for(i=0;i<$scope.recipes.length;i++) {
-                    for(j=0;j<$scope.recipes[i].liquids.length;j++) {
-                        $scope.recipes[i].liquids[j].info =
-                            liquids.find(function(liquid){
-                                return liquid._id == $scope.recipes[i].liquids[j].id;
-                            });
-                    }
-                }
-            });
-            $q.all(onHandPromises).then(function(liquids) {
-                for(i=0;i<$scope.recipes.length;i++) {
-                    for(j=0;j<$scope.recipes[i].liquids.length;j++) {
-                        $scope.recipes[i].liquids[j].info =
-                            liquids.find(function(liquid){
-                                return liquid._id == $scope.recipes[i].liquids[j].id;
-                            });
-                    }
-                }
+                $scope.recipes = recipes;
             });
         }
 }]);

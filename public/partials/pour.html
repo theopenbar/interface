@@ -23,10 +23,10 @@
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="i in recipeSelected.liquids track by $index">
             {{recipeSelected.liquids[$index].amount}} oz of
-            {{recipeSelected.liquids[$index].info.description}}
-            {{recipeSelected.liquids[$index].info.brand}}
-            {{recipeSelected.liquids[$index].info.subtype}} 
-            {{recipeSelected.liquids[$index].info.type}}
+            {{recipeSelected.liquids[$index].id.brand}} Brand:
+            {{recipeSelected.liquids[$index].id.description}}
+            ({{recipeSelected.liquids[$index].id.type}},
+            {{recipeSelected.liquids[$index].id.subtype}})
         </li>
         <li class="list-group-item">
             <button type="button" class="btn btn-primary" ng-click="pourDrink(recipeSelected)">Pour drink</button>

@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var dbConns = require('../db_connections');
 
 var liquidSchema = new Schema({
-    id: String,
+    id: {type: Schema.Types.ObjectId, ref:'Liquid'},
     amount: Number,
     requirement: Boolean
 });
