@@ -21,12 +21,12 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div ng-show="liquidIndex==null && garnishIndex==null">
-            <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquid()"></input>
+        <div ng-show="!addLiquidDisplay">
+            <input type="button" class="btn btn-primary" value="Add Liquid" ng-click="addLiquidDisplay=true"></input>
             <input type="button" class="btn btn-primary" value="Add Garnish" ng-click="addGarnish()"></input>
         </div>
 
-        <div ng-show="liquidIndex!=null">
+        <div ng-show="addLiquidDisplay">
             <div class="page-header">
                 <h3>Liquid</h3>
             </div>
@@ -82,11 +82,11 @@
                     </label>
                 </div>
             </div>
-            <div ng-show="liquidSelection.id != null">
-                <div class="form-group row">
-                    <div class="col-xs-10">
-                        <input type="button" class="btn btn-primary" value="Add Liquid to Recipe" ng-click="addLiquidToRecipe()"></input>
-                    </div>
+
+            <div class="form-group row">
+                <div class="col-xs-10">
+                    <input type="button" class="btn btn-primary" value="Add Liquid to Recipe" ng-click="addLiquidToRecipe()"></input>
+                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelLiquid()"></input>
                 </div>
             </div>
         </div>
@@ -135,7 +135,7 @@
             <h3>Recipe</h3>
         </div>
 
-        <div class="panel panel-primary" ng-show="liquidDisplay">
+        <div class="panel panel-primary" ng-show="recipe.liquids.length">
             <div class="panel-heading">Liquids</div>
 
             <table class="table">
@@ -148,7 +148,7 @@
                     <th>Requirement</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="liquid in recipe.liquids track by $index" ng-show="$index!=liquidDisplay">
+                <tr ng-repeat="liquid in recipe.liquids track by $index">
                     <td>{{liquid.type}}</td>
                     <td>{{liquid.subtype}}</td>
                     <td>{{liquid.brand}}</td>
@@ -183,18 +183,18 @@
             </table>
         </div>
 
-        <div ng-show="recipe.name==null || liquidDisplay<1">
+        <div ng-show="recipe.name==null || !recipe.liquids.length">
             <div class="alert alert-warning" role="alert">
                 <p ng-show="recipe.name==null">
                     A name is required to submit this recipe.
                 </p>
-                <p ng-show="liquidDisplay<1">
+                <p ng-show="!recipe.liquids.length">
                     At least one liquid is required to submit this recipe.
                 </p>
             </div>
         </div>
 
-        <div ng-show="recipe.name!=null && liquidDisplay>0">
+        <div ng-show="recipe.name!=null && recipe.liquids.length">
             <input type="button" class="btn btn-success" value="Submit Recipe" ng-click="submitRecipe()"></input>
         </div>
     </div>

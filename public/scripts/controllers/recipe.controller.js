@@ -11,11 +11,6 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             $scope.types = types;
         });
 
-        $scope.addLiquid = function(){
-            $scope.recipe.liquids.push({"id": null, "amount": null, "requirement": true});
-            $scope.liquidIndex = $scope.recipe.liquids.length-1;
-        };
-
         $scope.addGarnish = function(){
             $scope.recipe.garnishes.push({"name": null, "amount": null});
             $scope.garnishIndex = $scope.recipe.garnishes.length-1;
@@ -63,6 +58,13 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             })[0]._id;
         }
 
+        $scope.cancelLiquid = function() {
+            // hide add liquid box
+            $scope.addLiquidDisplay = false;
+            // reset selection for next time
+            resetLiquidSelection();
+        }
+
         $scope.addLiquidToRecipe = function() {
             // check that liquid is fully filled in (i.e. has an ID assigned)
             if($scope.liquidSelection.id == null || $scope.liquidSelection.amount == null) {
@@ -71,17 +73,15 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
             else {
                 // otherwise good, clear error if there and add
                 $scope.ingredientError = null;
-                $scope.recipe.liquids[$scope.liquidIndex] = $scope.liquidSelection;
+
+                // hide add liquid box
+                $scope.addLiquidDisplay = false;
+
+                // add liquid to recipe
+                $scope.recipe.liquids.push($scope.liquidSelection);
 
                 // reset selections for next liquid
-                $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null,
-                                            "type": null, "subtype": null, "brand": null,
-                                            "amount": null, "requirement": true};
-                // display this liquid in the Recipe pane
-                $scope.liquidDisplay++;
-
-                // stop displaying liquid edit GUI
-                $scope.liquidIndex = null;
+                resetLiquidSelection();
             }
         }
 
@@ -106,30 +106,41 @@ app.controller('RecipeCtrl', ['$scope', 'typeService', 'liquidService', 'recipeS
         }
 
         $scope.editLiquid = function(index) {
-            $scope.liquidIndex = index;
+            // copy selected liquid into liquidSelection
             $scope.liquidSelection = $scope.recipe.liquids[index];
+            // remove selected liquid from recipe
+            $scope.recipe.liquids.splice(index,1);
+            // show add liquid box
+            $scope.addLiquidDisplay = true;
             querySubtypes();
             queryBrands();
             queryDescriptions();
+        }
+
+        $scope.deleteLiquid = function(index) {
+            // remove selected liquid from recipe
+            $scope.recipe.liquids.splice(index,1);
         }
 
         $scope.editGarnish = function(index) {
             $scope.garnishIndex = index;
         }
 
+        function resetLiquidSelection() {
+            $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null,
+                                        "type": null, "subtype": null, "brand": null,
+                                        "amount": null, "requirement": true};
+        }
+
         function defaultValues() {
+            // hide add liquid box
+            $scope.addLiquidDisplay = false;
+
             // stores full recipe
             $scope.recipe = {name: null, liquids: [], garnishes: []};
 
             // stores actual selections
-            $scope.liquidSelection = {"subtypes": null, "brands": null, "descriptions": null,
-                                        "type": null, "subtype": null, "brand": null,
-                                        "amount": null, "requirement": true};
-
-            // store the index of the liquid you're currently editing
-            // and index of null means you're not in "edit" mode
-            $scope.liquidIndex = null;
-            $scope.liquidDisplay = null;
+            resetLiquidSelection();
 
             // same idea for garnish
             $scope.garnishIndex = null;
