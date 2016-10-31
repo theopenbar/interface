@@ -13,7 +13,7 @@ router.post('/save', function(req, res) {
 
 router.post('/query', function(req, res) {
     // query based on Type and/or Subtype and/or Brand
-    Liquid.find(req.body, function (err, descriptions) {
+    Liquid.find(req.body).exec(function (err, descriptions) {
         if (err) return res.status(500).json({err: err});
 
         res.json(descriptions);
@@ -21,7 +21,7 @@ router.post('/query', function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    Liquid.findOne({"_id": req.params.id}, function (err, liquid) {
+    Liquid.findById(req.params.id).exec(function (err, liquid) {
         if (err) return res.status(500).json({err: err});
         res.json(liquid);
     })
