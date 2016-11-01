@@ -137,18 +137,28 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
                 }
             }
 
+            // check that liquid doesn't already exsist
+            // TODO: liquid exsisting is OK when you're creating a new bottle for that liquid
+            if ($scope.liquidId != null) {
+                $scope.messageError = "This liquid already exsists in the database.";
+                $scope.messageSuccess = null;
+                // return an error
+                return false;
+            }
+            // else, OK to create in database
+            else {
+                liquidService.saveLiquid(liquid).then(function (types) {
+                    if(types) {
+                        $scope.messageError = null;
+                        $scope.messageSuccess = "Liquid saved successfully.";
+                        //$scope.liquid = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
+                        // forget about amount and barcode for now
+                        $scope.liquid = {type: null, subtype: null, brand: null, description: null};
+                    }
+                });
+            }
+
             // convert liquid amount from text to number
             //liquid.amount = Number(liquid.amount);
-
-            // OK to save to database
-            liquidService.saveLiquid(liquid).then(function (types) {
-                if(types) {
-                    $scope.messageError = null;
-                    $scope.messageSuccess = "Liquid saved successfully.";
-                    //$scope.liquid = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
-                    // forget about amount and barcode for now
-                    $scope.liquid = {type: null, subtype: null, brand: null, description: null};
-                }
-            });
         };
 }]);
