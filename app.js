@@ -36,13 +36,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret: 'da big question',
-  resave: false,
-  saveUninitialized: false,
-  store: new MongoStore({
-    mongooseConnection: dbConns.old,
-    ttl: 5*60*60
-  })
+    secret: 'da big question',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+        mongooseConnection: dbConns.old,
+        ttl: 5*60*60
+    })
 }));
 app.use(passport.initialize());
 app.use(passport.session());

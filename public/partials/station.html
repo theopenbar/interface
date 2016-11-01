@@ -38,7 +38,6 @@
                 <span class="input-group-addon">:</span>
                 <input type="number" class="form-control" ng-model="station.port"></input>
             </div>
-            <button class="btn btn-default" ng-click="saveIPAddress()">Save</button>
         </div>
     </div>
 </div>
@@ -47,7 +46,12 @@
     <label for="name" class="col-xs-2 col-md-1 col-form-label">Number of Valves</label>
     <div class="col-xs-10">
         <input type="number" class="form-control" ng-model="station.numValves"></input>
-        <button class="btn btn-default" ng-click="saveNumValves()">Save</button>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-1">
+        <button class="btn btn-primary" ng-click="saveStation()">Save Station</button>
     </div>
 </div>
 
@@ -82,10 +86,10 @@
                 </tr>
                 <tr ng-repeat="liquid in liquidDisplay.connectedLiquids | orderBy: 'liquid.valve' track by $index">
                     <td>{{liquid.valve}}</td>
-                    <td>{{liquid.type}}</td>
-                    <td>{{liquid.subtype}}</td>
-                    <td>{{liquid.brand}}</td>
-                    <td>{{liquid.description}}</td>
+                    <td>{{liquid.id.type}}</td>
+                    <td>{{liquid.id.subtype}}</td>
+                    <td>{{liquid.id.brand}}</td>
+                    <td>{{liquid.id.description}}</td>
                     <td>{{liquid.amount}}</td>
                     <td>{{liquid.pressurized}}</td>
                     <td>
@@ -138,7 +142,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.subtypes">
+            <div class="form-group row" ng-show="liquidSelection.type!=null">
                 <label for="subtype" class="col-xs-2 col-form-label">Subtype</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.subtype" ng-change="selectSubtype()"
@@ -147,7 +151,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.brands">
+            <div class="form-group row" ng-show="liquidSelection.subtype!=null">
                 <label for="brand" class="col-xs-2 col-form-label">Brand</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.brand" ng-change="selectBrand()"
@@ -156,7 +160,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.descriptions">
+            <div class="form-group row" ng-show="liquidSelection.brand!=null">
                 <label for="description" class="col-xs-2 col-form-label">Description</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.description" ng-change="selectDescription()"
@@ -165,7 +169,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.amounts">
+            <div class="form-group row" ng-show="liquidSelection.description!=null && selectedValve!=null">
                 <label for="amount" class="col-xs-2 col-form-label">Amount (oz)</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.amount" ng-change="selectAmount()"
@@ -178,7 +182,7 @@
                 <label for="requirement" class="col-xs-2 col-form-label">Pressurized</label>
                 <div class="col-xs-10">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" ng-model="liquidSelection.pressurized">
+                        <input class="form-check-input" type="checkbox" ng-model="liquidSelection.pressurized" ng-click="selectPressurized()">
                     </label>
                 </div>
             </div>
@@ -193,8 +197,15 @@
                 {{ingredientError}}
             </div>
         </div>
-        <div ng-show="liquidSelection.id != null">
-            <input type="button" class="btn btn-primary" value="Add Liquid to Station" ng-click="addLiquidToStation()"></input>
+        <div class="form-check row">
+            <div class="col-xs-12">
+                <div ng-show="liquidSelection.id != null">
+                    <input type="button" class="btn btn-primary" value="Save Liquid" ng-click="addLiquidToStation()"></input>
+                </div>
+                <div ng-show="selectedValve != null || editOnHandLiquidIndex != null">
+                    <input type="button" class="btn btn-danger" value="Cancel/Delete" ng-click="cancelLiquid()"></input>
+                </div>
+            </div>
         </div>
         <br>
     </div>

@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var Station = require('../models/station.model');
-var Liquid = require('../models/liquid.model');
 var Recipe = require('../models/recipe.model');
 
 router.get('/:id', function(req, res) {
-    Station.findById(req.params.id, function (err, station) {
+    Station.findById(req.params.id).populate(['connectedLiquids.id','onHandLiquids'])
+    .exec(function (err, station) {
         if (err) return res.status(500).json({err: err});
         res.json(station);
     })
@@ -24,13 +24,13 @@ router.put('/:id', function(req, res) {
         if (!station) return next(new Error('Could not find Station'));
         else {
             var new_station = req.body;
-            station.modified = new Date();
             station.update(new_station, function(err, status) {
                 if (err) {
                     console.log(err);
                     return res.status(500).json({err: err});
                 }
-                Station.findById(req.params.id, function(err, updated_station) {
+                Station.findById(req.params.id).populate(['connectedLiquids.id','onHandLiquids'])
+                .exec( function(err, updated_station) {
                     if (err) {
                         console.log(err);
                         return res.status(500).json({err: err});
