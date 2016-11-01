@@ -43,18 +43,19 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
             $scope.stationIPEdit = true;
         }
 
-        $scope.saveIPAddress = function() {
-            $scope.messageSuccess = null;
-            $scope.editIPAddress = false;
-            updateStation();
-        }
-
         $scope.sendIDtoController = function() {
             WebSocket.sendCommand($scope.station._id, '06', $scope.station._id);
         }
 
-        $scope.saveNumValves = function() {
+        $scope.saveStation = function() {
             $scope.messageSuccess = null;
+            $scope.stationIPEdit = false;
+            // remove any liquids connected to higher valves if the numValves decreased
+            if($scope.station.numValves < $scope.station.connectedLiquids.length){
+                $scope.station.connectedLiquids.filter(function(liquid, index, liquids){
+                    return liquid.valve <= $scope.station.numValves;
+                });
+            }
             updateStation();
         }
 
@@ -138,11 +139,20 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
             }
             else if ($scope.editOnHandLiquidIndex != null) {
                 // we're adding an on-hand liquid
-                $scope.station.onHandLiquids[$scope.editOnHandLiquidIndex] = $scope.liquidSelection.id;
+                $scope.station.onHandLiquids.push($scope.liquidSelection.id);
                 updateStation();
             }
             // else something is wrong
             else $scope.ingredientError = "Add Liquid Internal Error";
+        }
+
+        $scope.cancelLiquid = function() {
+            if($scope.selectedValve != null && $scope.editOnHandLiquidIndex == null) {
+                // this is a connectedLiquid being selected, we need to delete it
+                $scope.deleteConnectedLiquid($scope.selectedValve-1);
+            }
+            // else it's an onHandLiquid and was already deleted, so just update
+            else updateStation();
         }
 
         $scope.editConnectedLiquid = function(index) {
