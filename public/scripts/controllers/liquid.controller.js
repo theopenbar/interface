@@ -5,6 +5,9 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
         // make a default object so we can tell when it's all filled in
         $scope.liquid = {type: null, subtype: null, brand: null, description: null, id: null};
 
+        // create bottle for this liquid
+        $scope.bottle = false;
+
         // stores actual selections
         $scope.liquidSelection = {"types": null, "subtypes": null, "brands": null};
     }

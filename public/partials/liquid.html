@@ -7,16 +7,12 @@
                 <th>Subtype</th>
                 <th>Brand</th>
                 <th>Description</th>
-                <!--
-                <th>Amount</th>
-                <th>Barcode</th>
-                -->
+                <th>Bottle?</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             <tr>
-
                 <td>
                     <select class="form-control" ng-model="liquid.type" ng-change="getSubtypes()">
                         <option ng-repeat="type in liquidSelection.types | orderBy:'type'" value="{{type.type}}">{{type.type}}</option>
@@ -29,9 +25,25 @@
                 </td>
                 <td><input class="form-control" list="type-brands" ng-model="liquid.brand" ng-change="getDescriptions()"/></td>
                 <td><input class="form-control" list="type-descriptions" ng-model="liquid.description" ng-change="getId()"></td>
-                <!--
+                <td><input class="form-check-input" type="checkbox" ng-model="bottle"></td>
+                <td><button class="btn btn-success" ng-click="saveLiquid()">save</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="table-responsive" ng-show="bottle">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Barcode</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
                 <td>
-                    list of possible amounts
+                    <!-- list of possible amounts -->
                     <select class="form-control" ng-model="liquid.amount">
 						<option value="1.69">1.69oz / 50mL</option>
 						<option value="6.76">6.76oz / 200mL</option>
@@ -46,9 +58,6 @@
                     </select>
                 </td>
                 <td><input class="form-control" type='text' ng-model="liquid.barcode"></input></td>
-                -->
-                <td><button class="btn btn-success" ng-click="saveLiquid()">save</button></td>
-
             </tr>
         </tbody>
     </table>
