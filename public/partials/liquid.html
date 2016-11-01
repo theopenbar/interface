@@ -27,8 +27,8 @@
                         <option ng-repeat="subtype in liquidSelection.subtypes | orderBy:'subtype'" value="{{subtype.subtype}}">{{subtype.subtype}}</option>
                     </select>
                 </td>
-                <td><input class="form-control" list="type-brands" ng-model="liquid.brand"/></td>
-                <td><input class="form-control" type='text' ng-model="liquid.description"></input></td>
+                <td><input class="form-control" list="type-brands" ng-model="liquid.brand" ng-change="getDescriptions()"/></td>
+                <td><input class="form-control" list="type-descriptions" ng-model="liquid.description"></input></td>
                 <!--
                 <td>
                     list of possible amounts
@@ -74,10 +74,16 @@
     </div>
 </div>
 
-<!-- list of Types cooresponding to the selected Brand-->
+<!-- list of Brands cooresponding to the selected Subtype -->
 <datalist id="type-brands">
     <select>
-        <!-- Yo, dawg. I heard you like types. -->
         <option ng-repeat="brand in liquidSelection.brands" value="{{brand.brand}}"></option>
+    </select>
+</datalist>
+
+<!-- list of Descriptions cooresponding to the selected Brand -->
+<datalist id="type-descriptions">
+    <select>
+        <option ng-repeat="description in liquidSelection.descriptions" value="{{description.description}}"></option>
     </select>
 </datalist>

@@ -79,6 +79,22 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             });
         }
 
+        $scope.getDescriptions = function() {
+            // erase all values afterwards
+            deleteFutureChoices("description");
+
+            // get all Descriptions from that Type, Subtype, Brand
+            var query = {
+                "type" : $scope.liquid.type,
+                "subtype" : $scope.liquid.subtype,
+                "brand" : $scope.liquid.brand
+            };
+            var promise = liquidService.getLiquids(query);
+            promise.then(function (descriptions) {
+                $scope.liquidSelection.descriptions = descriptions;
+            });
+        }
+
         // save the liquid
         $scope.saveLiquid = function() {
             var liquid = $scope.liquid;
@@ -100,7 +116,7 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             liquidService.saveLiquid(liquid).then(function (types) {
                 if(types) {
                     $scope.messageError = null;
-                    $scope.messageSuccess = "liquid saved successfully.";
+                    $scope.messageSuccess = "Liquid saved successfully.";
                     //$scope.liquid = {type: null, subtype: null, brand: null, description: null, amount: null, barcode: null};
                     // forget about amount and barcode for now
                     $scope.liquid = {type: null, subtype: null, brand: null, description: null};
