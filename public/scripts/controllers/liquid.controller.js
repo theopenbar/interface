@@ -3,7 +3,9 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
 
     function defaultValues() {
         // make a default object so we can tell when it's all filled in
-        $scope.liquid = {type: null, subtype: null, brand: null, description: null, id: null};
+        $scope.liquid = {type: null, subtype: null, brand: null, description: null};
+        // store ID of liquid if it already exists in the database
+        $scope.liquidId = null;
 
         // create bottle for this liquid
         $scope.bottle = false;
@@ -25,7 +27,7 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             default:
                 // always reset description and ID on change
                 $scope.liquid.description = null;
-                $scope.liquid.id = null;
+                $scope.liquidId = null;
         }
     }
 
@@ -111,12 +113,12 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             promise.then(function (liquid) {
                 // set ID if correct liquid was returned
                 try {
-                    $scope.liquid.id = liquid[0]._id;
+                    $scope.liquidId = liquid[0]._id;
                 }
                 // otherwise, not found; clear ID
                 catch(err) {
                     //console.log(err);
-                    $scope.liquid.id = null;
+                    $scope.liquidId = null;
                 }
             });
         }
