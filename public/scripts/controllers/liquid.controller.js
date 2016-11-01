@@ -3,7 +3,7 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
 
     function defaultValues() {
         // make a default object so we can tell when it's all filled in
-        $scope.liquid = {type: null, subtype: null, brand: null, description: null};
+        $scope.liquid = {type: null, subtype: null, brand: null, description: null, id: null};
 
         // stores actual selections
         $scope.liquidSelection = {"types": null, "subtypes": null, "brands": null};
@@ -20,8 +20,9 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
                 $scope.liquid.brand = null;
                 $scope.liquidSelection.brands = null;
             default:
-                // always reset description on change
+                // always reset description and ID on change
                 $scope.liquid.description = null;
+                $scope.liquid.id = null;
         }
     }
 
@@ -92,6 +93,28 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             var promise = liquidService.getLiquids(query);
             promise.then(function (descriptions) {
                 $scope.liquidSelection.descriptions = descriptions;
+            });
+        }
+
+        $scope.getId = function() {
+            // get ID for that Type, Subtype, Brand, Description
+            var query = {
+                "type" : $scope.liquid.type,
+                "subtype" : $scope.liquid.subtype,
+                "brand" : $scope.liquid.brand,
+                "description" : $scope.liquid.description
+            };
+            var promise = liquidService.getLiquids(query);
+            promise.then(function (liquid) {
+                // set ID if correct liquid was returned
+                try {
+                    $scope.liquid.id = liquid[0]._id;
+                }
+                // otherwise, not found; clear ID
+                catch(err) {
+                    //console.log(err);
+                    $scope.liquid.id = null;
+                }
             });
         }
 
