@@ -24,7 +24,7 @@
         <div class="col-xs-10">
             <input type="text" class="form-control" ng-value="station.host+':'+station.port" readonly>
             <button class="btn btn-default" ng-click="editIPAddress()">Edit</button>
-            <button class="btn btn-success" ng-click="sendIDtoController()">Send ID to controller</button>
+            <button class="btn btn-primary" ng-click="sendIDtoController()">Send ID to controller</button>
         </div>
     </div>
 </div>
@@ -51,7 +51,7 @@
 
 <div class="form-group row">
     <div class="col-md-1">
-        <button class="btn btn-primary" ng-click="saveStation()">Save Station</button>
+        <button class="btn btn-success" ng-click="saveStation()">Save Station</button>
     </div>
 </div>
 
@@ -131,6 +131,14 @@
         <div ng-show="selectedValve!=null || editOnHandLiquidIndex!=null">
             <div class="page-header">
                 <h3>Add Liquid</h3>
+                <h4>Enter Barcode or Select Type</h4>
+            </div>
+
+            <div class="form-group row">
+                <label for="barcode" class="col-xs-2 col-form-label">Barcode</label>
+                <div class="col-xs-10">
+                    <input class="form-control" type='text' ng-model="liquidSelection.barcode" ng-change="selectBarcode()"></input>
+                </div>
             </div>
 
             <div class="form-group row">
@@ -142,7 +150,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.type!=null">
+            <div class="form-group row">
                 <label for="subtype" class="col-xs-2 col-form-label">Subtype</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.subtype" ng-change="selectSubtype()"
@@ -151,7 +159,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.subtype!=null">
+            <div class="form-group row">
                 <label for="brand" class="col-xs-2 col-form-label">Brand</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.brand" ng-change="selectBrand()"
@@ -160,7 +168,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.brand!=null">
+            <div class="form-group row">
                 <label for="description" class="col-xs-2 col-form-label">Description</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.description" ng-change="selectDescription()"
@@ -169,16 +177,25 @@
                 </div>
             </div>
 
-            <div class="form-group row" ng-show="liquidSelection.description!=null && selectedValve!=null">
+            <div class="form-group row" ng-show="selectedValve!=null">
                 <label for="amount" class="col-xs-2 col-form-label">Amount (oz)</label>
                 <div class="col-xs-10">
-                    <select class="form-control" ng-model="liquidSelection.amount" ng-change="selectAmount()"
-                        ng-options="o.description as o.description for o in liquidSelection.amounts">
+                    <select class="form-control" ng-model="liquidSelection.amount" ng-change="selectAmount()">
+                        <option value="1.69">1.69oz / 50mL</option>
+                        <option value="6.76">6.76oz / 200mL</option>
+                        <option value="12.7">12.7oz / 375mL</option>
+                        <option value="16.9">16.9oz / 500mL</option>
+                        <option value="25.4">25.4oz / 750mL (fifth)</option>
+                        <option value="33.8">33.8oz / 1000mL</option>
+                        <option value="40.0">40.0oz / 1183mL</option>
+                        <option value="59.2">59.2oz / 1750mL (handle)</option>
+                        <option value="67.6">67.6oz / 2000mL</option>
+                        <option value="101.4">101.4oz / 3000mL</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-check row" ng-show="editOnHandLiquidIndex == null">
+            <div class="form-check row" ng-show="selectedValve!=null">
                 <label for="requirement" class="col-xs-2 col-form-label">Pressurized</label>
                 <div class="col-xs-10">
                     <label class="form-check-label">
@@ -199,10 +216,8 @@
         </div>
         <div class="form-check row">
             <div class="col-xs-12">
-                <div ng-show="liquidSelection.id != null">
-                    <input type="button" class="btn btn-primary" value="Save Liquid" ng-click="addLiquidToStation()"></input>
-                </div>
                 <div ng-show="selectedValve != null || editOnHandLiquidIndex != null">
+                    <input type="button" class="btn btn-primary" value="Save Liquid" ng-click="addLiquidToStation()"></input>
                     <input type="button" class="btn btn-danger" value="Cancel/Delete" ng-click="cancelLiquid()"></input>
                 </div>
             </div>

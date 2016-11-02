@@ -105,45 +105,57 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
                 $scope.liquidSelection.pressurized;
         }
 
+        $scope.selectAmount = function() {
+            $scope.liquidDisplay.connectedLiquids[$scope.selectedValve-1].amount =
+                $scope.liquidSelection.amount;
+        }
+
         $scope.addLiquidToStation = function() {
             $scope.messageSuccess = null;
-            if($scope.selectedValve != null){
-                // we're adding a connected liquid, find it's index if it is an existing one
-                var i = -1;
-                $scope.station.connectedLiquids.filter(function(liquid, cur_index, liquids){
-                    if(liquid.valve == $scope.selectedValve) {
-                        i = cur_index;
-                        return true;
-                    }
-                    else return false;
-                });
-                if(i > -1) {
-                    // found... we're editing a liquid
-                    $scope.station.connectedLiquids[i]= {
-                        "id":$scope.liquidSelection.id,
-                        "amount":$scope.liquidSelection.amount,
-                        "pressurized":$scope.liquidSelection.pressurized,
-                        "valve":$scope.selectedValve
-                    };
-                }
-                else {
-                    // this is a new liquid
-                    $scope.station.connectedLiquids.push({
-                        "id":$scope.liquidSelection.id,
-                        "amount":$scope.liquidSelection.amount,
-                        "pressurized":$scope.liquidSelection.pressurized,
-                        "valve":$scope.selectedValve
+            // check that liquid is fully filled in (i.e. has an ID assigned, and an amount if a connected liquid)
+            if($scope.liquidSelection.id == null
+                || ($scope.liquidSelection.amount == null && $scope.selectedValve != null)) {
+                $scope.ingredientError = "Please fill in all forms for this liquid.";
+            }
+            else {
+                // otherwise good, clear error if there and continue
+                $scope.ingredientError = null;
+                if($scope.selectedValve != null){
+                    // we're adding a connected liquid, find it's index if it is an existing one
+                    var i = -1;
+                    $scope.station.connectedLiquids.filter(function(liquid, cur_index, liquids){
+                        if(liquid.valve == $scope.selectedValve) {
+                            i = cur_index;
+                            return true;
+                        }
+                        else return false;
                     });
+                    if(i > -1) {
+                        // found... we're editing a liquid
+                        $scope.station.connectedLiquids[i]= {
+                            "id":$scope.liquidSelection.id,
+                            "amount":$scope.liquidSelection.amount,
+                            "pressurized":$scope.liquidSelection.pressurized,
+                            "valve":$scope.selectedValve
+                        };
+                    }
+                    else {
+                        // this is a new liquid
+                        $scope.station.connectedLiquids.push({
+                            "id":$scope.liquidSelection.id,
+                            "amount":$scope.liquidSelection.amount,
+                            "pressurized":$scope.liquidSelection.pressurized,
+                            "valve":$scope.selectedValve
+                        });
+                    }
+                    updateStation();
                 }
-                updateStation();
+                else if ($scope.editOnHandLiquidIndex != null) {
+                    // we're adding an on-hand liquid
+                    $scope.station.onHandLiquids.push($scope.liquidSelection.id);
+                    updateStation();
+                }
             }
-            else if ($scope.editOnHandLiquidIndex != null) {
-                // we're adding an on-hand liquid
-                $scope.station.onHandLiquids.push($scope.liquidSelection.id);
-                updateStation();
-            }
-            // else something is wrong
-            else $scope.ingredientError = "Add Liquid Internal Error";
         }
 
         $scope.cancelLiquid = function() {
@@ -159,14 +171,16 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
             // make sure we're not already editing
             if($scope.editOnHandLiquidIndex == null && $scope.selectedValve == null) {
                 $scope.selectedValve = index+1;
-                $scope.liquidSelection = {
-                    "id": $scope.liquidDisplay.connectedLiquids[index].id._id,
-                    "type" :$scope.liquidDisplay.connectedLiquids[index].id.type,
-                    "subtype": $scope.liquidDisplay.connectedLiquids[index].id.subtype,
-                    "brand": $scope.liquidDisplay.connectedLiquids[index].id.brand,
-                    "description": $scope.liquidDisplay.connectedLiquids[index].id.description,
-                    "amount": $scope.liquidDisplay.connectedLiquids[index].amount,
-                    "pressurized": $scope.liquidDisplay.connectedLiquids[index].pressurized
+                if($scope.liquidDisplay.connectedLiquids[index].id) {
+                    $scope.liquidSelection = {
+                        "id": $scope.liquidDisplay.connectedLiquids[index].id._id,
+                        "type" :$scope.liquidDisplay.connectedLiquids[index].id.type,
+                        "subtype": $scope.liquidDisplay.connectedLiquids[index].id.subtype,
+                        "brand": $scope.liquidDisplay.connectedLiquids[index].id.brand,
+                        "description": $scope.liquidDisplay.connectedLiquids[index].id.description,
+                        "amount": $scope.liquidDisplay.connectedLiquids[index].amount,
+                        "pressurized": $scope.liquidDisplay.connectedLiquids[index].pressurized
+                    }
                 }
                 querySubtypes(); // query from subtypes on to update Options
             }
@@ -177,11 +191,12 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
             // find matching liquid in station from liquid display
             var i = -1;
             $scope.station.connectedLiquids.filter(function(liquid, cur_index, liquids){
-                if(liquid.id._id == $scope.liquidDisplay.connectedLiquids[index].id._id) {
-                    i = cur_index;
-                    return true;
-                }
-                else return false;
+                if(liquid.id) {
+                    if(liquid.id.valve == $scope.selectedValve) {
+                        i = cur_index;
+                        return true;
+                    } else return false;
+                } else return false;
             });
             // If found, remove from array
             if(i > -1) $scope.station.connectedLiquids.splice(i,1);
@@ -281,7 +296,11 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
             if ($scope.liquidSelection.type != null) {
                 var promise = typeService.getSubtypes($scope.liquidSelection.type);
                 promise.then(function (subtypes) {
-                    $scope.liquidSelection.subtypes = subtypes;
+                    // we want to force a full liquid specification in the station so
+                    // remove all cases of "*Any"
+                    $scope.liquidSelection.subtypes = subtypes.filter(function(st){
+                        return st.subtype != "*Any";
+                    });
                     queryBrands();
                 });
             }
@@ -289,33 +308,29 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
 
         function queryBrands() {
             if ($scope.liquidSelection.subtype != null) {
+                // query for liquids of selected type and subtype, buy none with *Any
                 var query = {
                     "type" : $scope.liquidSelection.type,
-                    "subtype" : $scope.liquidSelection.subtype
+                    "subtype" :$scope.liquidSelection.subtype,
+                    "brand":{$ne:"*Any"}
                 };
                 var promise = liquidService.getLiquids(query);
                 promise.then(function (brands) {
                     // remove duplicate Brands
                     // http://stackoverflow.com/a/31963129
+                    var reducedBrands =
                     $scope.liquidSelection.brands = brands.reduceRight(function (r, a) {
                         r.some(function (b) { return a.brand === b.brand; }) || r.push(a);
                         return r;
                     }, []);
+
                     queryDescriptions();
                 });
             }
         }
 
         function queryDescriptions() {
-            if ($scope.liquidSelection.brand == "*Any") {
-                // get liquid ID for "brand" : "*Any"
-                // http://stackoverflow.com/a/7364203
-                 $scope.liquidSelection.id =
-                    $scope.liquidSelection.brands.filter(function(v) {
-                        return v.brand === "*Any"; // Filter out the appropriate one
-                })[0]._id;
-            }
-            else if ($scope.liquidSelection.brand != null) {
+            if ($scope.liquidSelection.brand != null) {
                 // get all Descriptions from that Type and Subtype and Brand
                 var query = {
                     "type" : $scope.liquidSelection.type,
@@ -331,7 +346,11 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
         }
 
         function queryBottles() {
-            $scope.ingredientError = "Query Bottles Not Implemented";
+            if($scope.liquidSelection.description != null
+            && $scope.liquidSelection.id != null) {
+                // liquidService.getBottle($scope.liquidSelection.id,
+                //                         $scope.liquidSelection.amount);
+            }
         }
 
         function updateDisplayFromSelection() {

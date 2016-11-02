@@ -3,9 +3,9 @@ app.service("typeService",
         this.getTypes = function() {
             var deferred = $q.defer();
 
-            var Types = $resource('/api/type/types');
+            var Types = $resource('/api/type/types',{},{get:{isArray:true}});
 
-            Types.query(function(types){
+            Types.get(function(types){
                 deferred.resolve(types);
             });
 
@@ -15,9 +15,9 @@ app.service("typeService",
         this.getSubtypes = function(type) {
             var deferred = $q.defer();
 
-            var Subtypes = $resource('/api/type/subtypes/:type', {type: type});
+            var Subtypes = $resource('/api/type/subtypes/:type', {type: type},{get:{isArray:true}});
 
-            Subtypes.query(function(subtypes){
+            Subtypes.get(function(subtypes){
                 deferred.resolve(subtypes);
             });
 

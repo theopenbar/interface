@@ -21,7 +21,7 @@ app.service("liquidService",
             var deferred = $q.defer();
 
             var Liquids = $resource('/api/liquid/save');
-            Liquids.save(liquid, function(status){
+            Liquids.post(liquid, function(status){
                 deferred.resolve(status);
             });
 
@@ -32,11 +32,9 @@ app.service("liquidService",
             var deferred = $q.defer();
 
             // return an array
-            var Types = $resource('/api/liquid/query', {}, {
-                save: {method: 'POST', isArray:true}
-            });
+            var Types = $resource('/api/liquid/query',{},{post:{method:'POST',isArray:true}});
 
-            Types.save(query, function(brands){
+            Types.post(query, function(brands){
                 deferred.resolve(brands);
             });
 

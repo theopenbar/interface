@@ -14,7 +14,10 @@ router.post('/save', function(req, res) {
 router.post('/query', function(req, res) {
     // query based on Type and/or Subtype and/or Brand
     Liquid.find(req.body).exec(function (err, descriptions) {
-        if (err) return res.status(500).json({err: err});
+        if (err) {
+            console.log(err);
+            return res.status(500).json({err: err});
+        }
 
         res.json(descriptions);
     });

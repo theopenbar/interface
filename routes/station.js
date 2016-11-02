@@ -42,7 +42,32 @@ router.put('/:id', function(req, res) {
     });
 });
 
-router.put('/recipes/:id', function(req, res) {
+// API to update connectedLiquids amount from station, body should be a json of
+// the valve number and and the new amount i.e. {'valve':Number, 'amount':Number}
+router.put('/liquid/:id', function(req, res) {
+    Station.findById(req.params.id).exec(function (err, station) {
+        if (err) res.status(500).json({err: err});
+        var updated_station = null;
+        // find the connected liquid by valve and set it's amount
+        for(i=0; i<station.connectedLiquids.length; i++){
+            if(station.connectedLiquids[i].valve == req.body.valve) {
+                station.connectedLiquids[i].amount = req.body.amount;
+                updated_station = station;
+            }
+        }
+        // now update the station
+        if(updated_station != null) {
+            station.update(updated_station, function(err, status) {
+                if (err) res.status(500).json({err: err});
+                else res.status(200).send();
+            });
+        }
+        // else the liquid was not found or updated
+        else res.status(404);
+    });
+});
+
+router.post('/recipes/:id', function(req, res) {
     Station.findById(req.params.id).populate(
         ['connectedLiquids.id','onHandLiquids']).exec(function (err, station) {
         if (err) return (err);
@@ -60,16 +85,17 @@ function getMatchingRecipes(station, query, next) {
         if(err) next(err,null);
         else {
             // filter the returned recipes
-            console.log("Beginning Filter Recipes:", recipes);
             var recipes_filtered = recipes.filter(function(recipe,recipeIndex,recipes){
                 // filter all liquids of each returned reciped to make sure we have all required ingredients
                 var liquids_filtered =  recipe.liquids.filter(function(liquid,liquidIndex,liquids){
                     var ids_filtered = station.connectedLiquids.filter(function(connLiquid){
-                        if(connLiquid.id._id == liquid.id._id
-                        || (connLiquid.id.type == liquid.id.type && liquid.id.subtype == "*Any")
-                        || (connLiquid.id.type == liquid.id.type && connLiquid.id.subtype == liquid.id.subtype && liquid.id.brand == "*Any")
-                        || !liquid.requirement) return true;
-                        else return false;
+                        if(connLiquid.id != null && liquid.id != null) {
+                            if(connLiquid.id._id == liquid.id._id
+                            || (connLiquid.id.type == liquid.id.type && liquid.id.subtype == "*Any")
+                            || (connLiquid.id.type == liquid.id.type && connLiquid.id.subtype == liquid.id.subtype && liquid.id.brand == "*Any")
+                            || !liquid.requirement) return true;
+                            else return false;
+                        } else return false;
                     });
                     // if an Id was found in the station, we have this liquid
                     if(ids_filtered.length > 0) return true;
@@ -80,7 +106,6 @@ function getMatchingRecipes(station, query, next) {
                 if(liquids_filtered.length == recipe.liquids.length) return true;
                 else return false;
             });
-            console.log("End Filered Recipes:", recipes_filtered);
             next(err, recipes_filtered);
         }
     });

@@ -14,10 +14,8 @@ app.service("stationService",
     this.createStation = function() {
         var deferred = $q.defer();
 
-        var Station = $resource('/api/station/', {}, {
-          create: { method: 'POST' }
-        });
-        Station.create(function(station){
+        var Station = $resource('/api/station/',{},{post:{method:'POST'}});
+        Station.post(function(station){
             deferred.resolve(station);
         });
         return deferred.promise;
@@ -26,10 +24,8 @@ app.service("stationService",
     this.updateStation = function(station) {
         var deferred = $q.defer();
 
-        var Station = $resource('/api/station/:id', {id: station._id}, {
-          update: { method: 'PUT' }
-        });
-        Station.update(station, function(station_updated){
+        var Station = $resource('/api/station/:id', {id: station._id},{put:{method:'PUT'}});
+        Station.put(station, function(station_updated){
             deferred.resolve(station_updated);
         });
         return deferred.promise;
@@ -65,10 +61,8 @@ app.service("stationService",
     this.getRecipes = function(station, query) {
         var deferred = $q.defer();
 
-        var Recipes = $resource('/api/station/recipes/:id', {id:station._id}, {
-            retrieve: { method:'PUT', isArray:true }
-        });
-        Recipes.retrieve(query, function(recipes){
+        var Recipes = $resource('/api/station/recipes/:id', {id:station._id}, {post:{method:'POST', isArray:true}});
+        Recipes.post(query, function(recipes){
             deferred.resolve(recipes);
         });
 

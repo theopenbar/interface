@@ -5,7 +5,7 @@ app.service("recipeService",
             var deferred = $q.defer();
 
             var Recipe = $resource('/api/recipe/save');
-            Recipe.save(recipe, function(recipe){
+            Recipe.put(recipe, function(recipe){
                 deferred.resolve(recipe);
             });
 
