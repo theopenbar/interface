@@ -132,14 +132,9 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
         };
         var promise = liquidService.getBottles(query);
         promise.then(function(bottle) {
-            try {
+            if(bottle.length > 0) {
                 $scope.bottleId = bottle[0]._id;
                 $scope.liquid.barcode = bottle[0].barcode;
-            }
-            // otherwise, not found; clear ID
-            catch(err) {
-                $scope.messageError = err;
-                $scope.bottleId = null;
             }
         });
     }
@@ -180,7 +175,9 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             return false;
         }
         else if($scope.liquidId == null){
-            liquidService.saveLiquid(liquid);
+            liquidService.saveLiquid(liquid).then(function(returned){
+                $scope.messageSuccess = "Liquid Saved!";
+            });
         }
 
         // check that bottle doesn't already exist if adding bottle
@@ -199,7 +196,7 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
                 "barcode"   :$scope.liquid.barcode
             }
             liquidService.saveBottle(bottle).then(function(returned){
-                $scope.messageSuccess = returned;
+                $scope.messageSuccess = "Liquid/Bottle Saved!";
             });
         }
         defaultValues();

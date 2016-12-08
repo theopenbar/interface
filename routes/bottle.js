@@ -13,17 +13,17 @@ router.post('/', function(req, res) {
 
 router.post('/query', function(req, res) {
     // query based on Type and/or Subtype and/or Brand
-    Bottle.find(req.body).exec(function (err, descriptions) {
+    Bottle.find(req.body).populate('liquid').exec(function (err, returned) {
         if (err) return res.status(500).json({err: err});
 
-        res.json(descriptions);
+        res.json(returned);
     });
 });
 
 router.get('/:id', function(req, res) {
-    Bottle.findById(req.params.id).exec(function (err, liquid) {
+    Bottle.findById(req.params.id).populate('liquid').exec(function (err, returned) {
         if (err) return res.status(500).json({err: err});
-        res.json(liquid);
+        res.json(returned);
     })
 });
 

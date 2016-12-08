@@ -134,6 +134,14 @@
             </div>
 
             <div class="form-group row">
+                <label for="barcode" class="col-xs-2 col-form-label">Barcode Quick-Add:</label>
+                <div class="col-xs-10">
+                    <input type="text" class="form-control"  ng-model="liquidSelection.barcode" ng-change="getBottle()">
+                    </input>
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label for="type" class="col-xs-2 col-form-label">Type</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.type" ng-change="selectType()"
@@ -173,7 +181,7 @@
                 <label for="amount" class="col-xs-2 col-form-label">Amount (oz)</label>
                 <div class="col-xs-10">
                     <select class="form-control" ng-model="liquidSelection.amount" ng-change="selectAmount()"
-                        ng-options="o.description as o.description for o in liquidSelection.amounts">
+                        ng-options="o for o in liquidSelection.amounts">
                     </select>
                 </div>
             </div>
