@@ -65,11 +65,13 @@ function getMatchingRecipes(station, query, next) {
                 // filter all liquids of each returned reciped to make sure we have all required ingredients
                 var liquids_filtered =  recipe.liquids.filter(function(liquid,liquidIndex,liquids){
                     var ids_filtered = station.connectedLiquids.filter(function(connLiquid){
-                        if(connLiquid.id._id == liquid.id._id
-                        || (connLiquid.id.type == liquid.id.type && liquid.id.subtype == "*Any")
-                        || (connLiquid.id.type == liquid.id.type && connLiquid.id.subtype == liquid.id.subtype && liquid.id.brand == "*Any")
-                        || !liquid.requirement) return true;
-                        else return false;
+                        if(connLiquid.id != null && liquid.id != null) {
+                            if(connLiquid.id._id == liquid.id._id
+                            || (connLiquid.id.type == liquid.id.type && liquid.id.subtype == "*Any")
+                            || (connLiquid.id.type == liquid.id.type && connLiquid.id.subtype == liquid.id.subtype && liquid.id.brand == "*Any")
+                            || !liquid.requirement) return true;
+                            else return false;
+                        }
                     });
                     // if an Id was found in the station, we have this liquid
                     if(ids_filtered.length > 0) return true;

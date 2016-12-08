@@ -1,28 +1,12 @@
 app.service("liquidService",
     function($resource, $q) {
 
-        /*
-        this.putIngredient = function() {
-            var deferred = $q.defer();
-
-            var Ingredient = $resource('/api/liquid', {}, {
-              update: { method: 'PUT' }
-            });
-
-            Ingredient.update(function(ingredient){
-                deferred.resolve(ingredient);
-            });
-
-            return deferred.promise;
-        };
-        */
-
         this.saveLiquid = function(liquid) {
             var deferred = $q.defer();
 
-            var Liquids = $resource('/api/liquid/save');
-            Liquids.save(liquid, function(status){
-                deferred.resolve(status);
+            var Liquids = $resource('/api/liquid');
+            Liquids.save(liquid, function(returned){
+                deferred.resolve(returned);
             });
 
             return deferred.promise;
@@ -36,8 +20,8 @@ app.service("liquidService",
                 save: {method: 'POST', isArray:true}
             });
 
-            Types.save(query, function(brands){
-                deferred.resolve(brands);
+            Types.save(query, function(liquids){
+                deferred.resolve(liquids);
             });
 
             return deferred.promise;
@@ -54,4 +38,30 @@ app.service("liquidService",
 
             return deferred.promise;
         };
+
+        this.getBottles = function(query) {
+            var deferred = $q.defer();
+
+            // return an array
+            var Types = $resource('/api/bottle/query', {}, {
+                save: {method: 'POST', isArray:true}
+            });
+
+            Types.save(query, function(bottles){
+                deferred.resolve(bottles);
+            });
+
+            return deferred.promise;
+        };
+
+        this.saveBottle = function(bottle) {
+            var deferred = $q.defer();
+
+            var Bottles = $resource('/api/bottle');
+            Bottles.save(bottle, function(returned){
+                deferred.resolve(returned);
+            });
+
+            return deferred.promise;
+        }
 });
