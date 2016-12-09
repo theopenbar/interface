@@ -24,7 +24,7 @@ router.get('/:id', function(req, res) {
     Bottle.findById(req.params.id).populate('liquid').exec(function (err, returned) {
         if (err) return res.status(500).json({err: err});
         res.json(returned);
-    })
+    });
 });
 
 module.exports = router;

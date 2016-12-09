@@ -40,7 +40,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
-        mongooseConnection: dbConns.old,
+        mongooseConnection: dbConns.privLocal,
         ttl: 5*60*60
     })
 }));

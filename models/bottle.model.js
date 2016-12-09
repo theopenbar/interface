@@ -8,4 +8,4 @@ var bottleSchema = new Schema({
     barcode: Number
 }, {collection: 'bottles'});
 
-module.exports = dbConns.old.model('Bottle', bottleSchema);
+module.exports = dbConns.pubLocal.model('Bottle', bottleSchema);

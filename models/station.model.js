@@ -18,4 +18,4 @@ var stationSchema = new Schema({
     onHandLiquids: [{type: Schema.Types.ObjectId, ref: 'Liquid'}]
 }, {collection: 'stations'});
 
-module.exports = dbConns.old.model('Station', stationSchema);
+module.exports = dbConns.pubLocal.model('Station', stationSchema);

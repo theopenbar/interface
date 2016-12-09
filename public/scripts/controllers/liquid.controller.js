@@ -113,14 +113,10 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
         var promise = liquidService.getLiquids(query);
         promise.then(function (liquid) {
             // set ID if correct liquid was returned
-            try {
+            if (liquid.length > 0) {
                 $scope.liquidId = liquid[0]._id;
             }
-            // otherwise, not found; clear ID
-            catch(err) {
-                $scope.messageError = err;
-                $scope.liquidId = null;
-            }
+            else $scope.liquidId = null;
         });
     }
 
@@ -152,6 +148,7 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
                 return false;
             }
         }
+        // if we're saving a bottle
         if ($scope.bottle == true) {
             if (liquid.amount == null || liquid.amount == "") {
                 $scope.messageError = "Please fill in bottle amount.";
@@ -176,7 +173,12 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
         }
         else if($scope.liquidId == null){
             liquidService.saveLiquid(liquid).then(function(returned){
-                $scope.messageSuccess = "Liquid Saved!";
+                if($scope.bottle == false) {
+                    $scope.messageSuccess = "Liquid Saved!";
+                }
+                else {
+                    $scope.getId();
+                }
             });
         }
 
@@ -189,7 +191,22 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             return false;
         }
         else {
-            $scope.messageSuccess = $scope.bottleId;
+            attemptBottleSave(0);
+        }
+    };
+
+    function attemptBottleSave(attempt) {
+        var count = attempt + 1;
+        if ($scope.liquidId == null) {
+            if (count < 15) {
+                setTimeout(function(){attemptBottleSave(count);},100);
+            }
+            else {
+                $scope.messageError = "Timeout Waiting for Liquid ID, please try again.";
+                $scope.messageSuccess = null;
+            }
+        }
+        else {
             var bottle = {
                 "liquid"    :$scope.liquidId,
                 "amount"    :$scope.liquid.amount,
@@ -197,8 +214,9 @@ app.controller('LiquidCtrl', ['$scope', 'typeService', 'liquidService',
             }
             liquidService.saveBottle(bottle).then(function(returned){
                 $scope.messageSuccess = "Liquid/Bottle Saved!";
+                $scope.messageError = null;
+                defaultValues();
             });
         }
-        defaultValues();
-    };
+    }
 }]);

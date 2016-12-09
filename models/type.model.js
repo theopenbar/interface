@@ -11,4 +11,4 @@ var typeSchema = new Schema({
     subtypes: [subtypeSchema]
 }, {collection: 'types'});
 
-module.exports = dbConns.old.model('Type', typeSchema);
+module.exports = dbConns.pubCloud.model('Type', typeSchema);

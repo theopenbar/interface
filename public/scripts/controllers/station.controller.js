@@ -70,13 +70,16 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
                 promise.then(function (bottles) {
                     if(bottles.length == 1){
                         console.log(bottles);
+                        // save previous pressurized setting
+                        var pressurized = $scope.liquidSelection.pressurized;
                         $scope.liquidSelection = {
                             "id": bottles[0].liquid._id,
                             "type" :bottles[0].liquid.type,
                             "subtype": bottles[0].liquid.subtype,
                             "brand": bottles[0].liquid.brand,
                             "description": bottles[0].liquid.description,
-                            "amount": bottles[0].amount
+                            "amount": bottles[0].amount,
+                            "pressurized": pressurized
                         }
                         querySubtypes();
                         $scope.ingredientError = null;

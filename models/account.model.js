@@ -10,4 +10,4 @@ var Account = new Schema({
 
 Account.plugin(passportLocalMongoose);
 
-module.exports = dbConns.old.model('Account', Account);
+module.exports = dbConns.privLocal.model('Account', Account);
