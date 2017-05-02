@@ -44,7 +44,7 @@
                 <tr>
                 <td>
                     <!-- list of possible amounts -->
-                    <select class="form-control" ng-model="liquid.amount">
+                    <select class="form-control" ng-model="liquid.amount" ng-change="getBottleId()">
 						<option value="1.69">1.69oz / 50mL</option>
 						<option value="6.76">6.76oz / 200mL</option>
 						<option value="12.7">12.7oz / 375mL</option>

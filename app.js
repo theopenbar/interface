@@ -40,7 +40,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
-        mongooseConnection: dbConns.old,
+        mongooseConnection: dbConns.privLocal,
         ttl: 5*60*60
     })
 }));
@@ -63,8 +63,9 @@ app.use('/:partials', routes);
 // server-side routing for APIs
 app.use('/api/account', require('./routes/account'));
 app.use('/api/station', require('./routes/station'));
-app.use('/api/type', require('./routes/type'));
-app.use('/api/liquid', require('./routes/liquid'));
-app.use('/api/recipe', require('./routes/recipe'));
+app.use('/api/type',    require('./routes/type'));
+app.use('/api/liquid',  require('./routes/liquid'));
+app.use('/api/recipe',  require('./routes/recipe'));
+app.use('/api/bottle',  require('./routes/bottle'));
 //use commander to handle socket.io connections
 io.sockets.on('connection', require('./routes/commander'));

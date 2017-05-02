@@ -10,15 +10,6 @@ router.get('/types', function(req, res) {
     })
 });
 
-router.post('/types', function(req, res) {
-    var type = new Type(req.body);
-    
-    type.save(function (err, status) {
-        if (err) return res.status(500).json({err: err});
-        res.json(status);
-    });
-});
-
 router.get('/subtypes/:type', function(req, res) {
     // query based on Type and get all Brands associated with it
     // specifically remove _id

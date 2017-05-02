@@ -44,6 +44,7 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
         }
 
         $scope.sendIDtoController = function() {
+            // send command 06 to set controller's station id
             WebSocket.sendCommand($scope.station._id, '06', $scope.station._id);
         }
 
@@ -57,6 +58,44 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
                 });
             }
             updateStation();
+        }
+
+        $scope.getBottle = function() {
+            if($scope.liquidSelection.barcode.length == 12) {
+                var query = {
+                    "barcode" : $scope.liquidSelection.barcode
+                };
+                var promise = liquidService.getBottles(query);
+                var amounts = [];
+                promise.then(function (bottles) {
+                    if(bottles.length == 1){
+                        console.log(bottles);
+                        // save previous pressurized setting
+                        var pressurized = $scope.liquidSelection.pressurized;
+                        $scope.liquidSelection = {
+                            "id": bottles[0].liquid._id,
+                            "type" :bottles[0].liquid.type,
+                            "subtype": bottles[0].liquid.subtype,
+                            "brand": bottles[0].liquid.brand,
+                            "description": bottles[0].liquid.description,
+                            "amount": bottles[0].amount,
+                            "pressurized": pressurized
+                        }
+                        querySubtypes();
+                        $scope.ingredientError = null;
+                    }
+                    else if(bottles.length > 1) {
+                        $scope.ingredientError = "Too many bottles found for barcode. \
+                        Report barcode to database manager.";
+                    }
+                    else {
+                        $scope.ingredientError = "Bottle Not Found in database. Please add it first";
+                    }
+                });
+            }
+            else {
+                $scope.ingredientError = "Barcode must be 12 Digits";
+            }
         }
 
         $scope.selectType = function() {
@@ -331,7 +370,17 @@ app.controller('StationCtrl', ['$rootScope', '$scope', '$state', '$q','$localSto
         }
 
         function queryBottles() {
-            $scope.ingredientError = "Query Bottles Not Implemented";
+            var query = {
+                "liquid" : $scope.liquidSelection.id
+            }
+            var promise = liquidService.getBottles(query);
+            var amounts = [];
+            promise.then(function (bottles) {
+                for (i = 0; i < bottles.length; i++) {
+                    amounts[i] = bottles[i].amount;
+                }
+                $scope.liquidSelection.amounts = amounts;
+            });
         }
 
         function updateDisplayFromSelection() {
