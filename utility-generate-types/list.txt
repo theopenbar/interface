@@ -1,0 +1,18 @@
+Red, Madeira
+Red, Port
+Red, Port, Lbv
+Red, Port, Ruby
+Red, Port, Tawny
+Red, Sherry
+Red, Sherry, Cream
+Red, Sherry, Dry
+Red, Sherry, Sweet
+Red, Vermouth
+Red, Vermouth, Sweet
+White, Dry
+White, Lillet
+White, Sparkling
+White, Sparkling, Champagne
+White, Vermouth
+White, Vermouth, Dry
+White, Vermouth, French

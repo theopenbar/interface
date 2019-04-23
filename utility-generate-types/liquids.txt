@@ -1,0 +1,213 @@
+Aquavit
+Beer
+Brandy
+Brandy, Apple
+Brandy, Apricot
+Brandy, Grape, Cognac
+Dairy, Coconut Milk
+Dairy, Cream
+Dairy, Cream, Coconut
+Dairy, Cream, Cream Of Coconut
+Dairy, Cream, Half-and-half
+Dairy, Cream, Heavy
+Dairy, Cream, Heavy, Double
+Dairy, Cream, Light
+Dairy, Cream, Whipped
+Dairy, Cream, Whipping
+Dairy, Egg
+Dairy, Egg, Eggnog
+Dairy, Milk
+Dairy, Milk, Chocolate
+Dairy, Milk, Condensed
+Dairy, Yoghurt
+Gin
+Gin, Dry
+Gin, Dry, Plymouth
+Gin, Sweet, Sloe
+Grain Alcohol
+Juice, Apple
+Juice, Cherry
+Juice, Cherry, Maraschino
+Juice, Clamato
+Juice, Cranberry
+Juice, Fruit
+Juice, Fruit, Apple-cranberry
+Juice, Fruit, Cranberry-raspberry
+Juice, Grape
+Juice, Grapefruit
+Juice, Guava
+Juice, Lemon
+Juice, Lime
+Juice, Mango
+Juice, Olive
+Juice, Orange
+Juice, Orange, Mandarin
+Juice, Papaya
+Juice, Passion-fruit
+Juice, Peach
+Juice, Pineapple
+Juice, Pomegranate
+Juice, Raspberry
+Juice, Strawberry
+Juice, Tomato
+Liqueur, Almond, Amaretto
+Liqueur, Almond, Creme De
+Liqueur, Almond, Creme De, Noyaux
+Liqueur, Anise, Anis
+Liqueur, Anise, Sambuca
+Liqueur, Anise, Sambuca, Black
+Liqueur, Anise, Sambuca, White
+Liqueur, Apple, Schnapps
+Liqueur, Banana
+Liqueur, Banana, Creme De
+Liqueur, Blackberry, Brandy
+Liqueur, Blackcurrant, Creme De Cassis
+Liqueur, Blueberry, Schnapps
+Liqueur, Butterscotch, Schnapps
+Liqueur, Cherry
+Liqueur, Cherry, Brandy
+Liqueur, Cherry, Maraschino
+Liqueur, Chocolate
+Liqueur, Chocolate, Creme De Cacao
+Liqueur, Chocolate, Creme De Cacao, Brown
+Liqueur, Chocolate, Creme De Cacao, Dark
+Liqueur, Chocolate, Creme De Cacao, White
+Liqueur, Chocolate, White
+Liqueur, Cinnamon, Schnapps
+Liqueur, Coconut
+Liqueur, Coffee
+Liqueur, Coffee, Brandy
+Liqueur, Cream, Amarula
+Liqueur, Cream, Irish
+Liqueur, Curacao
+Liqueur, Curacao, Blue
+Liqueur, Curacao, Orange
+Liqueur, Curacao, White
+Liqueur, Egg, Advocaat
+Liqueur, Hazelnut
+Liqueur, Herbal, Absinthe
+Liqueur, Herbal, Bitters
+Liqueur, Lemon, Limoncello
+Liqueur, Licorice, Anisette
+Liqueur, Melon
+Liqueur, Melon, Watermelon, Schnapps
+Liqueur, Mint, Creme De Menthe
+Liqueur, Mint, Creme De Menthe, Green
+Liqueur, Mint, Creme De Menthe, White
+Liqueur, Orange
+Liqueur, Orange, Bitters
+Liqueur, Orange, Triple Sec
+Liqueur, Peach
+Liqueur, Peach, Brandy
+Liqueur, Peach, Schnapps
+Liqueur, Pear
+Liqueur, Peppermint, Schnapps
+Liqueur, Raspberry
+Liqueur, Raspberry, Schnapps
+Liqueur, Root Beer, Schnapps
+Liqueur, Strawberry
+Liqueur, Strawberry, Schnapps
+Liqueur, Vanilla
+Liqueur, Vanilla, Schnapps
+Liqueur, Wildberry, Schnapps
+Mixer, Margarita Mixer
+Rum
+Rum, Aged, Anejo
+Rum, Cachaca
+Rum, Dark
+Rum, Dark, Jamaican
+Rum, Flavored, Coconut
+Rum, Flavored, Mango
+Rum, Flavored, Pineapple
+Rum, Gold
+Rum, Overproof
+Rum, Overproof, 151 Proof
+Rum, Spiced
+Rum, White
+Rum, White, Light
+Soda
+Soda, Blackcurrant, Cordial
+Soda, Cider
+Soda, Club
+Soda, Cola
+Soda, Cola, Cherry
+Soda, Cream
+Soda, Energy
+Soda, Fruit, Fruit Punch
+Soda, Fruit, Fruit Punch, Hawaiian Punch
+Soda, Fruit, Lemon-lime
+Soda, Ginger Ale
+Soda, Ginger Ale, Dry
+Soda, Ginger Beer
+Soda, Grape
+Soda, Lemon, Bitter
+Soda, Lemon, Lemonade
+Soda, Lemon, Lemonade, Pink
+Soda, Lime, Cordial
+Soda, Lime, Limeade
+Soda, Orange
+Soda, Raspberry, Cordial
+Soda, Root Beer
+Syrup
+Syrup, Almond
+Syrup, Caramel
+Syrup, Chocolate
+Syrup, Gomme
+Syrup, Grenadine
+Syrup, Maple
+Syrup, Orgeat
+Syrup, Passion-fruit
+Syrup, Pineapple
+Syrup, Raspberry
+Syrup, Simple
+Syrup, Strawberry
+Syrup, Sugar
+Tequila
+Tequila, Gold
+Tequila, Silver
+Tequila, White
+Vodka
+Vodka, Flavored, Apple
+Vodka, Flavored, Cherry
+Vodka, Flavored, Citrus
+Vodka, Flavored, Cranberry
+Vodka, Flavored, Lemon
+Vodka, Flavored, Lime
+Vodka, Flavored, Orange
+Vodka, Flavored, Peach
+Vodka, Flavored, Pepper
+Vodka, Flavored, Raspberry
+Vodka, Flavored, Strawberry
+Vodka, Flavored, Vanilla
+Water
+Water, Carbonated Water
+Water, Carbonated Water, Soda Water
+Water, Tonic Water
+Whiskey
+Whiskey, Blended
+Whiskey, Bourbon
+Whiskey, Canadian
+Whiskey, Irish
+Whiskey, Rye
+Whiskey, Scotch
+Whiskey, Whisky
+Wine, Red
+Wine, Red, Madeira
+Wine, Red, Port
+Wine, Red, Port, Lbv
+Wine, Red, Port, Ruby
+Wine, Red, Port, Tawny
+Wine, Red, Sherry
+Wine, Red, Sherry, Cream
+Wine, Red, Sherry, Dry
+Wine, Red, Sherry, Sweet
+Wine, Red, Vermouth
+Wine, Red, Vermouth, Sweet
+Wine, White
+Wine, White, Dry
+Wine, White, Lillet
+Wine, White, Sparkling
+Wine, White, Sparkling, Champagne
+Wine, White, Vermouth
+Wine, White, Vermouth, Dry
+Wine, White, Vermouth, French
